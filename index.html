@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ar">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Nexora — موقع تجريبي</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <img src="logo.svg" alt="Nexora" class="logo">
+    <h1>نيكسورا</h1>
+  </header>
+
+  <main id="app">
+    <section id="auth" class="card">
+      <h2>تسجيل / تسجيل دخول</h2>
+      <input id="name" placeholder="الاسم (للتسجيل)" />
+      <input id="email" placeholder="البريد الإلكتروني" />
+      <input id="password" placeholder="كلمة المرور" type="password" />
+      <div class="row">
+        <button id="signupBtn">سجّل</button>
+        <button id="loginBtn">دخول</button>
+      </div>
+      <div id="authMsg" class="msg"></div>
+    </section>
+
+    <section id="chat" class="card" style="display:none">
+      <div class="chat-top">
+        <div><strong id="meName"></strong></div>
+        <button id="logoutBtn">تسجيل خروج</button>
+      </div>
+      <div class="main-area">
+        <aside id="usersList" class="users"></aside>
+        <div class="chat-area">
+          <div id="chatBox" class="chat-box"></div>
+          <div class="chat-controls">
+            <input id="messageInput" placeholder="اكتب رسالة..." />
+            <button id="sendBtn">إرسال</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <script src="client.js"></script>
+</body>
+</html>
