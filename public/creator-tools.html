@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أدوات المنشئ - Nexora</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="creator-tools.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700;800&family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- الشريط العلوي -->
+    <header class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-icons-left">
+                <div class="persona-selector">
+                    <div class="logo" title="Nexora - Your World. Smarter.">
+                        <span>NEXORA</span>
+                    </div>
+                </div>
+                <button class="nav-icon-btn menu-btn" title="القائمة" id="menuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            <div class="navbar-icons-right"></div>
+        </div>
+    </header>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="creator-tools-container">
+        <!-- شريط التنقل الجانبي -->
+        <aside class="tools-sidebar">
+            <div class="sidebar-header">
+                <h2>أدوات المنشئ</h2>
+            </div>
+
+            <nav class="tools-nav">
+                <button class="nav-item active" data-tool="video-editor">
+                    <i class="fas fa-film"></i>
+                    <span>محرر الفيديو</span>
+                </button>
+                <button class="nav-item" data-tool="photo-tools">
+                    <i class="fas fa-image"></i>
+                    <span>أدوات الصور</span>
+                </button>
+                <button class="nav-item" data-tool="audio-tools">
+                    <i class="fas fa-music"></i>
+                    <span>أدوات الصوت</span>
+                </button>
+                <button class="nav-item" data-tool="templates">
+                    <i class="fas fa-th"></i>
+                    <span>القوالب</span>
+                </button>
+                <button class="nav-item" data-tool="ai-assistant">
+                    <i class="fas fa-brain"></i>
+                    <span>مساعد ذكي</span>
+                </button>
+                <button class="nav-item" data-tool="collaboration">
+                    <i class="fas fa-users"></i>
+                    <span>التعاون</span>
+                </button>
+            </nav>
+        </aside>
+
+        <!-- منطقة المحتوى الرئيسية -->
+        <div class="tools-content">
+            <!-- محرر الفيديو -->
+            <section id="video-editor" class="tool-section active">
+                <div class="section-header">
+                    <h2>محرر الفيديو المتقدم</h2>
+                    <p>قم بإنشاء فيديوهات احترافية باستخدام القوالب والمؤثرات</p>
+                </div>
+
+                <div class="editor-workspace">
+                    <div class="video-preview">
+                        <div class="preview-placeholder">
+                            <i class="fas fa-video"></i>
+                            <p>اختر ملف فيديو للبدء</p>
+                        </div>
+                    </div>
+
+                    <div class="editor-controls">
+                        <div class="control-section">
+                            <h3>القوالب</h3>
+                            <div class="templates-grid">
+                                <div class="template-card">
+                                    <div class="template-preview">
+                                        <i class="fas fa-film"></i>
+                                    </div>
+                                    <p>قالب احترافي 1</p>
+                                </div>
+                                <div class="template-card">
+                                    <div class="template-preview">
+                                        <i class="fas fa-film"></i>
+                                    </div>
+                                    <p>قالب احترافي 2</p>
+                                </div>
+                                <div class="template-card">
+                                    <div class="template-preview">
+                                        <i class="fas fa-film"></i>
+                                    </div>
+                                    <p>قالب احترافي 3</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="control-section">
+                            <h3>المؤثرات والانتقالات</h3>
+                            <div class="effects-grid">
+                                <button class="effect-btn">
+                                    <i class="fas fa-wand-magic-sparkles"></i>
+                                    <span>تلاشي</span>
+                                </button>
+                                <button class="effect-btn">
+                                    <i class="fas fa-wand-magic-sparkles"></i>
+                                    <span>انزلاق</span>
+                                </button>
+                                <button class="effect-btn">
+                                    <i class="fas fa-wand-magic-sparkles"></i>
+                                    <span>تكبير</span>
+                                </button>
+                                <button class="effect-btn">
+                                    <i class="fas fa-wand-magic-sparkles"></i>
+                                    <span>دوران</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="control-section">
+                            <h3>الترجمات والنصوص</h3>
+                            <button class="btn-primary">
+                                <i class="fas fa-closed-captioning"></i>
+                                إضافة ترجمات ذكية
+                            </button>
+                        </div>
+
+                        <div class="control-section">
+                            <h3>نسبة العرض والارتفاع</h3>
+                            <div class="aspect-ratio-buttons">
+                                <button class="aspect-btn active">16:9</button>
+                                <button class="aspect-btn">9:16</button>
+                                <button class="aspect-btn">1:1</button>
+                                <button class="aspect-btn">4:5</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- أدوات الصور -->
+            <section id="photo-tools" class="tool-section">
+                <div class="section-header">
+                    <h2>أدوات تحرير الصور</h2>
+                    <p>حسّن صورك باستخدام الفلاتر والمؤثرات الذكية</p>
+                </div>
+
+                <div class="photo-editor">
+                    <div class="photo-preview">
+                        <div class="preview-placeholder">
+                            <i class="fas fa-image"></i>
+                            <p>اختر صورة للبدء</p>
+                        </div>
+                    </div>
+
+                    <div class="photo-controls">
+                        <div class="control-section">
+                            <h3>الفلاتر</h3>
+                            <div class="filters-grid">
+                                <button class="filter-btn">
+                                    <div class="filter-preview" style="background: sepia(1);"></div>
+                                    <span>قديم</span>
+                                </button>
+                                <button class="filter-btn">
+                                    <div class="filter-preview" style="background: grayscale(1);"></div>
+                                    <span>أبيض وأسود</span>
+                                </button>
+                                <button class="filter-btn">
+                                    <div class="filter-preview" style="background: saturate(2);"></div>
+                                    <span>حيوي</span>
+                                </button>
+                                <button class="filter-btn">
+                                    <div class="filter-preview" style="background: invert(1);"></div>
+                                    <span>معكوس</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="control-section">
+                            <h3>المحسنات الذكية</h3>
+                            <button class="btn-primary">
+                                <i class="fas fa-wand-magic-sparkles"></i>
+                                تحسين تلقائي
+                            </button>
+                            <button class="btn-primary">
+                                <i class="fas fa-face-smile"></i>
+                                تجميل الوجه
+                            </button>
+                            <button class="btn-primary">
+                                <i class="fas fa-eraser"></i>
+                                إزالة الخلفية
+                            </button>
+                        </div>
+
+                        <div class="control-section">
+                            <h3>أدوات إضافية</h3>
+                            <button class="btn-primary">
+                                <i class="fas fa-laugh"></i>
+                                منشئ الميمز
+                            </button>
+                            <button class="btn-primary">
+                                <i class="fas fa-images"></i>
+                                منشئ الكولاج
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- أدوات الصوت -->
+            <section id="audio-tools" class="tool-section">
+                <div class="section-header">
+                    <h2>أدوات الصوت والموسيقى</h2>
+                    <p>أضف موسيقى وحسّن الصوت في محتواك</p>
+                </div>
+
+                <div class="audio-editor">
+                    <div class="control-section">
+                        <h3>مكتبة الموسيقى</h3>
+                        <div class="music-library">
+                            <div class="music-card">
+                                <i class="fas fa-music"></i>
+                                <h4>موسيقى هادئة</h4>
+                                <p>موسيقى خلفية هادئة</p>
+                                <button class="btn-small">استخدم</button>
+                            </div>
+                            <div class="music-card">
+                                <i class="fas fa-music"></i>
+                                <h4>موسيقى نشيطة</h4>
+                                <p>موسيقى حماسية</p>
+                                <button class="btn-small">استخدم</button>
+                            </div>
+                            <div class="music-card">
+                                <i class="fas fa-music"></i>
+                                <h4>موسيقى درامية</h4>
+                                <p>موسيقى درامية</p>
+                                <button class="btn-small">استخدم</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="control-section">
+                        <h3>تحسين الصوت</h3>
+                        <button class="btn-primary">
+                            <i class="fas fa-microphone"></i>
+                            تحسين جودة الصوت
+                        </button>
+                        <button class="btn-primary">
+                            <i class="fas fa-volume-xmark"></i>
+                            إزالة الضوضاء
+                        </button>
+                    </div>
+
+                    <div class="control-section">
+                        <h3>الرواية الصوتية الذكية</h3>
+                        <div class="voiceover-options">
+                            <textarea placeholder="أدخل النص الذي تريد تحويله إلى صوت..."></textarea>
+                            <select>
+                                <option>اختر صوتاً...</option>
+                                <option>ذكر عربي</option>
+                                <option>أنثى عربية</option>
+                                <option>طفل</option>
+                            </select>
+                            <button class="btn-primary">
+                                <i class="fas fa-play"></i>
+                                توليد الصوت
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- القوالب -->
+            <section id="templates" class="tool-section">
+                <div class="section-header">
+                    <h2>قوالب القصص والريلز</h2>
+                    <p>استخدم قوالب جاهزة لإنشاء محتوى احترافي</p>
+                </div>
+
+                <div class="templates-showcase">
+                    <div class="template-category">
+                        <h3>قوالب القصص</h3>
+                        <div class="templates-grid-large">
+                            <div class="template-item">
+                                <div class="template-preview-large">
+                                    <i class="fas fa-sparkles"></i>
+                                </div>
+                                <h4>قصة موسيقية</h4>
+                                <p>قالب متحرك مع موسيقى</p>
+                                <button class="btn-small">استخدم</button>
+                            </div>
+                            <div class="template-item">
+                                <div class="template-preview-large">
+                                    <i class="fas fa-sparkles"></i>
+                                </div>
+                                <h4>قصة نصية</h4>
+                                <p>قالب نصي بسيط وأنيق</p>
+                                <button class="btn-small">استخدم</button>
+                            </div>
+                            <div class="template-item">
+                                <div class="template-preview-large">
+                                    <i class="fas fa-sparkles"></i>
+                                </div>
+                                <h4>قصة تفاعلية</h4>
+                                <p>قالب مع استطلاعات وأسئلة</p>
+                                <button class="btn-small">استخدم</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="template-category">
+                        <h3>قوالب الريلز</h3>
+                        <div class="templates-grid-large">
+                            <div class="template-item">
+                                <div class="template-preview-large">
+                                    <i class="fas fa-film"></i>
+                                </div>
+                                <h4>ريل سريع</h4>
+                                <p>قالب ريل بسيط وسريع</p>
+                                <button class="btn-small">استخدم</button>
+                            </div>
+                            <div class="template-item">
+                                <div class="template-preview-large">
+                                    <i class="fas fa-film"></i>
+                                </div>
+                                <h4>ريل درامي</h4>
+                                <p>قالب ريل درامي احترافي</p>
+                                <button class="btn-small">استخدم</button>
+                            </div>
+                            <div class="template-item">
+                                <div class="template-preview-large">
+                                    <i class="fas fa-film"></i>
+                                </div>
+                                <h4>ريل تعليمي</h4>
+                                <p>قالب ريل تعليمي وشرح</p>
+                                <button class="btn-small">استخدم</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ar-effects">
+                        <h3>مؤثرات الواقع المعزز</h3>
+                        <div class="effects-grid">
+                            <button class="effect-card">
+                                <i class="fas fa-mask"></i>
+                                <span>أقنعة وجه</span>
+                            </button>
+                            <button class="effect-card">
+                                <i class="fas fa-star"></i>
+                                <span>ملصقات</span>
+                            </button>
+                            <button class="effect-card">
+                                <i class="fas fa-face-grin-hearts"></i>
+                                <span>إيموجيات متحركة</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- مساعد الذكاء الاصطناعي -->
+            <section id="ai-assistant" class="tool-section">
+                <div class="section-header">
+                    <h2>مساعد الذكاء الاصطناعي</h2>
+                    <p>احصل على اقتراحات ذكية لتحسين محتواك</p>
+                </div>
+
+                <div class="ai-tools">
+                    <div class="ai-tool-card">
+                        <div class="tool-icon">
+                            <i class="fas fa-pen-fancy"></i>
+                        </div>
+                        <h3>منشئ الكاتب</h3>
+                        <p>توليد كاتب احترافي لمنشورك</p>
+                        <textarea placeholder="أدخل موضوع المنشور..."></textarea>
+                        <button class="btn-primary">
+                            <i class="fas fa-wand-magic-sparkles"></i>
+                            توليد كاتب
+                        </button>
+                    </div>
+
+                    <div class="ai-tool-card">
+                        <div class="tool-icon">
+                            <i class="fas fa-hashtag"></i>
+                        </div>
+                        <h3>مقترح الهاشتاج</h3>
+                        <p>احصل على هاشتاجات ذكية</p>
+                        <textarea placeholder="أدخل محتوى المنشور..."></textarea>
+                        <button class="btn-primary">
+                            <i class="fas fa-wand-magic-sparkles"></i>
+                            اقترح هاشتاجات
+                        </button>
+                    </div>
+
+                    <div class="ai-tool-card">
+                        <div class="tool-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>تحليل الاتجاهات</h3>
+                        <p>اكتشف الاتجاهات الحالية</p>
+                        <button class="btn-primary">
+                            <i class="fas fa-chart-line"></i>
+                            عرض الاتجاهات
+                        </button>
+                    </div>
+
+                    <div class="ai-tool-card">
+                        <div class="tool-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <h3>نصائح التحسين</h3>
+                        <p>احصل على نصائح لتحسين الوصول</p>
+                        <textarea placeholder="أدخل محتوى المنشور..."></textarea>
+                        <button class="btn-primary">
+                            <i class="fas fa-lightbulb"></i>
+                            احصل على النصائح
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- أدوات التعاون -->
+            <section id="collaboration" class="tool-section">
+                <div class="section-header">
+                    <h2>أدوات التعاون الجماعي</h2>
+                    <p>تعاون مع الفريق على المحتوى</p>
+                </div>
+
+                <div class="collaboration-tools">
+                    <div class="collab-card">
+                        <h3>المنشورات المشتركة</h3>
+                        <p>قم بإنشاء منشور مع عدة منشئين</p>
+                        <button class="btn-primary">
+                            <i class="fas fa-plus"></i>
+                            إنشاء منشور مشترك
+                        </button>
+                    </div>
+
+                    <div class="collab-card">
+                        <h3>إدارة الفريق</h3>
+                        <p>أدر فريق المحتوى الخاص بك</p>
+                        <button class="btn-primary">
+                            <i class="fas fa-users"></i>
+                            إدارة الفريق
+                        </button>
+                    </div>
+
+                    <div class="collab-card">
+                        <h3>المسودات المشتركة</h3>
+                        <p>شارك المسودات مع الفريق للتعديل</p>
+                        <button class="btn-primary">
+                            <i class="fas fa-file-pen"></i>
+                            عرض المسودات
+                        </button>
+                    </div>
+
+                    <div class="collab-card">
+                        <h3>التقويم المشترك</h3>
+                        <p>خطط المحتوى مع الفريق</p>
+                        <button class="btn-primary">
+                            <i class="fas fa-calendar"></i>
+                            عرض التقويم
+                        </button>
+                    </div>
+                </div>
+
+                <div class="team-members">
+                    <h3>أعضاء الفريق</h3>
+                    <div class="members-list">
+                        <div class="member-item">
+                            <img src="https://picsum.photos/40/40?random=1" alt="عضو">
+                            <div class="member-info">
+                                <h4>أحمد محمد</h4>
+                                <p>منشئ محتوى</p>
+                            </div>
+                            <span class="role-badge">مسؤول</span>
+                        </div>
+                        <div class="member-item">
+                            <img src="https://picsum.photos/40/40?random=2" alt="عضو">
+                            <div class="member-info">
+                                <h4>فاطمة علي</h4>
+                                <p>محررة</p>
+                            </div>
+                            <span class="role-badge">محرر</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="creator-tools.js"></script>
+</body>
+</html>

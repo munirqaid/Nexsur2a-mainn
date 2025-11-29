@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الاستكشاف - Nexora</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="explore.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700;800&family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- الشريط العلوي -->
+    <header class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-icons-left">
+                <div class="persona-selector">
+                    <div class="logo" title="Nexora - Your World. Smarter.">
+                        <span>NEXORA</span>
+                    </div>
+                </div>
+                <button class="nav-icon-btn menu-btn" title="القائمة" id="menuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            <div class="navbar-icons-right"></div>
+        </div>
+    </header>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="explore-container">
+        <!-- شريط البحث والتصفية -->
+        <section class="explore-header">
+            <div class="search-bar-container">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="ابحث عن محتوى، هاشتاجات، أشخاص..." id="exploreSearch">
+                    <button class="btn-filter" id="filterBtn">
+                        <i class="fas fa-sliders"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- تبويبات التصنيفات -->
+            <div class="category-tabs">
+                <button class="tab-btn active" data-category="all">
+                    <i class="fas fa-star"></i>
+                    الكل
+                </button>
+                <button class="tab-btn" data-category="trending">
+                    <i class="fas fa-fire"></i>
+                    الاتجاهات
+                </button>
+                <button class="tab-btn" data-category="popular">
+                    <i class="fas fa-heart"></i>
+                    الشهير
+                </button>
+                <button class="tab-btn" data-category="recommended">
+                    <i class="fas fa-lightbulb"></i>
+                    موصى به
+                </button>
+                <button class="tab-btn" data-category="local">
+                    <i class="fas fa-map-marker-alt"></i>
+                    محلي
+                </button>
+            </div>
+        </section>
+
+        <!-- محتوى الاستكشاف -->
+        <div class="explore-content">
+            <!-- القسم الأول: الاتجاهات -->
+            <section class="explore-section" id="trending-section">
+                <div class="section-header">
+                    <h2>الاتجاهات الحالية</h2>
+                    <a href="#" class="view-all">عرض الكل</a>
+                </div>
+
+                <div class="trends-grid" id="trendsGrid">
+                    <!-- سيتم تحميل الاتجاهات هنا -->
+                </div>
+            </section>
+
+            <!-- القسم الثاني: المحتوى الشهير -->
+            <section class="explore-section" id="popular-section">
+                <div class="section-header">
+                    <h2>المحتوى الشهير</h2>
+                    <a href="#" class="view-all">عرض الكل</a>
+                </div>
+
+                <div class="posts-grid" id="popularGrid">
+                    <!-- سيتم تحميل المنشورات هنا -->
+                </div>
+            </section>
+
+            <!-- القسم الثالث: التوصيات الشخصية -->
+            <section class="explore-section" id="recommended-section">
+                <div class="section-header">
+                    <h2>موصى به لك</h2>
+                    <p class="section-subtitle">بناءً على اهتماماتك وأنشطتك</p>
+                </div>
+
+                <div class="recommendations-grid" id="recommendationsGrid">
+                    <!-- سيتم تحميل التوصيات هنا -->
+                </div>
+            </section>
+
+            <!-- القسم الرابع: مراكز المواضيع -->
+            <section class="explore-section" id="topics-section">
+                <div class="section-header">
+                    <h2>مراكز المواضيع</h2>
+                    <p class="section-subtitle">استكشف مجتمعات حول اهتماماتك</p>
+                </div>
+
+                <div class="topics-grid" id="topicsGrid">
+                    <!-- سيتم تحميل مراكز المواضيع هنا -->
+                </div>
+            </section>
+
+            <!-- القسم الخامس: الأشخاص المقترحون -->
+            <section class="explore-section" id="suggested-people-section">
+                <div class="section-header">
+                    <h2>أشخاص قد تعرفهم</h2>
+                    <a href="#" class="view-all">عرض الكل</a>
+                </div>
+
+                <div class="people-grid" id="peopleGrid">
+                    <!-- سيتم تحميل الأشخاص المقترحين هنا -->
+                </div>
+            </section>
+
+            <!-- القسم السادس: الأحداث والبث المباشر -->
+            <section class="explore-section" id="events-section">
+                <div class="section-header">
+                    <h2>الأحداث والبث المباشر</h2>
+                    <a href="#" class="view-all">عرض الكل</a>
+                </div>
+
+                <div class="events-grid" id="eventsGrid">
+                    <!-- سيتم تحميل الأحداث هنا -->
+                </div>
+            </section>
+        </div>
+
+        <!-- الشريط الجانبي -->
+        <aside class="explore-sidebar">
+            <!-- أفضل المواضيع -->
+            <div class="sidebar-card">
+                <h3>أفضل المواضيع</h3>
+                <div class="topics-list" id="topTopics">
+                    <!-- سيتم تحميل المواضيع هنا -->
+                </div>
+            </div>
+
+            <!-- الأشخاص المتابعون الجدد -->
+            <div class="sidebar-card">
+                <h3>متابعون جدد</h3>
+                <div class="followers-list" id="newFollowers">
+                    <!-- سيتم تحميل المتابعين الجدد هنا -->
+                </div>
+            </div>
+
+            <!-- الأحداث القادمة -->
+            <div class="sidebar-card">
+                <h3>أحداث قادمة</h3>
+                <div class="upcoming-events" id="upcomingEvents">
+                    <!-- سيتم تحميل الأحداث القادمة هنا -->
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <!-- Modal للفلاتر -->
+    <div id="filterModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>تصفية النتائج</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="filter-group">
+                    <h3>نوع المحتوى</h3>
+                    <label class="filter-checkbox">
+                        <input type="checkbox" checked>
+                        <span>منشورات</span>
+                    </label>
+                    <label class="filter-checkbox">
+                        <input type="checkbox" checked>
+                        <span>صور</span>
+                    </label>
+                    <label class="filter-checkbox">
+                        <input type="checkbox" checked>
+                        <span>فيديوهات</span>
+                    </label>
+                    <label class="filter-checkbox">
+                        <input type="checkbox">
+                        <span>بث مباشر</span>
+                    </label>
+                </div>
+
+                <div class="filter-group">
+                    <h3>الفترة الزمنية</h3>
+                    <select id="timeFilter">
+                        <option value="today">اليوم</option>
+                        <option value="week">هذا الأسبوع</option>
+                        <option value="month">هذا الشهر</option>
+                        <option value="all">كل الوقت</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <h3>الموقع</h3>
+                    <select id="locationFilter">
+                        <option value="global">عالمي</option>
+                        <option value="country">بلدي</option>
+                        <option value="city">مدينتي</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <h3>الترتيب</h3>
+                    <select id="sortFilter">
+                        <option value="recent">الأحدث</option>
+                        <option value="popular">الأكثر شهرة</option>
+                        <option value="trending">الاتجاهات</option>
+                        <option value="relevant">الأكثر صلة</option>
+                    </select>
+                </div>
+
+                <div class="filter-actions">
+                    <button class="btn-primary" id="applyFilters">تطبيق الفلاتر</button>
+                    <button class="btn-secondary" id="resetFilters">إعادة تعيين</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="explore.js"></script>
+</body>
+</html>

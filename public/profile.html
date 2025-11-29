@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexora - الملف الشخصي</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700;800&family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0B0D12;
+            color: #fff;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .navbar {
+            background: rgba(11, 13, 18, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(42, 124, 255, 0.2);
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5em;
+            font-weight: 800;
+            background: linear-gradient(135deg, #2A7CFF 0%, #A259FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            cursor: pointer;
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .nav-icon-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #fff;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .nav-icon-btn:hover {
+            background: rgba(42, 124, 255, 0.3);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .profile-header {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .profile-banner {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(135deg, #2A7CFF 0%, #A259FF 100%);
+            position: relative;
+        }
+
+        .profile-info {
+            padding: 30px 20px;
+            position: relative;
+            margin-top: -80px;
+        }
+
+        .profile-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2A7CFF 0%, #A259FF 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4em;
+            font-weight: 700;
+            border: 5px solid #0B0D12;
+            margin-bottom: 20px;
+        }
+
+        .profile-name {
+            font-size: 2em;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .profile-username {
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 15px;
+        }
+
+        .profile-bio {
+            margin-bottom: 20px;
+            line-height: 1.6;
+            max-width: 500px;
+        }
+
+        .profile-stats {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+
+        .stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .stat-number {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #2A7CFF;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #2A7CFF 0%, #A259FF 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(42, 124, 255, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .tab {
+            padding: 15px 0;
+            cursor: pointer;
+            color: rgba(255, 255, 255, 0.6);
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            color: #2A7CFF;
+            border-bottom-color: #2A7CFF;
+        }
+
+        .tab:hover {
+            color: #fff;
+        }
+
+        .posts-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .post-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .post-card:hover {
+            border-color: rgba(42, 124, 255, 0.3);
+            box-shadow: 0 10px 30px rgba(42, 124, 255, 0.1);
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .post-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2A7CFF 0%, #A259FF 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .post-user-info {
+            flex: 1;
+        }
+
+        .post-username {
+            font-weight: 600;
+        }
+
+        .post-time {
+            font-size: 0.85em;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .post-content {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .post-image {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            max-height: 400px;
+            object-fit: cover;
+        }
+
+        .post-actions {
+            display: flex;
+            justify-content: space-around;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .post-action {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+            justify-content: center;
+            padding: 8px;
+            border-radius: 8px;
+        }
+
+        .post-action:hover {
+            color: #2A7CFF;
+            background: rgba(42, 124, 255, 0.1);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px 20px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 3px solid rgba(42, 124, 255, 0.3);
+            border-top-color: #2A7CFF;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .profile-avatar {
+                width: 100px;
+                height: 100px;
+                font-size: 2.5em;
+            }
+
+            .profile-name {
+                font-size: 1.5em;
+            }
+
+            .profile-stats {
+                gap: 20px;
+            }
+
+            .tabs {
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- الشريط العلوي -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="logo" onclick="window.location.href='/home.html'">NEXORA</div>
+            <div class="nav-icons">
+                <button class="nav-icon-btn" title="تسجيل الخروج" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- المحتوى الرئيسي -->
+    <div class="container">
+        <!-- رأس الملف الشخصي -->
+        <div class="profile-header">
+            <div class="profile-banner"></div>
+            <div class="profile-info">
+                <div class="profile-avatar" id="profileAvatar">A</div>
+                <h1 class="profile-name" id="profileName">اسم المستخدم</h1>
+                <p class="profile-username" id="profileUsername">@username</p>
+                <p class="profile-bio" id="profileBio">السيرة الذاتية</p>
+
+                <div class="profile-stats">
+                    <div class="stat">
+                        <div class="stat-number" id="postsCount">0</div>
+                        <div class="stat-label">منشور</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number" id="followersCount">0</div>
+                        <div class="stat-label">متابع</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number" id="followingCount">0</div>
+                        <div class="stat-label">يتابع</div>
+                    </div>
+                </div>
+
+                <div class="profile-actions" id="profileActions">
+                    <button class="btn btn-primary" id="followBtn">متابعة</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- التبويبات -->
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('posts')">المنشورات</div>
+            <div class="tab" onclick="switchTab('media')">الوسائط</div>
+            <div class="tab" onclick="switchTab('likes')">الإعجابات</div>
+        </div>
+
+        <!-- المنشورات -->
+        <div id="postsContainer" class="posts-container">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>جاري تحميل المنشورات...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const token = localStorage.getItem('token');
+        const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+        const urlParams = new URLSearchParams(window.location.search);
+        const userId = urlParams.get('userId') || currentUser.id;
+
+        // التحقق من تسجيل الدخول
+        if (!token) {
+            window.location.href = '/auth.html';
+        }
+
+        // تسجيل الخروج
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = '/auth.html';
+        });
+
+        // تحميل بيانات الملف الشخصي
+        async function loadProfile() {
+            try {
+                const response = await fetch(`/api/users/${userId}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                const data = await response.json();
+                const user = data.user;
+
+                document.getElementById('profileName').textContent = user.displayName || user.username;
+                document.getElementById('profileUsername').textContent = `@${user.username}`;
+                document.getElementById('profileBio').textContent = user.bio || 'لا توجد سيرة ذاتية';
+                document.getElementById('profileAvatar').textContent = (user.displayName || user.username).charAt(0).toUpperCase();
+
+                // تحميل المنشورات والإحصائيات
+                loadUserPosts();
+                loadFollowStats();
+
+                // إظهار زر المتابعة إذا كان المستخدم مختلفاً
+                if (userId !== currentUser.id) {
+                    document.getElementById('profileActions').innerHTML = '<button class="btn btn-primary" id="followBtn">متابعة</button>';
+                    document.getElementById('followBtn').addEventListener('click', followUser);
+                } else {
+                    document.getElementById('profileActions').innerHTML = '<button class="btn btn-secondary">تعديل الملف</button>';
+                }
+            } catch (error) {
+                console.error('Error loading profile:', error);
+            }
+        }
+
+        async function loadUserPosts() {
+            try {
+                const response = await fetch(`/api/posts/user/${userId}?page=1&limit=20`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                const data = await response.json();
+                const container = document.getElementById('postsContainer');
+                container.innerHTML = '';
+
+                if (data.posts && data.posts.length > 0) {
+                    document.getElementById('postsCount').textContent = data.posts.length;
+                    data.posts.forEach(post => {
+                        const postCard = createPostCard(post);
+                        container.appendChild(postCard);
+                    });
+                } else {
+                    container.innerHTML = '<div class="loading"><p>لا توجد منشورات</p></div>';
+                }
+            } catch (error) {
+                console.error('Error loading posts:', error);
+            }
+        }
+
+        async function loadFollowStats() {
+            try {
+                const followersRes = await fetch(`/api/users/${userId}/followers`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const followersData = await followersRes.json();
+                document.getElementById('followersCount').textContent = followersData.followers?.length || 0;
+
+                const followingRes = await fetch(`/api/users/${userId}/following`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const followingData = await followingRes.json();
+                document.getElementById('followingCount').textContent = followingData.following?.length || 0;
+            } catch (error) {
+                console.error('Error loading follow stats:', error);
+            }
+        }
+
+        async function followUser() {
+            try {
+                const response = await fetch(`/api/users/${userId}/follow`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    document.getElementById('followBtn').textContent = 'متابع';
+                    document.getElementById('followBtn').disabled = true;
+                    loadFollowStats();
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        function createPostCard(post) {
+            const card = document.createElement('div');
+            card.className = 'post-card';
+
+            const timeAgo = getTimeAgo(post.createdAt);
+
+            card.innerHTML = `
+                <div class="post-header">
+                    <div class="post-avatar">${(post.author?.displayName || 'U').charAt(0).toUpperCase()}</div>
+                    <div class="post-user-info">
+                        <div class="post-username">${post.author?.displayName || 'مستخدم'}</div>
+                        <div class="post-time">@${post.author?.username || 'user'} • ${timeAgo}</div>
+                    </div>
+                </div>
+                <div class="post-content">${escapeHtml(post.content)}</div>
+                ${post.mediaUrls && post.mediaUrls.length > 0 ? `<img src="${post.mediaUrls[0]}" alt="Post image" class="post-image">` : ''}
+                <div class="post-actions">
+                    <div class="post-action">
+                        <i class="fas fa-comment"></i>
+                        <span>${post.commentCount || 0}</span>
+                    </div>
+                    <div class="post-action">
+                        <i class="fas fa-heart"></i>
+                        <span>${post.likeCount || 0}</span>
+                    </div>
+                    <div class="post-action">
+                        <i class="fas fa-share"></i>
+                        <span>${post.shareCount || 0}</span>
+                    </div>
+                </div>
+            `;
+
+            return card;
+        }
+
+        function getTimeAgo(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const seconds = Math.floor((now - date) / 1000);
+
+            if (seconds < 60) return 'الآن';
+            if (seconds < 3600) return `${Math.floor(seconds / 60)} دقيقة`;
+            if (seconds < 86400) return `${Math.floor(seconds / 3600)} ساعة`;
+            return `${Math.floor(seconds / 86400)} يوم`;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        // تحميل الملف الشخصي عند فتح الصفحة
+        loadProfile();
+    </script>
+</body>
+</html>

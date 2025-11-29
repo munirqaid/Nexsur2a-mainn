@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexora - الخلاصة</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700;800&family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0B0D12;
+            color: #fff;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .navbar {
+            background: rgba(11, 13, 18, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(42, 124, 255, 0.2);
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5em;
+            font-weight: 800;
+            background: linear-gradient(135deg, #2A7CFF 0%, #A259FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .nav-icon-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #fff;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .nav-icon-btn:hover {
+            background: rgba(42, 124, 255, 0.3);
+        }
+
+        .user-profile-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 15px;
+            background: rgba(42, 124, 255, 0.2);
+            border: 1px solid rgba(42, 124, 255, 0.3);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .user-profile-btn:hover {
+            background: rgba(42, 124, 255, 0.3);
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2A7CFF 0%, #A259FF 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 250px 1fr 300px;
+            gap: 20px;
+        }
+
+        .sidebar {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            height: fit-content;
+            position: sticky;
+            top: 80px;
+        }
+
+        .sidebar-item {
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-item:hover {
+            background: rgba(42, 124, 255, 0.2);
+        }
+
+        .sidebar-item.active {
+            background: rgba(42, 124, 255, 0.3);
+            color: #2A7CFF;
+        }
+
+        .feed-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .post-creator {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .post-creator-header {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .post-creator-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2A7CFF 0%, #A259FF 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .post-creator-input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            padding: 12px 20px;
+            color: #fff;
+            font-family: 'Cairo', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .post-creator-input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.12);
+            border-color: #2A7CFF;
+        }
+
+        .post-creator-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .post-creator-icons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .icon-btn {
+            background: transparent;
+            border: none;
+            color: #2A7CFF;
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: all 0.3s ease;
+        }
+
+        .icon-btn:hover {
+            color: #A259FF;
+            transform: scale(1.1);
+        }
+
+        .post-btn {
+            background: linear-gradient(135deg, #2A7CFF 0%, #A259FF 100%);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .post-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(42, 124, 255, 0.3);
+        }
+
+        .post-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .post-card:hover {
+            border-color: rgba(42, 124, 255, 0.3);
+            box-shadow: 0 10px 30px rgba(42, 124, 255, 0.1);
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .post-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2A7CFF 0%, #A259FF 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .post-user-info {
+            flex: 1;
+        }
+
+        .post-username {
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .post-username:hover {
+            color: #2A7CFF;
+        }
+
+        .post-time {
+            font-size: 0.85em;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .post-content {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .post-image {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            max-height: 400px;
+            object-fit: cover;
+        }
+
+        .post-actions {
+            display: flex;
+            justify-content: space-around;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .post-action {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+            justify-content: center;
+            padding: 8px;
+            border-radius: 8px;
+        }
+
+        .post-action:hover {
+            color: #2A7CFF;
+            background: rgba(42, 124, 255, 0.1);
+        }
+
+        .post-action.liked {
+            color: #ff6b6b;
+        }
+
+        .right-sidebar {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            height: fit-content;
+            position: sticky;
+            top: 80px;
+        }
+
+        .sidebar-title {
+            font-size: 1.2em;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .trending-item {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .trending-item:hover {
+            color: #2A7CFF;
+        }
+
+        .trending-tag {
+            color: #2A7CFF;
+            font-weight: 600;
+        }
+
+        .trending-count {
+            font-size: 0.85em;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 3px solid rgba(42, 124, 255, 0.3);
+            border-top-color: #2A7CFF;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 1024px) {
+            .main-container {
+                grid-template-columns: 1fr 300px;
+            }
+
+            .sidebar {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+
+            .right-sidebar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- الشريط العلوي -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="logo">NEXORA</div>
+            <div class="nav-icons">
+                <button class="nav-icon-btn" title="البحث">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button class="nav-icon-btn" title="الإشعارات">
+                    <i class="fas fa-bell"></i>
+                </button>
+                <button class="nav-icon-btn" title="الرسائل">
+                    <i class="fas fa-envelope"></i>
+                </button>
+                <button class="user-profile-btn" id="userProfileBtn">
+                    <div class="user-avatar" id="userAvatarNav">A</div>
+                    <span id="userNameNav">المستخدم</span>
+                </button>
+                <button class="nav-icon-btn" title="تسجيل الخروج" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- المحتوى الرئيسي -->
+    <div class="main-container">
+        <!-- الشريط الجانبي الأيسر -->
+        <aside class="sidebar">
+            <div class="sidebar-item active">
+                <i class="fas fa-home"></i>
+                <span>الصفحة الرئيسية</span>
+            </div>
+            <div class="sidebar-item">
+                <i class="fas fa-compass"></i>
+                <span>الاستكشاف</span>
+            </div>
+            <div class="sidebar-item">
+                <i class="fas fa-bell"></i>
+                <span>الإشعارات</span>
+            </div>
+            <div class="sidebar-item">
+                <i class="fas fa-envelope"></i>
+                <span>الرسائل</span>
+            </div>
+            <div class="sidebar-item">
+                <i class="fas fa-bookmark"></i>
+                <span>المحفوظات</span>
+            </div>
+            <div class="sidebar-item" id="profileSidebarBtn">
+                <i class="fas fa-user"></i>
+                <span>الملف الشخصي</span>
+            </div>
+            <div class="sidebar-item">
+                <i class="fas fa-cog"></i>
+                <span>الإعدادات</span>
+            </div>
+        </aside>
+
+        <!-- الخلاصة -->
+        <div class="feed-container">
+            <!-- منشئ المنشور -->
+            <div class="post-creator">
+                <div class="post-creator-header">
+                    <div class="post-creator-avatar" id="creatorAvatar">A</div>
+                    <input type="text" class="post-creator-input" id="postInput" placeholder="ماذا في بالك الآن؟">
+                </div>
+                <div class="post-creator-actions">
+                    <div class="post-creator-icons">
+                        <button class="icon-btn" title="صورة">
+                            <i class="fas fa-image"></i>
+                        </button>
+                        <button class="icon-btn" title="فيديو">
+                            <i class="fas fa-video"></i>
+                        </button>
+                        <button class="icon-btn" title="استطلاع">
+                            <i class="fas fa-poll"></i>
+                        </button>
+                    </div>
+                    <button class="post-btn" id="publishBtn">نشر</button>
+                </div>
+            </div>
+
+            <!-- المنشورات -->
+            <div id="postsContainer">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>جاري تحميل المنشورات...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- الشريط الجانبي الأيمن -->
+        <aside class="right-sidebar">
+            <div class="sidebar-title">المواضيع الرائجة</div>
+            <div class="trending-item">
+                <div class="trending-tag">#تقنية</div>
+                <div class="trending-count">125 ألف منشور</div>
+            </div>
+            <div class="trending-item">
+                <div class="trending-tag">#برمجة</div>
+                <div class="trending-count">98 ألف منشور</div>
+            </div>
+            <div class="trending-item">
+                <div class="trending-tag">#ويب</div>
+                <div class="trending-count">87 ألف منشور</div>
+            </div>
+            <div class="trending-item">
+                <div class="trending-tag">#تطوير</div>
+                <div class="trending-count">76 ألف منشور</div>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        const token = localStorage.getItem('token');
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+        // التحقق من تسجيل الدخول
+        if (!token) {
+            window.location.href = '/auth.html';
+        }
+
+        // تحديث بيانات المستخدم
+        document.getElementById('userNameNav').textContent = user.displayName || user.username;
+        document.getElementById('userAvatarNav').textContent = (user.displayName || user.username).charAt(0).toUpperCase();
+        document.getElementById('creatorAvatar').textContent = (user.displayName || user.username).charAt(0).toUpperCase();
+
+        // تسجيل الخروج
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = '/auth.html';
+        });
+
+        // الذهاب إلى الملف الشخصي
+        document.getElementById('userProfileBtn').addEventListener('click', () => {
+            window.location.href = `/profile.html?userId=${user.id}`;
+        });
+
+        document.getElementById('profileSidebarBtn').addEventListener('click', () => {
+            window.location.href = `/profile.html?userId=${user.id}`;
+        });
+
+        // نشر منشور جديد
+        document.getElementById('publishBtn').addEventListener('click', async () => {
+            const content = document.getElementById('postInput').value.trim();
+            if (!content) {
+                alert('يرجى كتابة شيء ما');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/posts', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        content,
+                        postType: 'text',
+                        mediaUrls: [],
+                        hashtags: [],
+                        mentions: []
+                    })
+                });
+
+                if (response.ok) {
+                    document.getElementById('postInput').value = '';
+                    loadPosts();
+                } else {
+                    alert('فشل نشر المنشور');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('حدث خطأ');
+            }
+        });
+
+        // تحميل المنشورات
+        async function loadPosts() {
+            try {
+                const response = await fetch('/api/posts?page=1&limit=20', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                const data = await response.json();
+                const container = document.getElementById('postsContainer');
+                container.innerHTML = '';
+
+                if (data.posts && data.posts.length > 0) {
+                    data.posts.forEach(post => {
+                        const postCard = createPostCard(post);
+                        container.appendChild(postCard);
+                    });
+                } else {
+                    container.innerHTML = '<div class="loading"><p>لا توجد منشورات حتى الآن</p></div>';
+                }
+            } catch (error) {
+                console.error('Error loading posts:', error);
+                document.getElementById('postsContainer').innerHTML = '<div class="loading"><p>خطأ في تحميل المنشورات</p></div>';
+            }
+        }
+
+        function createPostCard(post) {
+            const card = document.createElement('div');
+            card.className = 'post-card';
+
+            const timeAgo = getTimeAgo(post.createdAt);
+
+            card.innerHTML = `
+                <div class="post-header">
+                    <div class="post-avatar">${(post.author?.displayName || 'U').charAt(0).toUpperCase()}</div>
+                    <div class="post-user-info">
+                        <div class="post-username">${post.author?.displayName || 'مستخدم'}</div>
+                        <div class="post-time">@${post.author?.username || 'user'} • ${timeAgo}</div>
+                    </div>
+                </div>
+                <div class="post-content">${escapeHtml(post.content)}</div>
+                ${post.mediaUrls && post.mediaUrls.length > 0 ? `<img src="${post.mediaUrls[0]}" alt="Post image" class="post-image">` : ''}
+                <div class="post-actions">
+                    <div class="post-action">
+                        <i class="fas fa-comment"></i>
+                        <span>${post.commentCount || 0}</span>
+                    </div>
+                    <div class="post-action" onclick="likePost('${post.id}')">
+                        <i class="fas fa-heart"></i>
+                        <span>${post.likeCount || 0}</span>
+                    </div>
+                    <div class="post-action">
+                        <i class="fas fa-share"></i>
+                        <span>${post.shareCount || 0}</span>
+                    </div>
+                </div>
+            `;
+
+            return card;
+        }
+
+        function getTimeAgo(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const seconds = Math.floor((now - date) / 1000);
+
+            if (seconds < 60) return 'الآن';
+            if (seconds < 3600) return `${Math.floor(seconds / 60)} دقيقة`;
+            if (seconds < 86400) return `${Math.floor(seconds / 3600)} ساعة`;
+            return `${Math.floor(seconds / 86400)} يوم`;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        async function likePost(postId) {
+            try {
+                const response = await fetch(`/api/posts/${postId}/react`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ reactionType: 'like' })
+                });
+
+                if (response.ok) {
+                    loadPosts();
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        // تحميل المنشورات عند فتح الصفحة
+        loadPosts();
+    </script>
+</body>
+</html>

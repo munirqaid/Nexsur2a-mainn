@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الرسائل - Nexora</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="messages.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700;800&family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- الشريط العلوي -->
+    <header class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-icons-left">
+                <div class="persona-selector">
+                    <div class="logo" title="Nexora - Your World. Smarter.">
+                        <span>NEXORA</span>
+                    </div>
+                </div>
+                <button class="nav-icon-btn menu-btn" title="القائمة" id="menuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+
+            <div class="navbar-icons-right">
+            </div>
+        </div>
+    </header>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="messages-container">
+        <div class="messages-layout">
+            <!-- قائمة المحادثات -->
+            <aside class="conversations-sidebar">
+                <div class="conversations-header">
+                    <h2>الرسائل</h2>
+                    <button class="btn-icon" id="newChatBtn" title="محادثة جديدة">
+                        <i class="fas fa-pen-to-square"></i>
+                    </button>
+                </div>
+
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="ابحث عن محادثة..." id="searchConversations">
+                </div>
+
+                <div class="conversations-tabs">
+                    <button class="tab-btn active" data-tab="all">الكل</button>
+                    <button class="tab-btn" data-tab="direct">مباشر</button>
+                    <button class="tab-btn" data-tab="groups">مجموعات</button>
+                    <button class="tab-btn" data-tab="channels">قنوات</button>
+                </div>
+
+                <div class="conversations-list" id="conversationsList">
+                    <!-- المحادثات سيتم تحميلها هنا -->
+                </div>
+            </aside>
+
+            <!-- منطقة الدردشة -->
+            <div class="chat-area">
+                <div class="chat-header" id="chatHeader">
+                    <div class="chat-header-info">
+                        <h3 id="chatTitle">اختر محادثة</h3>
+                        <p id="chatStatus" class="chat-status">آخر ظهور</p>
+                    </div>
+                    <div class="chat-header-actions">
+                        <button class="btn-icon" title="البحث في الرسائل">
+                            <i class="fas fa-search"></i>
+                        </button>
+                        <button class="btn-icon" title="مكالمة صوتية" id="voiceCallBtn">
+                            <i class="fas fa-phone"></i>
+                        </button>
+                        <button class="btn-icon" title="مكالمة فيديو" id="videoCallBtn">
+                            <i class="fas fa-video"></i>
+                        </button>
+                        <button class="btn-icon" title="معلومات المحادثة">
+                            <i class="fas fa-info-circle"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="messages-list" id="messagesList">
+                    <div class="empty-state">
+                        <i class="fas fa-comments"></i>
+                        <p>اختر محادثة لبدء الرسائل</p>
+                    </div>
+                </div>
+
+                <div class="message-input-area">
+                    <div class="message-input-wrapper">
+                        <button class="btn-icon" id="attachBtn" title="إرفاق ملف">
+                            <i class="fas fa-paperclip"></i>
+                        </button>
+                        <input type="text" class="message-input" id="messageInput" placeholder="اكتب رسالة...">
+                        <button class="btn-icon" id="emojiBtn" title="إيموجي">
+                            <i class="fas fa-face-smile"></i>
+                        </button>
+                        <button class="btn-send" id="sendBtn" title="إرسال">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                    <div class="message-options">
+                        <button class="btn-icon" id="voiceMessageBtn" title="رسالة صوتية">
+                            <i class="fas fa-microphone"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal لإنشاء محادثة جديدة -->
+    <div id="newChatModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>محادثة جديدة</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="ابحث عن مستخدم..." id="userSearch">
+                </div>
+                <div class="users-list" id="usersList">
+                    <!-- المستخدمون سيتم تحميلهم هنا -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal لمكالمة الفيديو -->
+    <div id="videoCallModal" class="modal">
+        <div class="modal-content video-call-modal">
+            <div class="video-container">
+                <video id="localVideo" autoplay muted playsinline></video>
+                <video id="remoteVideo" autoplay playsinline></video>
+            </div>
+            <div class="call-controls">
+                <button class="btn-icon btn-danger" id="endCallBtn">
+                    <i class="fas fa-phone-slash"></i>
+                </button>
+                <button class="btn-icon" id="toggleMicBtn">
+                    <i class="fas fa-microphone"></i>
+                </button>
+                <button class="btn-icon" id="toggleCameraBtn">
+                    <i class="fas fa-video"></i>
+                </button>
+                <button class="btn-icon" id="screenShareBtn">
+                    <i class="fas fa-share-from-square"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal لمكالمة صوتية -->
+    <div id="voiceCallModal" class="modal">
+        <div class="modal-content voice-call-modal">
+            <div class="call-info">
+                <img id="callerAvatar" src="" alt="المتصل" class="caller-avatar">
+                <h3 id="callerName">اسم المتصل</h3>
+                <p id="callDuration">00:00</p>
+            </div>
+            <div class="call-controls">
+                <button class="btn-icon btn-danger" id="endVoiceCallBtn">
+                    <i class="fas fa-phone-slash"></i>
+                </button>
+                <button class="btn-icon" id="toggleVoiceMicBtn">
+                    <i class="fas fa-microphone"></i>
+                </button>
+                <button class="btn-icon" id="toggleSpeakerBtn">
+                    <i class="fas fa-volume-high"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- حقل إدخال ملف مخفي -->
+    <input type="file" id="fileInput" style="display: none;">
+
+    <script src="messages.js"></script>
+</body>
+</html>
