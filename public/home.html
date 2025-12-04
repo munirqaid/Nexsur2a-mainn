@@ -471,12 +471,15 @@
 	                    <div id="mediaPreview" style="display: none; margin-top: 10px; padding: 10px; background: rgba(42, 124, 255, 0.1); border-radius: 8px; color: #2A7CFF; font-size: 0.9em;"></div>
                     <div class="post-creator-icons">
                         <button class="icon-btn" title="صورة" id="composerImageBtn">
+                            <i class="fas fa-camera"></i>
+                        </button>
+                        <button class="icon-btn" title="صورة من الجهاز" id="composerImageUploadBtn">
                             <i class="fas fa-image"></i>
                         </button>
                         <button class="icon-btn" title="فيديو" id="composerVideoBtn">
                             <i class="fas fa-video"></i>
                         </button>
-                        <button class="icon-btn" title="استطلاع">
+                        <button class="icon-btn" title="استطلاع" id="composerPollBtn">
                             <i class="fas fa-poll"></i>
                         </button>
                     </div>
@@ -555,26 +558,29 @@
                 return;
             }
 
-            try {
-                const response = await fetch('/api/posts', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({
-                        content,
-                        postType: 'text',
-                        mediaUrls: [],
-                        hashtags: [],
-                        mentions: []
-                    })
-                });
+	            try {
+	                const postType = uploadedMediaUrls.length > 0 ? 'media' : 'text';
+	                const response = await fetch('/api/posts', {
+	                    method: 'POST',
+	                    headers: {
+	                        'Content-Type': 'application/json',
+	                        'Authorization': `Bearer ${token}`
+	                    },
+	                    body: JSON.stringify({
+	                        content,
+	                        postType: postType,
+	                        mediaUrls: uploadedMediaUrls,
+	                        hashtags: [],
+	                        mentions: []
+	                    })
+	                });
 
-                if (response.ok) {
-                    document.getElementById('postInput').value = '';
-                    loadPosts();
-                } else {
+	                if (response.ok) {
+	                    document.getElementById('postInput').value = '';
+	                    uploadedMediaUrls = []; // مسح الروابط بعد النشر
+	                    mediaPreview.style.display = 'none';
+	                    loadPosts();
+	                } else {
                     alert('فشل نشر المنشور');
                 }
             } catch (error) {
@@ -625,18 +631,18 @@
                 <div class="post-content">${escapeHtml(post.content)}</div>
                 ${post.mediaUrls && post.mediaUrls.length > 0 ? `<img src="${post.mediaUrls[0]}" alt="Post image" class="post-image">` : ''}
                 <div class="post-actions">
-                    <div class="post-action">
-                        <i class="fas fa-comment"></i>
-                        <span>${post.commentCount || 0}</span>
-                    </div>
+	                    <div class="post-action" onclick="openCommentModal('${post.id}')">
+	                        <i class="fas fa-comment"></i>
+	                        <span>${post.commentCount || 0}</span>
+	                    </div>
                     <div class="post-action" onclick="likePost('${post.id}')">
                         <i class="fas fa-heart"></i>
                         <span>${post.likeCount || 0}</span>
                     </div>
-                    <div class="post-action">
-                        <i class="fas fa-share"></i>
-                        <span>${post.shareCount || 0}</span>
-                    </div>
+	                    <div class="post-action" onclick="sharePost('${post.id}')">
+	                        <i class="fas fa-share"></i>
+	                        <span>${post.shareCount || 0}</span>
+	                    </div>
                 </div>
             `;
 
@@ -704,26 +710,102 @@
             });
         }
 
-        // زر الإعدادات
+	        // زر الإعدادات
 	        if (settingsSidebarBtn) {
 	            settingsSidebarBtn.addEventListener('click', () => {
-	                window.location.href = '/settings.html';
+	                alert('وظيفة الإعدادات قيد التطوير');
+	                // window.location.href = '/settings.html';
 	            });
 	        }
 
-        // معالج حدث تغيير الملف (لرفع الصور/الفيديو)
+	        // دالة وهمية للتعليقات
+	        function openCommentModal(postId) {
+	            alert(\`فتح نافذة التعليقات للمنشور رقم: \${postId}\`);
+	        }
+	
+	        // دالة وهمية للمشاركة
+	        function sharePost(postId) {
+	            alert(\`مشاركة المنشور رقم: \${postId}\`);
+	        }
+	
+	        // معالج حدث تغيير الملف (لرفع الصور/الفيديو)
 	        const mediaPreview = document.getElementById('mediaPreview');
-        if (mediaFileInput) {
-            mediaFileInput.addEventListener('change', (event) => {
-                const file = event.target.files[0];
-                if (file) {
-                    mediaPreview.textContent = \`تم اختيار ملف: \${file.name}\`;
-	                    mediaPreview.style.display = 'block';
-	                    // ملاحظة: وظيفة الرفع الفعلية إلى الخادم (API) تحتاج إلى تطوير في الواجهة الخلفية.
-	                    // هذا التعديل يضمن استجابة الواجهة الأمامية لاختيار الملف.
-                }
-            });
-        }
+	        let uploadedMediaUrls = [];
+	
+	        async function uploadMediaToPost(file) {
+	            const formData = new FormData();
+	            formData.append('files', file);
+	
+	            try {
+	                mediaPreview.textContent = \`جاري رفع الملف: \${file.name}...\`;
+	                mediaPreview.style.display = 'block';
+	
+	                const response = await fetch('/api/upload', {
+	                    method: 'POST',
+	                    headers: {
+	                        'Authorization': \`Bearer ${token}\`
+	                    },
+	                    body: formData
+	                });
+	
+	                if (response.ok) {
+	                    const data = await response.json();
+	                    uploadedMediaUrls = data.files;
+	                    mediaPreview.textContent = \`تم رفع الملف بنجاح: \${file.name}\`;
+	                } else {
+	                    const errorData = await response.json();
+	                    mediaPreview.textContent = \`فشل الرفع: \${errorData.error || 'خطأ غير معروف'}\`;
+	                    uploadedMediaUrls = [];
+	                }
+	            } catch (error) {
+	                console.error('Upload error:', error);
+	                mediaPreview.textContent = 'حدث خطأ أثناء الرفع.';
+	                uploadedMediaUrls = [];
+	            }
+	        }
+	
+	        if (mediaFileInput) {
+	            mediaFileInput.addEventListener('change', (event) => {
+	                const file = event.target.files[0];
+	                if (file) {
+	                    uploadMediaToPost(file);
+	                }
+	            });
+	        }
+	
+	        // ربط زر الكاميرا (الذي لم يكن يعمل)
+	        const composerCameraBtn = document.getElementById('composerImageBtn');
+	        if (composerCameraBtn) {
+	            composerCameraBtn.addEventListener('click', () => {
+	                alert('فتح الكاميرا (يتطلب WebRTC API)');
+	            });
+	        }
+	
+	        // ربط زر رفع الصورة من الجهاز
+	        const composerImageUploadBtn = document.getElementById('composerImageUploadBtn');
+	        if (composerImageUploadBtn) {
+	            composerImageUploadBtn.addEventListener('click', () => {
+	                mediaFileInput.setAttribute('accept', 'image/*');
+	                mediaFileInput.click();
+	            });
+	        }
+	
+	        // ربط زر الفيديو
+	        const composerVideoBtn = document.getElementById('composerVideoBtn');
+	        if (composerVideoBtn) {
+	            composerVideoBtn.addEventListener('click', () => {
+	                mediaFileInput.setAttribute('accept', 'video/*');
+	                mediaFileInput.click();
+	            });
+	        }
+	
+	        // ربط زر الاستطلاع
+	        const composerPollBtn = document.getElementById('composerPollBtn');
+	        if (composerPollBtn) {
+	            composerPollBtn.addEventListener('click', () => {
+	                alert('إنشاء استطلاع');
+	            });
+	        }
     </script>
 </body>
 </html>
