@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexora - تسجيل الدخول والتسجيل</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700;800&family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #F5F5F5 0%, #E8E8E8 100%);
+            font-family: 'Cairo', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .auth-container {
+            display: flex;
+            width: 100%;
+            max-width: 1000px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .auth-left {
+            flex: 1;
+            background: linear-gradient(135deg, #2A7CFF 0%, #A259FF 100%);
+            padding: 60px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+        }
+
+        .auth-left h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+
+        .auth-left p {
+            font-size: 1.1em;
+            opacity: 0.9;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .auth-right {
+            flex: 1;
+            padding: 60px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .form-title {
+            font-size: 2em;
+            margin-bottom: 30px;
+            color: #2A7CFF;
+            font-weight: 700;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            border-radius: 8px;
+            color: #333;
+            font-family: 'Cairo', sans-serif;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 1);
+            border-color: #2A7CFF;
+            box-shadow: 0 0 10px rgba(42, 124, 255, 0.2);
+        }
+
+        .form-group input::placeholder {
+            color: rgba(0, 0, 0, 0.4);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #2A7CFF 0%, #A259FF 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(42, 124, 255, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .toggle-form {
+            text-align: center;
+            margin-top: 20px;
+            color: rgba(0, 0, 0, 0.6);
+        }
+
+        .toggle-form a {
+            color: #2A7CFF;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .toggle-form a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            background: rgba(255, 0, 0, 0.2);
+            color: #ff6b6b;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .auth-container {
+                flex-direction: column;
+            }
+
+            .auth-left {
+                padding: 40px 20px;
+            }
+
+            .auth-right {
+                padding: 40px 20px;
+            }
+
+            .auth-left h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-left">
+            <h1>NEXORA</h1>
+            <p>منصة التواصل الاجتماعي المتقدمة</p>
+            <p>تواصل مع أصدقائك، شارك أفكارك، واستمتع بتجربة فريدة</p>
+        </div>
+
+        <div class="auth-right">
+            <!-- نموذج تسجيل الدخول -->
+            <form class="auth-form active" id="loginForm">
+                <h2 class="form-title">تسجيل الدخول</h2>
+                <div class="error-message" id="loginError"></div>
+                
+                <div class="form-group">
+                    <label for="loginEmail">البريد الإلكتروني</label>
+                    <input type="email" id="loginEmail" placeholder="أدخل بريدك الإلكتروني" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="loginPassword">كلمة المرور</label>
+                    <input type="password" id="loginPassword" placeholder="أدخل كلمة المرور" required>
+                </div>
+
+                <button type="submit" class="submit-btn">تسجيل الدخول</button>
+
+                <div class="toggle-form">
+                    ليس لديك حساب؟ <a onclick="toggleForm()">إنشاء حساب جديد</a>
+                </div>
+            </form>
+
+            <!-- نموذج التسجيل -->
+            <form class="auth-form" id="registerForm">
+                <h2 class="form-title">إنشاء حساب جديد</h2>
+                <div class="error-message" id="registerError"></div>
+                
+                <div class="form-group">
+                    <label for="registerName">الاسم الكامل</label>
+                    <input type="text" id="registerName" placeholder="أدخل اسمك الكامل" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="registerUsername">اسم المستخدم</label>
+                    <input type="text" id="registerUsername" placeholder="اختر اسم مستخدم فريد" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="registerEmail">البريد الإلكتروني</label>
+                    <input type="email" id="registerEmail" placeholder="أدخل بريدك الإلكتروني" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="registerPassword">كلمة المرور</label>
+                    <input type="password" id="registerPassword" placeholder="أنشئ كلمة مرور قوية" required>
+                </div>
+
+                <button type="submit" class="submit-btn">إنشاء الحساب</button>
+
+                <div class="toggle-form">
+                    هل لديك حساب بالفعل؟ <a onclick="toggleForm()">تسجيل الدخول</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function toggleForm() {
+            document.getElementById('loginForm').classList.toggle('active');
+            document.getElementById('registerForm').classList.toggle('active');
+            document.getElementById('loginError').classList.remove('show');
+            document.getElementById('registerError').classList.remove('show');
+        }
+
+        // تسجيل الدخول
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const errorDiv = document.getElementById('loginError');
+
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    window.location.href = '/home.html';
+                } else {
+                    errorDiv.textContent = data.error || 'خطأ في تسجيل الدخول';
+                    errorDiv.classList.add('show');
+                }
+            } catch (error) {
+                errorDiv.textContent = 'حدث خطأ في الاتصال بالخادم';
+                errorDiv.classList.add('show');
+            }
+        });
+
+        // التسجيل
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const displayName = document.getElementById('registerName').value;
+            const username = document.getElementById('registerUsername').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const errorDiv = document.getElementById('registerError');
+
+            try {
+                const response = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, email, password, displayName })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    errorDiv.classList.remove('show');
+                    alert('تم إنشاء الحساب بنجاح! يرجى تسجيل الدخول');
+                    toggleForm();
+                } else {
+                    errorDiv.textContent = data.error || 'خطأ في إنشاء الحساب';
+                    errorDiv.classList.add('show');
+                }
+            } catch (error) {
+                errorDiv.textContent = 'حدث خطأ في الاتصال بالخادم';
+                errorDiv.classList.add('show');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexora - منصة التواصل الاجتماعي المتقدمة</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700;800&family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- الشريط العلوي -->
+    <header class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-icons-left">
+                <div class="persona-selector">
+                    <div class="logo" title="Nexora - Your World. Smarter.">
+                        <span>NEXORA</span>
+                    </div>
+                    <select id="personaSelect" class="persona-select">
+                        <option value="casual">مستخدم عادي (Casual User)</option>
+                        <option value="creator">منشئ محتوى (Creator)</option>
+                        <option value="business">أعمال (Business)</option>
+                        <option value="gamer">لاعب (Gamer)</option>
+                        <option value="professional">محترف (Professional)</option>
+                        <option value="privacy">مهتم بالخصوصية (Privacy-focused)</option>
+                    </select>
+                </div>
+                <button class="nav-icon-btn menu-btn" title="القائمة" id="menuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+
+            <div class="navbar-icons-right">
+                <button class="nav-icon-btn" title="الإعدادات" id="settingsBtn">
+                    <i class="fas fa-cog"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="main-container">
+        <div class="sidebar-layout">
+            <!-- الشريط الجانبي الأيمن (للميزات المخصصة) -->
+            <aside class="right-sidebar" id="rightSidebar">
+                <!-- المحتوى سيتم إضافته بواسطة JavaScript -->
+            </aside>
+
+            <div class="content-wrapper">
+
+
+                <!-- شريط الأيقونات والميزات -->
+                <section class="top-icons-bar">
+                    <button class="nav-icon-btn" title="المتجر">
+                        <i class="fas fa-shopping-bag"></i>
+                    </button>
+                    <button class="nav-icon-btn" title="الإشعارات" id="notificationsBtn">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge" id="notificationBadge">7</span>
+                    </button>
+                    <button class="nav-icon-btn" title="البحث" id="searchBtn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button class="nav-icon-btn" title="إضافة" id="addBtn">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </section>
+
+                <!-- مربع كتابة المنشور -->
+                <section class="post-composer">
+                    <div class="composer-header">
+                        <img src="https://picsum.photos/40/40?random=1" alt="صورتك" class="composer-avatar">
+                        <div class="composer-input-wrapper">
+                            <input type="text" class="composer-input" placeholder="اكتب منشورك هنا... (مدعوم بالذكاء الاصطناعي)">
+                        </div>
+                        <button class="composer-emoji-btn" id="composerEmojiBtn">
+                            <i class="fas fa-face-smile"></i>
+                        </button>
+                    </div>
+                    <div class="composer-divider"></div>
+                    <div class="composer-footer">
+                        <button class="composer-btn" id="composerImageBtn">
+                            <i class="fas fa-image"></i>
+                            <span>صورة</span>
+                        </button>
+                        <button class="composer-btn" id="composerVideoBtn">
+                            <i class="fas fa-video"></i>
+                            <span>فيديو</span>
+                        </button>
+                        <button class="composer-btn">
+                            <i class="fas fa-face-smile"></i>
+                            <span>شعور</span>
+                        </button>
+                        <button class="composer-btn">
+                            <i class="fas fa-poll"></i>
+                            <span>استطلاع</span>
+                        </button>
+                    </div>
+                </section>
+
+                <!-- منطقة الخلاصات (المنشورات) -->
+                <section class="feed-section" id="feedSection">
+                    <!-- المنشورات سيتم تحميلها هنا -->
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal للملف الشخصي -->
+    <div id="profileModal" class="modal">
+        <div class="modal-content profile-modal">
+            <button class="modal-close">&times;</button>
+            <div class="profile-banner">
+                <img src="https://picsum.photos/1200/300?random=10" alt="Banner">
+            </div>
+            <div class="profile-header">
+                <img src="https://picsum.photos/120/120?random=1" alt="Avatar" class="profile-avatar">
+                <div class="profile-info">
+                    <h2>محمد الشرقي</h2>
+                    <p class="profile-username">@mohammedalsharqi</p>
+                    <p class="profile-bio">مهندس برمجيات | مهتم بالتكنولوجيا والابتكار</p>
+                    <div class="profile-stats">
+                        <div class="stat">
+                            <span class="stat-number">245</span>
+                            <span class="stat-label">متابع</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">189</span>
+                            <span class="stat-label">متابَع</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">42</span>
+                            <span class="stat-label">منشور</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="profile-actions">
+                <button class="btn btn-primary">تحرير الملف الشخصي</button>
+                <button class="btn btn-secondary">مشاركة</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal للإشعارات -->
+    <div id="notificationsModal" class="modal">
+        <div class="modal-content notifications-modal">
+            <div class="modal-header">
+                <h2>الإشعارات</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="notifications-list" id="notificationsList">
+                <!-- الإشعارات سيتم تحميلها هنا -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal للبحث -->
+    <div id="searchModal" class="modal">
+        <div class="modal-content search-modal">
+            <div class="search-header">
+                <input type="text" class="search-input" placeholder="ابحث عن المستخدمين والمنشورات والهاشتاجات...">
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="search-results" id="searchResults">
+                <!-- نتائج البحث سيتم تحميلها هنا -->
+            </div>
+        </div>
+    </div>
+
+    <!-- حقل إدخال ملف مخفي -->
+    <input type="file" id="mediaFileInput" accept="image/*,video/*" style="display: none;">
+
+    <!-- Modal للإعدادات -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content settings-modal">
+            <div class="modal-header">
+                <h2>الإعدادات</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="settings-body">
+                <h3>إعدادات الحساب</h3>
+                <div class="setting-item">
+                    <label for="bioInput">الوصف (Bio)</label>
+                    <textarea id="bioInput" rows="3" placeholder="أضف وصفًا لحسابك..."></textarea>
+                </div>
+                <div class="setting-item">
+                    <label for="bannerInput">تغيير خلفية الحساب (Banner)</label>
+                    <input type="file" id="bannerInput" accept="image/*">
+                </div>
+                <button class="btn btn-primary" id="saveSettingsBtn">حفظ التغييرات</button>
+                
+                <h3 style="margin-top: 2rem;">إعدادات عامة</h3>
+                <div class="setting-item">
+                    <label for="languageSelect">لغة الواجهة</label>
+                    <select id="languageSelect">
+                        <option value="ar">العربية</option>
+                        <option value="en">الإنجليزية</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
