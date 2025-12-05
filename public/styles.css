@@ -1245,3 +1245,404 @@ body {
     background-color: var(--color-electric-blue);
 >>>>>>> 35cf68b (Feat: Applied light theme, fixed post actions layout, added settings modal, and fixed media buttons)
 }
+
+/* ============ Stories Section ============ */
+.stories-section {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem 0;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.stories-section::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+.story-card {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    flex-shrink: 0;
+    width: 70px;
+    text-align: center;
+}
+
+.story-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--primary-color);
+    padding: 2px;
+    transition: transform 0.2s;
+}
+
+.story-card:hover .story-avatar {
+    transform: scale(1.05);
+}
+
+.story-card span {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+}
+
+.add-story {
+    border: 1px dashed var(--border-color);
+    border-radius: 12px;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem;
+    background-color: var(--surface-color);
+}
+
+.add-story i {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+}
+
+/* ============ Post Composer (New) ============ */
+.post-composer {
+    background-color: var(--surface-color);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
+    margin-bottom: 1.5rem;
+}
+
+.composer-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.composer-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.composer-input {
+    flex: 1;
+    border: none;
+    background: none;
+    outline: none;
+    width: 100%;
+    font-size: 1rem;
+    color: var(--text-color);
+    resize: none;
+    min-height: 60px;
+    padding-top: 0.5rem;
+}
+
+.composer-input::placeholder {
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.composer-media-preview {
+    display: none;
+    margin-top: 1rem;
+    border-radius: var(--radius);
+    overflow: hidden;
+    max-height: 300px;
+    background-color: var(--bg-color);
+}
+
+.composer-media-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.composer-footer {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.composer-btn {
+    background: none;
+    border: none;
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--radius);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-cyber-aqua);
+    transition: background-color 0.2s;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.composer-btn:hover {
+    background-color: var(--border-color);
+}
+
+.composer-btn i {
+    font-size: 1.2rem;
+}
+
+#postSubmitBtn {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* ============ Profile Page Styles ============ */
+.profile-page-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.profile-info-section {
+    background-color: var(--surface-color);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
+    margin-bottom: 2rem;
+    overflow: hidden;
+}
+
+.profile-banner-container {
+    position: relative;
+    width: 100%;
+    height: 200px;
+}
+
+.profile-banner {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.edit-banner-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+
+.edit-banner-btn:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.profile-details-header {
+    padding: 0 2rem 2rem 2rem;
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+}
+
+.profile-avatar-container {
+    position: relative;
+    margin-top: -60px;
+    flex-shrink: 0;
+}
+
+.profile-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--surface-color);
+    box-shadow: var(--shadow);
+}
+
+.edit-avatar-btn {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background-color: var(--primary-color);
+    color: white;
+    border: 2px solid var(--surface-color);
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+}
+
+.profile-text-info {
+    flex: 1;
+    padding-top: 1rem;
+}
+
+.profile-text-info h2 {
+    font-size: 1.8rem;
+    margin: 0 0 0.25rem 0;
+}
+
+.profile-username {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    margin: 0 0 0.75rem 0;
+}
+
+.profile-bio {
+    font-size: 1rem;
+    margin: 0 0 1rem 0;
+    color: var(--text-color);
+}
+
+.profile-stats {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.stat {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.stat-number {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.edit-profile-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.2rem;
+}
+
+.user-posts-section {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    color: var(--text-color);
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* ============ Modals (New) ============ */
+.media-select-modal {
+    max-width: 400px;
+}
+
+.media-options {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem 0;
+}
+
+.media-option-btn {
+    width: 100%;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    font-size: 1.1rem;
+}
+
+.camera-modal-content {
+    max-width: 600px;
+}
+
+.camera-container {
+    padding: 1rem;
+    background-color: var(--bg-color);
+}
+
+#camera-video {
+    width: 100%;
+    border-radius: var(--radius);
+    background-color: black;
+}
+
+.camera-controls {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.camera-btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+}
+
+/* ============ Responsive Design (Updates) ============ */
+@media (max-width: 768px) {
+    .profile-details-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 1rem;
+    }
+
+    .profile-avatar-container {
+        margin-top: -80px;
+    }
+
+    .profile-text-info {
+        padding-top: 0;
+    }
+
+    .profile-stats {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .composer-footer {
+        flex-wrap: wrap;
+    }
+
+    .composer-btn {
+        flex: 1 1 45%;
+        justify-content: center;
+    }
+
+    #postSubmitBtn {
+        flex: 1 1 100%;
+    }
+}
