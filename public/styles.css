@@ -330,6 +330,12 @@ body {
     height: 44px;
     border-radius: 50%;
     object-fit: cover;
+    cursor: pointer; /* تم تفعيل النقر */
+    transition: all 0.3s ease;
+}
+
+.post-avatar:hover {
+    filter: brightness(1.2);
 }
 
 .post-header-info {
@@ -504,61 +510,37 @@ body {
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    animation: fadeIn 0.3s ease-in-out;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    padding-top: 50px;
 }
 
 .modal.active {
     display: flex;
-    align-items: center;
     justify-content: center;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+    align-items: center;
 }
 
 .modal-content {
     background-color: var(--surface-color);
-    padding: 2rem;
+    margin: auto;
+    padding: 20px;
     border-radius: var(--radius);
     box-shadow: var(--shadow);
-    max-width: 600px;
-    width: 90%;
-    max-height: 90vh;
-    overflow-y: auto;
-    border: 1px solid var(--border-color);
     position: relative;
-}
-
-.modal-close {
-    position: absolute;
-    right: 1.5rem;
-    top: 1.5rem;
-    background: none;
-    border: none;
-    font-size: 2rem;
-    cursor: pointer;
-    color: var(--text-secondary);
-    transition: color 0.2s;
-}
-
-.modal-close:hover {
-    color: var(--text-color);
+    width: 80%;
+    max-width: 600px;
+    animation: fadeIn 0.3s;
 }
 
 .modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5rem;
-    padding-bottom: 1rem;
+    margin-bottom: 1rem;
     border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
 }
 
 .modal-header h2 {
@@ -566,17 +548,272 @@ body {
     font-size: 1.5rem;
 }
 
-/* ============ Profile Modal ============ */
+.modal-close {
+    color: var(--text-secondary);
+    font-size: 28px;
+    font-weight: bold;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.modal-close:hover,
+.modal-close:focus {
+    color: var(--primary-color);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ============ زر الملف الشخصي في الـ Navbar ============ */
+.user-profile-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 1rem;
+    background-color: var(--border-color);
+    border: 1px solid var(--primary-color);
+    border-radius: 20px;
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.user-profile-btn:hover {
+    background-color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+.user-avatar-img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* ============ أنماط القصص (Stories) ============ */
+.stories-section {
+    background-color: var(--surface-color);
+    border-radius: var(--radius);
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow);
+}
+
+.stories-container {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+}
+
+.stories-container::-webkit-scrollbar {
+    height: 6px;
+}
+
+.stories-container::-webkit-scrollbar-track {
+    background: var(--border-color);
+    border-radius: 10px;
+}
+
+.stories-container::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 10px;
+}
+
+.story-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 80px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.story-item:hover {
+    transform: scale(1.05);
+}
+
+.story-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border: 3px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.story-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.story-circle:hover {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 15px rgba(42, 124, 255, 0.5);
+}
+
+.add-story-circle {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    font-size: 2rem;
+    color: white;
+}
+
+.story-label {
+    font-size: 0.75rem;
+    text-align: center;
+    color: var(--text-secondary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 80px;
+}
+
+.stories-list {
+    display: flex;
+    gap: 1rem;
+}
+
+/* ============ Modal للقصص ============ */
+.story-modal {
+    max-width: 500px;
+    width: 90%;
+}
+
+.story-upload-options {
+    display: flex;
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.story-option-btn {
+    flex: 1;
+    padding: 1.5rem;
+    background-color: var(--border-color);
+    border: 2px solid var(--primary-color);
+    border-radius: var(--radius);
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+}
+
+.story-option-btn:hover {
+    background-color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+.story-option-btn i {
+    font-size: 1.5rem;
+}
+
+.story-preview {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.story-preview img,
+.story-preview video {
+    max-width: 100%;
+    border-radius: var(--radius);
+    max-height: 300px;
+    object-fit: cover;
+}
+
+.story-preview textarea {
+    padding: 0.75rem;
+    background-color: var(--border-color);
+    border: 1px solid var(--primary-color);
+    border-radius: var(--radius);
+    color: var(--text-color);
+    font-family: 'Cairo', sans-serif;
+    resize: vertical;
+    min-height: 80px;
+}
+
+.story-preview textarea:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+}
+
+/* ============ Modal لعرض القصة ============ */
+.story-view-modal {
+    max-width: 600px;
+    width: 90%;
+}
+
+.story-viewer {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.story-viewer img,
+.story-viewer video {
+    max-width: 100%;
+    max-height: 600px;
+    border-radius: var(--radius);
+    object-fit: contain;
+}
+
+.story-info {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 0.75rem 1rem;
+    border-radius: 20px;
+}
+
+.story-info img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.story-info span {
+    font-weight: 600;
+}
+
+/* ============ أنماط الملف الشخصي ============ */
 .profile-modal {
-    max-width: 700px;
-    padding: 0;
+    max-width: 800px;
+    width: 90%;
 }
 
 .profile-banner {
     width: 100%;
-    height: 250px;
+    height: 200px;
     overflow: hidden;
-    background-color: var(--border-color);
+    border-radius: var(--radius) var(--radius) 0 0;
 }
 
 .profile-banner img {
@@ -586,41 +823,40 @@ body {
 }
 
 .profile-header {
-    padding: 2rem 2rem 0 2rem;
     display: flex;
     gap: 1.5rem;
-    align-items: flex-start;
+    padding: 0 20px 20px 20px;
+    margin-top: -60px;
+    align-items: flex-end;
 }
 
 .profile-avatar {
     width: 120px;
     height: 120px;
     border-radius: 50%;
+    border: 5px solid var(--surface-color);
     object-fit: cover;
-    border: 4px solid var(--surface-color);
-    margin-top: -60px;
+    box-shadow: var(--shadow);
 }
 
 .profile-info {
     flex: 1;
-    padding-top: 0.5rem;
 }
 
 .profile-info h2 {
-    font-size: 1.5rem;
-    margin: 0 0 0.25rem 0;
+    margin-top: 0;
+    font-size: 2rem;
 }
 
 .profile-username {
     color: var(--text-secondary);
-    font-size: 0.9rem;
-    margin: 0 0 0.75rem 0;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
 }
 
 .profile-bio {
-    font-size: 0.95rem;
-    margin: 0 0 1rem 0;
-    color: var(--text-color);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
 }
 
 .profile-stats {
@@ -635,9 +871,9 @@ body {
 }
 
 .stat-number {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     font-weight: 700;
-    color: var(--color-cyber-aqua);
+    color: var(--primary-color);
 }
 
 .stat-label {
@@ -646,922 +882,89 @@ body {
 }
 
 .profile-actions {
-    padding: 1.5rem 2rem;
+    padding: 0 20px 20px 20px;
     display: flex;
     gap: 1rem;
-    border-bottom: 1px solid var(--border-color);
+    justify-content: flex-end;
 }
 
 .btn {
     padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 8px;
+    border-radius: 20px;
     cursor: pointer;
     font-weight: 600;
-    transition: all 0.2s;
-    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    border: none;
 }
 
 .btn-primary {
     background-color: var(--primary-color);
-    color: var(--color-cloud-white);
+    color: white;
 }
 
 .btn-primary:hover {
-    opacity: 0.9;
+    background-color: var(--secondary-color);
 }
 
 .btn-secondary {
     background-color: var(--border-color);
     color: var(--text-color);
+    border: 1px solid var(--text-secondary);
 }
 
 .btn-secondary:hover {
-    background-color: var(--color-graphite-gray);
-}
-
-/* ============ Notifications Modal ============ */
-.notifications-modal {
-    max-width: 500px;
-}
-
-.notifications-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.notification-item {
-    padding: 1rem;
-    background-color: var(--bg-color);
-    border-radius: 8px;
-    border-left: 3px solid var(--primary-color);
-    display: flex;
-    gap: 1rem;
-    align-items: flex-start;
-}
-
-.notification-item.unread {
-    background-color: rgba(42, 124, 255, 0.1);
-}
-
-.notification-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-    flex-shrink: 0;
-}
-
-.notification-content {
-    flex: 1;
-}
-
-.notification-text {
-    font-size: 0.9rem;
-    margin: 0 0 0.25rem 0;
-}
-
-.notification-time {
-    font-size: 0.8rem;
-    color: var(--text-secondary);
-    margin: 0;
-}
-
-/* ============ Search Modal ============ */
-.search-modal {
-    max-width: 600px;
-    padding: 0;
-}
-
-.search-header {
-    padding: 1.5rem;
-    border-bottom: 1px solid var(--border-color);
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-}
-
-.search-input {
-    flex: 1;
-    background-color: var(--bg-color);
-    border: 1px solid var(--border-color);
-    padding: 0.75rem 1rem;
-    border-radius: 8px;
-    color: var(--text-color);
-    font-size: 1rem;
-}
-
-.search-input::placeholder {
-    color: var(--text-secondary);
-}
-
-.search-results {
-    padding: 1.5rem;
-    max-height: 500px;
-    overflow-y: auto;
-}
-
-.search-result-item {
-    padding: 1rem;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-}
-
-.search-result-item:hover {
-    background-color: var(--border-color);
-}
-
-.search-result-avatar {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-.search-result-info {
-    flex: 1;
-}
-
-.search-result-name {
-    font-weight: 600;
-    margin: 0;
-}
-
-.search-result-username {
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    margin: 0;
-}
-
-/* ============ Responsive Design ============ */
-@media (min-width: 1025px) {
-    .right-sidebar {
-        display: block !important;
-    }
-}
-
-@media (max-width: 1024px) {
-    .sidebar-layout {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .content-wrapper {
-        width: 100%;
-        max-width: 700px;
-    }
-
-    .right-sidebar {
-        width: 100%;
-        max-width: 700px;
-        position: static;
-        top: auto;
-        display: none;
-    }
-
-    .top-icons-bar {
-        justify-content: center;
-        padding: 1rem 0;
-    }
-}
-
-@media (max-width: 768px) {
-    .navbar-container {
-        padding: 0.5rem 1rem;
-    }
-
-    .post-card {
-        border-radius: 0;
-    }
-
-    .content-wrapper {
-        padding: 0;
-    }
-
-    .main-container {
-        padding: 1rem 0;
-    }
-
-    .modal-content {
-        width: 95%;
-        padding: 1.5rem;
-    }
-
-    .profile-header {
-        padding: 1.5rem 1.5rem 0 1.5rem;
-    }
-
-    .profile-actions {
-        padding: 1rem 1.5rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .navbar-icons-left,
-    .navbar-icons-right {
-        gap: 0.25rem;
-    }
-
-    .nav-icon-btn {
-        width: 38px;
-        height: 38px;
-        font-size: 1.1rem;
-    }
-
-    .logo {
-        font-size: 1.5rem;
-    }
-
-    .composer-btn span,
-    .post-action-btn span {
-        display: none;
-    }
-
-    .profile-header {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-    }
-
-    .profile-stats {
-        width: 100%;
-        justify-content: space-around;
-    }
-
-    .modal-content {
-        width: 98%;
-    }
-}
-
-<<<<<<< HEAD
-
-/* ============ Comments Modal Styles ============ */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    animation: fadeIn 0.3s ease;
-}
-
-.modal.active {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-.modal-content {
-    background: var(--surface-color);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    max-width: 600px;
-    width: 90%;
-    max-height: 80vh;
-    overflow-y: auto;
-    animation: slideUp 0.3s ease;
-}
-
-@keyframes slideUp {
-    from {
-        transform: translateY(50px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-.modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.5rem;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.modal-header h2 {
-    font-size: 1.3rem;
-    font-weight: 600;
-}
-
-.modal-close {
-    background: none;
-    border: none;
-    color: var(--text-color);
-    font-size: 1.5rem;
-    cursor: pointer;
-    transition: color 0.3s ease;
-}
-
-.modal-close:hover {
-    color: var(--primary-color);
-}
-
-/* ============ Comments List ============ */
-.comments-list {
-    padding: 1rem;
-    max-height: 400px;
-    overflow-y: auto;
-}
-
-.comment-item {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    padding: 1rem;
-    border-bottom: 1px solid var(--border-color);
-    margin-bottom: 0.5rem;
-}
-
-.comment-item:last-child {
-    border-bottom: none;
-}
-
-.comment-header {
-    display: flex;
-    gap: 0.75rem;
-    align-items: flex-start;
-}
-
-.comment-avatar {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-.comment-info {
-    flex: 1;
-}
-
-.comment-author {
-    font-weight: 600;
-    font-size: 0.95rem;
-    margin: 0;
-}
-
-.comment-time {
-    font-size: 0.8rem;
-    color: var(--text-secondary);
-    margin: 0;
-}
-
-.comment-content {
-    margin: 0.5rem 0 0 3rem;
-    line-height: 1.5;
-}
-
-/* ============ Comment Input ============ */
-.comment-input-section {
-    display: flex;
-    gap: 0.75rem;
-    padding: 1rem;
-    border-top: 1px solid var(--border-color);
-}
-
-.comment-input {
-    flex: 1;
-    background: var(--bg-color);
-    border: 1px solid var(--border-color);
-    border-radius: 20px;
-    padding: 0.75rem 1rem;
-    color: var(--text-color);
-    font-family: 'Cairo', sans-serif;
-    resize: none;
-    max-height: 100px;
-    transition: border-color 0.3s ease;
-}
-
-.comment-input:focus {
-    outline: none;
-    border-color: var(--primary-color);
-}
-
-.comment-submit-btn {
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    background-color: var(--text-secondary);
     color: white;
-    border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 20px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: all 0.3s ease;
 }
 
-.comment-submit-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(42, 124, 255, 0.3);
-}
-
-/* ============ Camera Modal ============ */
-.camera-modal-content {
-    max-width: 500px;
-}
-
-.camera-container {
-    position: relative;
-    width: 100%;
-    padding: 1rem;
-    background: var(--bg-color);
-}
-
-#camera-video,
-#camera-canvas {
-    width: 100%;
-    border-radius: 10px;
-    max-height: 400px;
-    object-fit: cover;
-}
-
-.camera-controls {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    padding: 1rem;
-    border-top: 1px solid var(--border-color);
-    flex-wrap: wrap;
-}
-
-.camera-btn {
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-    color: white;
-    border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 20px;
-    cursor: pointer;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    transition: all 0.3s ease;
-}
-
-.camera-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(42, 124, 255, 0.3);
-}
-
-/* ============ New Post Form ============ */
-.new-post-form {
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.post-textarea {
-    background: var(--bg-color);
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
-    padding: 1rem;
-    color: var(--text-color);
-    font-family: 'Cairo', sans-serif;
-    resize: vertical;
-    min-height: 100px;
-    transition: border-color 0.3s ease;
-}
-
-.post-textarea:focus {
-    outline: none;
-    border-color: var(--primary-color);
-}
-
-.preview-image {
-    width: 100%;
-    border-radius: 10px;
-    max-height: 300px;
-    object-fit: cover;
-}
-
-.post-submit-btn {
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-    color: white;
-    border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 20px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
-
-.post-submit-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(42, 124, 255, 0.3);
-}
-
-/* ============ Responsive Design ============ */
-@media (max-width: 768px) {
-    .modal-content {
-        width: 95%;
-        max-height: 90vh;
-    }
-
-    .camera-controls {
-        flex-direction: column;
-    }
-
-    .camera-btn {
-        width: 100%;
-        justify-content: center;
-    }
-
-    .comment-input-section {
-        flex-direction: column;
-    }
-
-    .comment-submit-btn {
-        width: 100%;
-    }
-=======
-/* ============ Settings Modal Styles ============ */
+/* ============ أنماط الإعدادات ============ */
 .settings-modal {
-    max-width: 600px;
+    max-width: 500px;
 }
 
-.setting-item {
-    margin-bottom: 1.5rem;
-}
-
-.setting-item label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-    color: var(--text-color);
-}
-
-.setting-item input[type="file"],
-.setting-item textarea,
-.setting-item select {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    font-size: 1rem;
-    resize: vertical;
+.settings-body {
+    padding: 1rem 0;
 }
 
 .settings-body h3 {
-    color: var(--primary-color);
-    margin-top: 1.5rem;
-    margin-bottom: 1rem;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 0.5rem;
-}
-
-.btn-primary {
-    background-color: var(--primary-color);
-    color: var(--color-cloud-white);
-    border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: background-color 0.2s;
-}
-
-.btn-primary:hover {
-    background-color: var(--color-electric-blue);
->>>>>>> 35cf68b (Feat: Applied light theme, fixed post actions layout, added settings modal, and fixed media buttons)
-}
-
-/* ============ Stories Section ============ */
-.stories-section {
-    display: flex;
-    gap: 1rem;
-    padding: 1rem 0;
-    overflow-x: auto;
-    white-space: nowrap;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none; /* Firefox */
-    margin-bottom: 1.5rem;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.stories-section::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
-}
-
-.story-card {
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    cursor: pointer;
-    flex-shrink: 0;
-    width: 70px;
-    text-align: center;
-}
-
-.story-avatar {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid var(--primary-color);
-    padding: 2px;
-    transition: transform 0.2s;
-}
-
-.story-card:hover .story-avatar {
-    transform: scale(1.05);
-}
-
-.story-card span {
-    font-size: 0.8rem;
-    color: var(--text-secondary);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    max-width: 100%;
-}
-
-.add-story {
-    border: 1px dashed var(--border-color);
-    border-radius: 12px;
-    justify-content: center;
-    align-items: center;
-    padding: 0.5rem;
-    background-color: var(--surface-color);
-}
-
-.add-story i {
-    font-size: 1.5rem;
-    color: var(--primary-color);
-}
-
-/* ============ Post Composer (New) ============ */
-.post-composer {
-    background-color: var(--surface-color);
-    border-radius: var(--radius);
-    padding: 1.25rem;
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border-color);
-    margin-bottom: 1.5rem;
-}
-
-.composer-header {
-    display: flex;
-    align-items: flex-start;
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-
-.composer-avatar {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    object-fit: cover;
-    flex-shrink: 0;
-}
-
-.composer-input {
-    flex: 1;
-    border: none;
-    background: none;
-    outline: none;
-    width: 100%;
-    font-size: 1rem;
-    color: var(--text-color);
-    resize: none;
-    min-height: 60px;
-    padding-top: 0.5rem;
-}
-
-.composer-input::placeholder {
-    color: var(--text-secondary);
-    font-weight: 500;
-}
-
-.composer-media-preview {
-    display: none;
-    margin-top: 1rem;
-    border-radius: var(--radius);
-    overflow: hidden;
-    max-height: 300px;
-    background-color: var(--bg-color);
-}
-
-.composer-media-preview img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.composer-footer {
-    display: flex;
-    gap: 0.75rem;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.composer-btn {
-    background: none;
-    border: none;
-    padding: 0.5rem 0.75rem;
-    border-radius: var(--radius);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--color-cyber-aqua);
-    transition: background-color 0.2s;
-    font-size: 0.95rem;
-    font-weight: 600;
-}
-
-.composer-btn:hover {
-    background-color: var(--border-color);
-}
-
-.composer-btn i {
     font-size: 1.2rem;
-}
-
-#postSubmitBtn {
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-/* ============ Profile Page Styles ============ */
-.profile-page-wrapper {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 0 1rem;
-}
-
-.profile-info-section {
-    background-color: var(--surface-color);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border-color);
-    margin-bottom: 2rem;
-    overflow: hidden;
-}
-
-.profile-banner-container {
-    position: relative;
-    width: 100%;
-    height: 200px;
-}
-
-.profile-banner {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.edit-banner-btn {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.2s;
-}
-
-.edit-banner-btn:hover {
-    background-color: rgba(0, 0, 0, 0.7);
-}
-
-.profile-details-header {
-    padding: 0 2rem 2rem 2rem;
-    display: flex;
-    gap: 2rem;
-    align-items: flex-start;
-}
-
-.profile-avatar-container {
-    position: relative;
-    margin-top: -60px;
-    flex-shrink: 0;
-}
-
-.profile-avatar {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 4px solid var(--surface-color);
-    box-shadow: var(--shadow);
-}
-
-.edit-avatar-btn {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    background-color: var(--primary-color);
-    color: white;
-    border: 2px solid var(--surface-color);
-    border-radius: 50%;
-    width: 35px;
-    height: 35px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.9rem;
-}
-
-.profile-text-info {
-    flex: 1;
-    padding-top: 1rem;
-}
-
-.profile-text-info h2 {
-    font-size: 1.8rem;
-    margin: 0 0 0.25rem 0;
-}
-
-.profile-username {
-    color: var(--text-secondary);
-    font-size: 1rem;
-    margin: 0 0 0.75rem 0;
-}
-
-.profile-bio {
-    font-size: 1rem;
-    margin: 0 0 1rem 0;
-    color: var(--text-color);
-}
-
-.profile-stats {
-    display: flex;
-    gap: 1.5rem;
-    margin-bottom: 1.5rem;
-}
-
-.stat {
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
-}
-
-.stat-number {
-    font-size: 1.1rem;
-    font-weight: 700;
+    margin-bottom: 1rem;
     color: var(--primary-color);
 }
 
-.stat-label {
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-}
-
-.edit-profile-btn {
+.setting-item {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.6rem 1.2rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border-color);
 }
 
-.user-posts-section {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 0 1rem;
+.setting-item label {
+    font-size: 1rem;
 }
 
-.section-title {
-    font-size: 1.5rem;
+.setting-item input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.setting-item select,
+.setting-item input[type="password"] {
+    padding: 0.5rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background-color: var(--border-color);
     color: var(--text-color);
-    border-bottom: 2px solid var(--border-color);
-    padding-bottom: 0.5rem;
-    margin-bottom: 1.5rem;
 }
 
-/* ============ Modals (New) ============ */
+#saveSettingsBtn {
+    margin-top: 1.5rem;
+    width: 100%;
+}
+
+/* ============ أنماط الوسائط والكاميرا ============ */
 .media-select-modal {
     max-width: 400px;
 }
@@ -1570,12 +973,10 @@ body {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    padding: 1rem 0;
 }
 
 .media-option-btn {
     width: 100%;
-    padding: 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1584,65 +985,67 @@ body {
 }
 
 .camera-modal-content {
-    max-width: 600px;
+    max-width: 700px;
 }
 
 .camera-container {
-    padding: 1rem;
-    background-color: var(--bg-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+    background-color: black;
+    border-radius: var(--radius);
+    overflow: hidden;
 }
 
 #camera-video {
     width: 100%;
-    border-radius: var(--radius);
-    background-color: black;
+    max-height: 400px;
+    object-fit: cover;
 }
 
 .camera-controls {
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     gap: 1rem;
-    padding: 1rem;
 }
 
 .camera-btn {
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
+    flex: 1;
 }
 
-/* ============ Responsive Design (Updates) ============ */
-@media (max-width: 768px) {
-    .profile-details-header {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        gap: 1rem;
-    }
-
-    .profile-avatar-container {
-        margin-top: -80px;
-    }
-
-    .profile-text-info {
-        padding-top: 0;
-    }
-
-    .profile-stats {
-        justify-content: center;
-    }
+/* ============ الوضع الداكن (Dark Mode) ============ */
+body.dark-mode {
+    --bg-color: var(--color-midnight-black);
+    --text-color: var(--color-cloud-white);
+    --text-secondary: #a0a0a0;
+    --border-color: var(--color-graphite-gray);
+    --surface-color: #1A1D23;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
-@media (max-width: 480px) {
-    .composer-footer {
-        flex-wrap: wrap;
-    }
-
-    .composer-btn {
-        flex: 1 1 45%;
-        justify-content: center;
-    }
-
-    #postSubmitBtn {
-        flex: 1 1 100%;
-    }
+body.dark-mode .composer-input {
+    background-color: var(--border-color);
 }
+
+body.dark-mode .persona-select {
+    background-color: var(--border-color);
+}
+
+body.dark-mode .persona-select option {
+    background-color: var(--surface-color);
+}
+
+body.dark-mode .btn-secondary {
+    background-color: var(--border-color);
+    color: var(--text-color);
+    border: 1px solid var(--text-secondary);
+}
+
+body.dark-mode .btn-secondary:hover {
+    background-color: var(--text-secondary);
+    color: white;
+}
+
+/* ============ أنماط القصص (Stories) - تم دمجها ============ */
+/* تم دمج أنماط القصص في الأنماط العامة أعلاه */

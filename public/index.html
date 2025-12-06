@@ -30,9 +30,10 @@
                     <span class="badge" id="notificationBadge">7</span>
                 </button>
                 <!-- أيقونة الملف الشخصي -->
-                <a href="profile.html" class="nav-icon-btn" title="الملف الشخصي" id="profileBtn">
-                    <i class="fas fa-user"></i>
-                </a>
+                <button class="user-profile-btn" id="userProfileBtn" title="الملف الشخصي">
+                    <img src="https://picsum.photos/32/32?random=1" alt="صورتك" class="user-avatar-img">
+                    <span id="userNameDisplay">حسابي</span>
+                </button>
             </div>
         </div>
     </header>
@@ -48,25 +49,16 @@
                 
                 <!-- قسم القصص (Stories) -->
                 <section class="stories-section">
-                    <div class="story-card add-story">
-                        <i class="fas fa-plus-circle"></i>
-                        <span>إضافة قصتك</span>
-                    </div>
-                    <div class="story-card">
-                        <img src="https://picsum.photos/60/60?random=11" alt="Story" class="story-avatar">
-                        <span>صديق 1</span>
-                    </div>
-                    <div class="story-card">
-                        <img src="https://picsum.photos/60/60?random=12" alt="Story" class="story-avatar">
-                        <span>صديق 2</span>
-                    </div>
-                    <div class="story-card">
-                        <img src="https://picsum.photos/60/60?random=13" alt="Story" class="story-avatar">
-                        <span>صديق 3</span>
-                    </div>
-                    <div class="story-card">
-                        <img src="https://picsum.photos/60/60?random=14" alt="Story" class="story-avatar">
-                        <span>صديق 4</span>
+                    <div class="stories-container">
+                        <!-- زر إضافة قصة -->
+                        <div class="story-item add-story">
+                            <div class="story-circle add-story-circle" id="addStoryBtn">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                            <p class="story-label">قصتك</p>
+                        </div>
+                        <!-- القصص الأخرى ستظهر هنا -->
+                        <div id="storiesContainer" class="stories-list"></div>
                     </div>
                 </section>
 
@@ -208,9 +200,85 @@
         </div>
     </div>
 
+    <!-- Modal لإضافة قصة -->
+    <div id="addStoryModal" class="modal">
+        <div class="modal-content story-modal">
+            <button class="modal-close">&times;</button>
+            <h2>أضف قصة جديدة</h2>
+            <div class="story-upload-options">
+                <button class="story-option-btn" id="uploadMediaBtn">
+                    <i class="fas fa-image"></i>
+                    <span>اختر من الوسائط</span>
+                </button>
+                <button class="story-option-btn" id="openCameraBtn">
+                    <i class="fas fa-camera"></i>
+                    <span>افتح الكاميرا</span>
+                </button>
+            </div>
+            <div id="storyPreview" class="story-preview" style="display: none;">
+                <img id="storyImage" src="" alt="معاينة القصة">
+                <video id="storyVideo" style="display: none;" controls></video>
+                <textarea id="storyCaption" placeholder="أضف نصا للقصة (اختياري)"></textarea>
+                <button id="publishStoryBtn" class="btn btn-primary">نشر القصة</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal لعرض القصة -->
+    <div id="viewStoryModal" class="modal">
+        <div class="modal-content story-view-modal">
+            <button class="modal-close">&times;</button>
+            <div class="story-viewer">
+                <img id="viewStoryImage" src="" alt="القصة">
+                <video id="viewStoryVideo" style="display: none;" autoplay controls></video>
+                <div class="story-info">
+                    <img id="storyAuthorAvatar" src="" alt="المستخدم">
+                    <span id="storyAuthorName"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal للملف الشخصي -->
+    <div id="profileModal" class="modal">
+        <div class="modal-content profile-modal">
+            <button class="modal-close">&times;</button>
+            <div class="profile-banner">
+                <img src="https://picsum.photos/1200/300?random=10" alt="Banner">
+            </div>
+            <div class="profile-header">
+                <img src="https://picsum.photos/120/120?random=1" alt="Avatar" class="profile-avatar">
+                <div class="profile-info">
+                    <h2>محمد الشرقي</h2>
+                    <p class="profile-username">@mohammedalsharqi</p>
+                    <p class="profile-bio">مهندس برمجيات | مهتم بالتكنولوجيا والابتكار</p>
+                    <div class="profile-stats">
+                        <div class="stat">
+                            <span class="stat-number">245</span>
+                            <span class="stat-label">متابع</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">189</span>
+                            <span class="stat-label">متابَع</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">42</span>
+                            <span class="stat-label">منشور</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="profile-actions">
+                <button class="btn btn-primary">تحرير الملف الشخصي</button>
+                <button class="btn btn-secondary">مشاركة</button>
+            </div>
+        </div>
+    </div>
+
     <!-- حقل إدخال ملف مخفي -->
     <input type="file" id="mediaFileInput" accept="image/*,video/*" style="display: none;">
-    
+    <input type="file" id="cameraInput" accept="image/*,video/*" capture="environment" style="display: none;">
+
     <script src="script.js"></script>
 </body>
 </html>
