@@ -168,7 +168,23 @@ composerCameraBtn.addEventListener('click', () => {
     openModal(cameraModal);
     startCameraStream();
 });
-composerEmojiBtn.addEventListener('click', () => alert('ميزة الإيموجي قيد التطوير!'));
+const emojiPicker = document.getElementById('emojiPicker');
+composerEmojiBtn.addEventListener('click', () => {
+    emojiPicker.style.display = emojiPicker.style.display === 'none' ? 'block' : 'none';
+});
+
+emojiPicker.addEventListener('emoji-click', event => {
+    const emoji = event.detail.unicode;
+    const start = postTextarea.selectionStart;
+    const end = postTextarea.selectionEnd;
+    const value = postTextarea.value;
+    
+    postTextarea.value = value.substring(0, start) + emoji + value.substring(end);
+    postTextarea.selectionStart = postTextarea.selectionEnd = start + emoji.length;
+    postTextarea.focus();
+    
+    emojiPicker.style.display = 'none';
+});
 
 // Media Selection
 uploadMediaBtn.addEventListener('click', () => mediaFileInput.click());
