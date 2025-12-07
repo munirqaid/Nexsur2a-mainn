@@ -1,8 +1,0 @@
-nohup: ignoring input
-
-> nexora-platform@1.0.0 start
-> node server.js
-
-MongoDB Connected Successfully!
-🚀 Nexora Server running on http://localhost:3000
-📱 API available at http://localhost:3000/api

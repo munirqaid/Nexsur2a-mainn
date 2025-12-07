@@ -1,66 +1,105 @@
-import express from 'express';
-import cors from 'cors';
-import dotenv from 'dotenv';
-import connectDB from './database/db.js';
-import path from 'path';
-import { fileURLToPath } from 'url';
 
-// Import API routes
-import authRoutes from './api/auth.js';
-import usersRoutes from './api/users.js';
-import postsRoutes from './api/posts.js';
-import commentsRoutes from './api/comments.js';
-import notificationsRoutes from './api/notifications.js';
-import searchRoutes from './api/search.js';
-import creatorRoutes from './api/creator.js';
-import uploadRoutes from './api/upload.js';
 
+
+const express = require("express")
+const db = require('./config/db')
+const app = express();
+const users = require('./Routes/api/users')
+const chat = require('./Routes/api/chat')
+const posts = require("./Routes/api/posts")
+const message = require("./Routes/api/message")
+const dotenv = require("dotenv");
+const cors = require('cors');
+const bodyParser = require("body-parser");
+const passport = require("passport");
+const http = require('http');
+const socketio = require('socket.io');
+const server = http.createServer(app)
+const path = require("path");
 dotenv.config();
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const app = express();
-const PORT = process.env.PORT || 3000;
 
-// ============ Middleware ============
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'public')));
-app.use('/uploads', express.static(path.join(__dirname, 'public', 'uploads')));
-
-// ============ API Routes ============
-app.use('/api/auth', authRoutes);
-app.use('/api/users', usersRoutes);
-app.use('/api/posts', postsRoutes);
-app.use('/api/comments', commentsRoutes);
-app.use('/api/notifications', notificationsRoutes);
-app.use('/api/search', searchRoutes);
-app.use('/api/creator', creatorRoutes);
-app.use('/api/upload', uploadRoutes);
-
-// ============ Health Check ============
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', message: 'Nexora API is running' });
+const io = require("socket.io")(server, {
+  pingTimeout: 60000,
+  cors: {
+    origin: "http://localhost:3000",
+    // credentials: true,
+  },
 });
 
-// ============ Serve Frontend ============
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
 
-// ============ Error Handling ============
-app.use((err, req, res, next) => {
-  console.error('Error:', err);
-  res.status(err.status || 500).json({
-    error: err.message || 'Internal Server Error',
-    status: err.status || 500,
+
+// Bodyparser middleware
+app.use(
+  bodyParser.urlencoded({
+    extended: false
+  })
+);
+
+app.use(bodyParser.json());
+
+app.use(cors({ origin: true }));
+// Passport middleware
+app.use(passport.initialize());
+// Passport config
+require('./config/password')(passport);
+
+// Routes
+app.use("/api/users", users);
+app.use("/api/post/", posts);
+app.use("/api/chat/", chat);
+app.use("/api/message/", message);
+
+
+io.on("connection", (socket) => {
+  console.log("User Connect")
+
+  socket.on("setup", (userData) => {
+    socket.join(userData.id)
+    console.log(userData.id)
+    socket.emit("connected")
+  })
+
+  socket.on("join chat", (room) => {
+    socket.join(room)
+    console.log("User Join to ROOM :  " + room)
+  })
+
+  socket.on("typing", (room) => socket.in(room).emit("typing"));
+  socket.on("stop typing", (room) => socket.in(room).emit("stop typing"));
+  socket.on("new message", (newMessageRecieved) => {
+    var chat = newMessageRecieved.chat;
+
+    if (!chat.users) return console.log("chat.users not defined");
+
+    chat.users.forEach((user) => {
+      if (user._id == newMessageRecieved.sender._id) return;
+
+      socket.in(user._id).emit("message recieved", newMessageRecieved);
+    });
   });
-});
 
-// ============ Start Server ============
-connectDB().then(() => {
-  app.listen(PORT, () => {
-    console.log(`🚀 Nexora Server running on http://localhost:${PORT}`);
-    console.log(`📱 API available at http://localhost:${PORT}/api`);
+})
+// --------------------------deployment------------------------------
+
+const __dirname1 = path.resolve();
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname1, "/FrontEnd/build")));
+
+  app.get("*", (req, res) =>
+    res.sendFile(path.resolve(__dirname1, "FrontEnd", "build", "index.html"))
+  );
+} else {
+  app.get("/", (req, res) => {
+    res.send("API is running..");
   });
-});
+}
+
+// --------------------------deployment------------------------------
+
+const PORT = process.env.PORT || 4000;
+
+server.listen(PORT, () => {
+  console.log("Server Work in ", PORT);
+})
