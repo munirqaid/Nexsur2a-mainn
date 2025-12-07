@@ -1,5 +1,5 @@
 const express = require('express')
-const User = require('../../Schema/User')
+const User = require('../../Schema/User.js.js.js.js')
 const validateLoginInput = require("../../validation/login");
 const keys = require('../../config/key');
 const jwt = require("jsonwebtoken");

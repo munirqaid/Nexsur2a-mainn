@@ -1,4 +1,4 @@
-const User = require("../../Schema/User");
+const User = require("../../Schema/User.js.js.js.js");
 const extend = require('lodash/extend')
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");

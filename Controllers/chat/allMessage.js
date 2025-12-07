@@ -1,6 +1,6 @@
 const Message = require("../../Schema/message.js");
-const Chat = require('../../Schema/Chat')
-const User = require('../../Schema/User')
+const Chat = require('../../Schema/Chat.js.js.js.js.js')
+const User = require('../../Schema/User.js.js.js.js')
 
 const allMessage = async (req, res) => {
  try {

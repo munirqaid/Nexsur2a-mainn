@@ -1,4 +1,4 @@
-const User = require('../../Schema/User')
+const User = require('../../Schema/User.js.js.js.js')
 
 //@access          Public
 const allUsers = async (req, res) => {

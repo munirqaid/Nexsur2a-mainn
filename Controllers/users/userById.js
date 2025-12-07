@@ -1,5 +1,5 @@
 const { use } = require("passport");
-const User = require("../../Schema/User");
+const User = require("../../Schema/User.js.js.js.js");
 
 
 const userById =async(req,res,next,id)=>

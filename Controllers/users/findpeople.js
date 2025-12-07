@@ -1,4 +1,4 @@
-const User = require('../../Schema/User')
+const User = require('../../Schema/User.js.js.js.js')
 
 
 const findpeople = async(req,res)=>{

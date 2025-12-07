@@ -1,5 +1,5 @@
 
-const User = require("../../Schema/User");
+const User = require("../../Schema/User.js.js.js.js");
 
 const check =async (req,res,next)=>{
 

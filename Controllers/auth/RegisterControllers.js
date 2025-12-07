@@ -7,7 +7,7 @@ const validateRegisterInput = require("../../validation/registeration");
 
 
 // Load User model
-const User = require("../../Schema/User");
+const User = require("../../Schema/User.js.js.js.js");
 
 // @route POST api/users/register
 // @desc Register user
