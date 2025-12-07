@@ -7,15 +7,16 @@ const router = express.Router();
 
 // ============ Routes ============
 
-// إضافة تعليق على منشور
-router.post('/', authenticateToken, async (req, res) => {
-  try {
-    const { postId, content, parentCommentId, mentions } = req.body;
+	// إضافة تعليق على منشور
+	router.post('/:postId/comments', authenticateToken, async (req, res) => {
+	  try {
+	    const { postId } = req.params;
+	    const { content, parentCommentId, mentions } = req.body;
     const userId = req.user.id;
 
-    if (!postId || !content) {
-      return res.status(400).json({ error: 'Post ID and content are required' });
-    }
+	    if (!content) {
+	      return res.status(400).json({ error: 'Content is required' });
+	    }
 
     // التحقق من وجود المنشور
     const post = await Post.findById(postId);
@@ -23,30 +24,46 @@ router.post('/', authenticateToken, async (req, res) => {
       return res.status(404).json({ error: 'Post not found' });
     }
 
-    const newComment = new Comment({
-      postId,
-      userId,
-      content,
-      parentCommentId: parentCommentId || null,
-    });
-
-    await newComment.save();
-
-    // تحديث عدد التعليقات
-    await Post.findByIdAndUpdate(postId, { $inc: { commentCount: 1 } });
-
-    res.status(201).json({
-      message: 'Comment added successfully',
-      commentId: newComment._id,
-    });
+	    const newComment = new Comment({
+	      postId,
+	      userId,
+	      content,
+	      parentCommentId: parentCommentId || null,
+	    });
+	
+	    await newComment.save();
+	
+	    // تحديث عدد التعليقات
+	    await Post.findByIdAndUpdate(postId, { $inc: { commentCount: 1 } });
+	
+	    // جلب التعليق مع بيانات المستخدم ليعرض في الواجهة الأمامية
+	    const populatedComment = await Comment.findById(newComment._id)
+	      .populate('userId', 'username displayName avatarUrl');
+	
+	    const commentWithData = {
+	      id: populatedComment._id,
+	      postId: populatedComment.postId,
+	      userId: populatedComment.userId._id,
+	      content: populatedComment.content,
+	      createdAt: populatedComment.createdAt,
+	      updatedAt: populatedComment.updatedAt,
+	      author: {
+	        id: populatedComment.userId._id,
+	        username: populatedComment.userId.username,
+	        displayName: populatedComment.userId.displayName,
+	        avatarUrl: populatedComment.userId.avatarUrl,
+	      },
+	    };
+	
+	    res.status(201).json(commentWithData);
   } catch (error) {
     console.error('Error adding comment:', error);
     res.status(500).json({ error: 'Failed to add comment' });
   }
 });
 
-// الحصول على تعليقات منشور
-router.get('/post/:postId', async (req, res) => {
+	// الحصول على تعليقات منشور
+	router.get('/:postId/comments', async (req, res) => {
   try {
     const { postId } = req.params;
     const page = parseInt(req.query.page) || 1;

@@ -86,41 +86,64 @@ function displayPosts(posts) {
     });
 }
 
-function createPostElement(post) {
-    const div = document.createElement('div');
-    div.className = 'post-card';
-    
-    const author = post.author || { displayName: 'مستخدم', avatarUrl: 'https://picsum.photos/40/40' };
-    const mediaHtml = post.mediaUrl
-        ? `<div class="post-image"><img src="${post.mediaUrl}" alt="صورة المنشور"></div>`
-        : '';
-    
-    const timeAgo = post.createdAt ? getTimeAgo(new Date(post.createdAt)) : 'الآن';
-    
-    div.innerHTML = `
-        <div class="post-header">
-            <img src="${author.avatarUrl || 'https://picsum.photos/40/40'}" alt="المستخدم" class="post-avatar">
-            <div class="post-header-info">
-                <h4 class="post-author">${author.displayName || 'مستخدم'}</h4>
-                <p class="post-time">${timeAgo}</p>
-            </div>
-            <button class="post-menu-btn"><i class="fas fa-ellipsis-h"></i></button>
-        </div>
-        <div class="post-content"><p>${post.content}</p></div>
-        ${mediaHtml}
-        <div class="post-stats">
-            <span><i class="fas fa-thumbs-up"></i> ${post.likeCount || 0}</span>
-            <span>${post.commentCount || 0} تعليق</span>
-        </div>
-        <div class="post-divider"></div>
-        <div class="post-actions">
-            <button class="post-action-btn" data-action="like"><i class="fas fa-thumbs-up"></i> <span>إعجاب</span></button>
-            <button class="post-action-btn" data-action="comment"><i class="fas fa-comment"></i> <span>تعليق</span></button>
-            <button class="post-action-btn" data-action="share"><i class="fas fa-share"></i> <span>مشاركة</span></button>
-        </div>
-    `;
-    return div;
-}
+	function createPostElement(post) {
+	    const div = document.createElement('div');
+	    div.className = 'post-card';
+	    
+	    const author = post.author || { displayName: 'مستخدم', avatarUrl: 'https://picsum.photos/40/40' };
+	    const mediaHtml = post.mediaUrl
+	        ? `<div class="post-image"><img src="${post.mediaUrl}" alt="صورة المنشور"></div>`
+	        : '';
+	    
+	    const timeAgo = post.createdAt ? getTimeAgo(new Date(post.createdAt)) : 'الآن';
+	    
+	    div.innerHTML = `
+	        <div class="post-header">
+	            <img src="${author.avatarUrl || 'https://picsum.photos/40/40'}" alt="المستخدم" class="post-avatar">
+	            <div class="post-header-info">
+	                <h4 class="post-author">${author.displayName || 'مستخدم'}</h4>
+	                <p class="post-time">${timeAgo}</p>
+	            </div>
+	            <button class="post-menu-btn"><i class="fas fa-ellipsis-h"></i></button>
+	        </div>
+	        <div class="post-content"><p>${post.content}</p></div>
+	        ${mediaHtml}
+	        <div class="post-stats">
+	            <span><i class="fas fa-thumbs-up"></i> ${post.likeCount || 0}</span>
+	            <span>${post.commentCount || 0} تعليق</span>
+	        </div>
+	        <div class="post-divider"></div>
+	        <div class="post-actions">
+	            <button class="post-action-btn" data-post-id="${post.id || 'dummy'}" data-action="like"><i class="fas fa-thumbs-up"></i> <span>إعجاب</span></button>
+	            <button class="post-action-btn" data-post-id="${post.id || 'dummy'}" data-action="comment"><i class="fas fa-comment"></i> <span>تعليق</span></button>
+	            <button class="post-action-btn" data-post-id="${post.id || 'dummy'}" data-action="share"><i class="fas fa-share"></i> <span>مشاركة</span></button>
+	        </div>
+	    `;
+	    
+	    // إضافة مستمعي الأحداث لأزرار التفاعل
+	    div.querySelectorAll('.post-action-btn').forEach(btn => {
+	        btn.addEventListener('click', handlePostAction);
+	    });
+	
+	    return div;
+	}
+	
+	function handlePostAction(e) {
+	    const btn = e.currentTarget;
+	    const postId = btn.dataset.postId;
+	    const action = btn.dataset.action;
+	
+	    if (action === 'like') {
+	        // محاكاة الإعجاب
+	        btn.classList.toggle('liked');
+	        alert('تم محاكاة الإعجاب للمنشور: ' + postId);
+	    } else if (action === 'comment') {
+	        // توجيه المستخدم إلى صفحة المنشور الفردي
+	        window.location.href = `post.html?id=${postId}`;
+	    } else if (action === 'share') {
+	        alert('تم محاكاة مشاركة المنشور: ' + postId);
+	    }
+	}
 
 function getTimeAgo(date) {
     const seconds = Math.floor((new Date() - date) / 1000);

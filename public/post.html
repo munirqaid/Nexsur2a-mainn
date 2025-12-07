@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المنشور - Nexora</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700;800&family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* أنماط خاصة بصفحة المنشور */
+        .post-page-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: var(--surface-color);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+        .post-page-container .post-card {
+            margin-bottom: 20px;
+            border: none;
+            box-shadow: none;
+            padding: 0;
+        }
+        .comments-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+        .comment-form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+        .comment-form textarea {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            resize: none;
+            font-family: inherit;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+        .comment-form button {
+            padding: 10px 20px;
+            white-space: nowrap;
+        }
+        .comment-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .comment-item {
+            display: flex;
+            gap: 10px;
+            padding: 10px;
+            border-radius: var(--radius);
+            background-color: var(--bg-color);
+        }
+        .comment-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .comment-content-wrapper {
+            flex-grow: 1;
+        }
+        .comment-author {
+            font-weight: bold;
+            color: var(--text-color);
+            margin-bottom: 5px;
+        }
+        .comment-text {
+            color: var(--text-secondary);
+            margin-bottom: 5px;
+        }
+        .comment-time {
+            font-size: 0.8em;
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <!-- الشريط العلوي (يمكن نسخه من index.html) -->
+    <header class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-icons-left">
+                <a href="index.html" class="logo" title="العودة إلى الرئيسية">
+                    <span>NEXORA</span>
+                </a>
+            </div>
+            <div class="navbar-icons-right">
+                <button class="nav-icon-btn" title="الإعدادات" id="settingsBtn">
+                    <i class="fas fa-cog"></i>
+                </button>
+                <button class="nav-icon-btn" title="التنبيهات" id="notificationsBtn">
+                    <i class="fas fa-bell"></i>
+                    <span class="badge" id="notificationBadge"></span>
+                </button>
+                <div id="authContainer">
+                    <!-- سيتم تحميل زر تسجيل الدخول أو أيقونة الملف الشخصي هنا -->
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="main-container">
+        <div class="post-page-container">
+            <div id="postContainer">
+                <!-- سيتم تحميل المنشور هنا -->
+                <p style="text-align: center; padding: 50px;">جاري تحميل المنشور...</p>
+            </div>
+
+            <div class="comments-section">
+                <h3>التعليقات (<span id="commentCount">0</span>)</h3>
+                
+                <!-- نموذج إضافة تعليق -->
+                <form class="comment-form" id="commentForm">
+                    <img src="https://picsum.photos/40/40?random=1" alt="صورتك" class="comment-avatar" id="commentAvatar">
+                    <textarea id="commentTextarea" placeholder="اكتب تعليقك هنا..." rows="1" required></textarea>
+                    <button type="submit" class="btn btn-primary" id="submitCommentBtn" disabled>إرسال</button>
+                </form>
+
+                <!-- قائمة التعليقات -->
+                <div class="comment-list" id="commentList">
+                    <!-- سيتم تحميل التعليقات هنا -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal للإشعارات والإعدادات (يمكن نسخه من index.html) -->
+    <!-- Modal للإشعارات -->
+    <div id="notificationsModal" class="modal">
+        <div class="modal-content notifications-modal">
+            <div class="modal-header">
+                <h2>الإشعارات</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="notifications-list" id="notificationsList">
+                <!-- الإشعارات سيتم تحميلها هنا -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal للإعدادات -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content settings-modal">
+            <div class="modal-header">
+                <h2>الإعدادات</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="settings-body">
+                <h3>إعدادات الخصوصية</h3>
+                <div class="setting-item">
+                    <label for="privacySelect">من يمكنه رؤية منشوراتي؟</label>
+                    <select id="privacySelect">
+                        <option value="public">الكل</option>
+                        <option value="friends">الأصدقاء فقط</option>
+                        <option value="private">أنا فقط</option>
+                    </select>
+                </div>
+                
+                <h3 style="margin-top: 2rem;">إعدادات الحساب</h3>
+                <div class="setting-item">
+                    <label for="passwordInput">تغيير كلمة المرور</label>
+                    <input type="password" id="passwordInput" placeholder="كلمة المرور الجديدة">
+                </div>
+                
+                <h3 style="margin-top: 2rem;">إعدادات التنبيهات</h3>
+                <div class="setting-item">
+                    <label for="notificationsToggle">تشغيل/إيقاف الإشعارات</label>
+                    <input type="checkbox" id="notificationsToggle" checked>
+                </div>
+
+                <button class="btn btn-primary" id="saveSettingsBtn">حفظ التغييرات</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // ============ Post Page Logic ============
+        const postContainer = document.getElementById('postContainer');
+        const commentList = document.getElementById('commentList');
+        const commentForm = document.getElementById('commentForm');
+        const commentTextarea = document.getElementById('commentTextarea');
+        const submitCommentBtn = document.getElementById('submitCommentBtn');
+        const commentCountSpan = document.getElementById('commentCount');
+        const commentAvatar = document.getElementById('commentAvatar');
+
+        let postId = null;
+
+        // جلب معرف المنشور من URL
+        function getPostIdFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('id');
+        }
+
+        // جلب المنشور وعرضه
+        async function loadPost() {
+            postId = getPostIdFromUrl();
+            if (!postId || postId === 'dummy') {
+                postContainer.innerHTML = '<p style="text-align: center; padding: 50px; color: red;">لم يتم تحديد معرف المنشور.</p>';
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/posts/${postId}`);
+                if (!response.ok) throw new Error('Post not found');
+                const post = await response.json();
+                
+                // عرض المنشور (باستخدام نفس دالة index.html)
+                postContainer.innerHTML = '';
+                const postElement = createPostElement(post);
+                postContainer.appendChild(postElement);
+
+                // تحميل التعليقات
+                loadComments(postId);
+
+            } catch (error) {
+                console.error('Error loading post:', error);
+                postContainer.innerHTML = '<p style="text-align: center; padding: 50px; color: red;">فشل تحميل المنشور.</p>';
+            }
+        }
+
+        // جلب وعرض التعليقات
+        async function loadComments(postId) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/posts/${postId}/comments`);
+                const data = await response.json();
+                
+                commentList.innerHTML = '';
+                commentCountSpan.textContent = data.comments.length;
+
+                if (data.comments && data.comments.length > 0) {
+                    data.comments.forEach(comment => {
+                        const commentElement = createCommentElement(comment);
+                        commentList.appendChild(commentElement);
+                    });
+                } else {
+                    commentList.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">لا توجد تعليقات بعد. كن أول من يعلق!</p>';
+                }
+            } catch (error) {
+                console.error('Error loading comments:', error);
+                commentList.innerHTML = '<p style="text-align: center; color: red;">فشل تحميل التعليقات.</p>';
+            }
+        }
+
+        // إنشاء عنصر التعليق
+        function createCommentElement(comment) {
+            const div = document.createElement('div');
+            div.className = 'comment-item';
+            
+            const author = comment.author || { displayName: 'مستخدم', avatarUrl: 'https://picsum.photos/40/40' };
+            const timeAgo = comment.createdAt ? getTimeAgo(new Date(comment.createdAt)) : 'الآن';
+
+            div.innerHTML = `
+                <img src="${author.avatarUrl || 'https://picsum.photos/40/40'}" alt="المستخدم" class="comment-avatar">
+                <div class="comment-content-wrapper">
+                    <p class="comment-author">${author.displayName || 'مستخدم'}</p>
+                    <p class="comment-text">${comment.content}</p>
+                    <p class="comment-time">${timeAgo}</p>
+                </div>
+            `;
+            return div;
+        }
+
+        // إرسال التعليق
+        commentForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const content = commentTextarea.value.trim();
+
+            if (!content) return;
+            if (!authToken) {
+                alert('يرجى تسجيل الدخول للتعليق.');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/posts/${postId}/comments`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify({ content })
+                });
+
+                if (response.ok) {
+                    const newComment = await response.json();
+                    // إضافة التعليق الجديد إلى القائمة مباشرة
+                    const commentElement = createCommentElement(newComment);
+                    commentList.prepend(commentElement); // إضافة في البداية
+                    commentTextarea.value = ''; // مسح مربع النص
+                    commentCountSpan.textContent = parseInt(commentCountSpan.textContent) + 1;
+                    // إزالة رسالة "لا توجد تعليقات" إذا كانت موجودة
+                    const emptyMessage = commentList.querySelector('p');
+                    if (emptyMessage && emptyMessage.textContent.includes('لا توجد تعليقات')) {
+                        commentList.innerHTML = '';
+                        commentList.appendChild(commentElement);
+                    }
+                } else {
+                    const errorData = await response.json();
+                    alert('فشل إرسال التعليق: ' + (errorData.error || 'خطأ غير معروف'));
+                }
+            } catch (error) {
+                console.error('Error submitting comment:', error);
+                alert('حدث خطأ أثناء الاتصال بالخادم لإرسال التعليق.');
+            }
+        });
+
+        // تفعيل زر الإرسال عند وجود نص
+        commentTextarea.addEventListener('input', () => {
+            submitCommentBtn.disabled = commentTextarea.value.trim() === '';
+        });
+
+        // تحديث صورة الملف الشخصي في نموذج التعليق
+        function updateCommentForm() {
+            if (currentUser) {
+                commentAvatar.src = currentUser.avatarUrl || 'https://picsum.photos/40/40?random=1';
+                submitCommentBtn.disabled = commentTextarea.value.trim() === '';
+            } else {
+                commentAvatar.src = 'https://picsum.photos/40/40?random=1';
+                submitCommentBtn.disabled = true;
+            }
+        }
+
+        // تشغيل الوظائف عند تحميل الصفحة
+        window.addEventListener('load', () => {
+            // يجب أن يتم استدعاء checkAuthStatus أولاً لتحديث currentUser و authToken
+            // بما أننا في صفحة منفصلة، سنقوم بتحميلها يدوياً
+            // (في تطبيق حقيقي، يجب أن تكون هذه الدوال في ملف JS مشترك)
+            // بما أننا نستخدم script.js، سنعتمد على الدوال الموجودة فيه.
+            
+            // تحديث حالة المصادقة (من script.js)
+            checkAuthStatus().then(() => {
+                updateCommentForm();
+                loadPost();
+            });
+        });
+    </script>
+</body>
+</html>
