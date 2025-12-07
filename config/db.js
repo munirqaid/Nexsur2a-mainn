@@ -3,10 +3,10 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 
-url="";
+const dbUrl = process.env.MONGO_URI;
 
 
-mongoose.connect(url , (err)=>{
+mongoose.connect(dbUrl , (err)=>{
 if (err)
 {
     console.log(err)
