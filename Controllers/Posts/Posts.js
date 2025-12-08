@@ -1,5 +1,5 @@
-const Post = require("../../Schema/Post.js.js.js.js");
-const User = require("../../Schema/User.js.js.js.js");
+const Post = require("../../Schema/Post.js");
+const User = require("../../Schema/User.js");
 const formidable = require('formidable')
 
 

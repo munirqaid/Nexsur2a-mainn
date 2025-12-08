@@ -1,4 +1,4 @@
-const User = require('../../Schema/User.js.js.js.js')
+const User = require('../../Schema/User.js')
 
 const removeFollowing = async(req,res,next)=>{
     try {   

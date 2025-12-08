@@ -1,6 +1,6 @@
 const Message = require("../../Schema/message.js");
-const Chat = require('../../Schema/Chat.js.js.js.js.js')
-const User = require('../../Schema/User.js.js.js.js')
+const Chat = require('../../Schema/Chat.js')
+const User = require('../../Schema/User.js')
 
 const sendMessage = async (req, res) => {
   const { content, chatId } = req.body;

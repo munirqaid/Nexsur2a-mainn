@@ -1,5 +1,5 @@
 
-const Post = require('../../Schema/Post.js.js.js.js')
+const Post = require('../../Schema/Post.js')
 
 const likePost = async(req,res)=>{
 console.log(req.body)

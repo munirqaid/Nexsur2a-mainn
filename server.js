@@ -2,7 +2,7 @@
 
 
 const express = require("express")
-const db = require('./config/db')
+// const db = require('./config/db') // Disabled for quick test
 const app = express();
 const users = require('./Routes/api/users')
 const chat = require('./Routes/api/chat')

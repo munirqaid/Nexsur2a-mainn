@@ -1,5 +1,5 @@
 
-const Post = require('../../Schema/Post.js.js.js.js')
+const Post = require('../../Schema/Post.js')
 
 const commentPost = async (req,res)=>{
 

@@ -1,6 +1,6 @@
 
-const User = require('../../Schema/User.js.js.js.js')
-const Chat = require('../../Schema/Chat.js.js.js.js.js')
+const User = require('../../Schema/User.js')
+const Chat = require('../../Schema/Chat.js')
 
 
 
