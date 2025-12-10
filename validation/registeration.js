@@ -13,35 +13,35 @@ function validateRegisterInput(data)
     //name
    if(validator.isEmpty(data.name))
    {
-       errors.error="Name field is required";
+       errors.name="Name field is required";
    }
    //email
 
    if(validator.isEmpty(data.email))
    {
-       errors.error= "Email field is required";
+       errors.email= "Email field is required";
    }
    else if(!validator.isEmail(data.email))
    {
-    errors.error = "Email is invalid";
+    errors.email = "Email is invalid";
    }
 
    //password
    
    if(validator.isEmpty(data.password))
    {
-       errors.error= "Password field is required";
+       errors.password= "Password field is required";
    }
    if (validator.isEmpty(data.password2)) {
-    errors.error = "Confirm password field is required";
+    errors.password2 = "Confirm password field is required";
    }
 
    if (!validator.isLength(data.password, { min: 6, max: 30 })) {
-    errors.error = "Password must be at least 6 characters";
+    errors.password = "Password must be at least 6 characters";
    }
 
    if (!validator.equals(data.password, data.password2)) {
-    errors.error = "Passwords must match";
+    errors.password2 = "Passwords must match";
    }
 
    return {
