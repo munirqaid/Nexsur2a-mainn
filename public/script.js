@@ -211,6 +211,11 @@ postSubmitBtn.addEventListener('click', async () => {
         return;
     }
 
+    if (!authToken) {
+        alert('يرجى تسجيل الدخول أولاً لنشر منشور.');
+        return;
+    }
+
 // 1. Upload media if available
 	    let mediaUrls = [];
 	    if (mediaFile) {
@@ -226,9 +231,12 @@ postSubmitBtn.addEventListener('click', async () => {
 	                body: formData
 	            });
 	
-	            if (!uploadResponse.ok) {
-	                throw new Error('Media upload failed');
-	            }
+if (!uploadResponse.ok) {
+                if (uploadResponse.status === 401 || uploadResponse.status === 403) {
+                    throw new Error('Authentication failed. Please log in again.');
+                }
+                throw new Error('Media upload failed with status: ' + uploadResponse.status);
+            }
 	
 	            const uploadData = await uploadResponse.json();
 	            mediaUrls = uploadData.files;
@@ -254,19 +262,28 @@ postSubmitBtn.addEventListener('click', async () => {
 	            })
 	        });
 	
-	        if (!postResponse.ok) {
-	            throw new Error('Post submission failed');
-	        }
+if (!postResponse.ok) {
+            if (postResponse.status === 401 || postResponse.status === 403) {
+                throw new Error('Authentication failed. Please log in first.');
+            }
+            throw new Error('Post submission failed with status: ' + postResponse.status);
+        }
 	
 	        // 3. Reload feed to show the new post from the database
 	        await loadFeed();
 	        
 	        console.log('Post submitted successfully.');
-	    } catch (error) {
-	        console.error('Error submitting post:', error);
-	        alert('فشل نشر المنشور. يرجى المحاولة مرة أخرى.');
-	        return;
-	    }
+    } catch (error) {
+        console.error('Error submitting post:', error);
+        let errorMessage = 'فشل نشر المنشور. يرجى المحاولة مرة أخرى.';
+        if (error.message.includes('Authentication failed')) {
+            errorMessage = 'فشل التوثيق. يرجى تسجيل الدخول أولاً.';
+        } else if (error.message.includes('Post submission failed with status')) {
+            errorMessage = `فشل نشر المنشور. رمز الخطأ: ${error.message.split(': ')[1]}`;
+        }
+        alert(errorMessage);
+        return;
+    }
 
     // Clear composer
     postTextarea.value = '';
