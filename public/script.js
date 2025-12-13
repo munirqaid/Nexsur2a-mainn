@@ -90,16 +90,16 @@ function createPostElement(post) {
     const div = document.createElement('div');
     div.className = 'post-card';
     
-    const author = post.author || { displayName: 'مستخدم', avatarUrl: 'https://picsum.photos/40/40' };
-    const mediaHtml = post.mediaUrl
-        ? `<div class="post-image"><img src="${post.mediaUrl}" alt="صورة المنشور"></div>`
-        : '';
+    const author = post.author || { displayName: 'مستخدم', avatarUrl: '/placeholder.svg' };
+	    const mediaHtml = post.mediaUrls && post.mediaUrls.length > 0
+	        ? `<div class="post-image"><img src="${post.mediaUrls[0]}" alt="صورة المنشور"></div>`
+	        : '';
     
     const timeAgo = post.createdAt ? getTimeAgo(new Date(post.createdAt)) : 'الآن';
     
     div.innerHTML = `
         <div class="post-header">
-            <img src="${author.avatarUrl || 'https://picsum.photos/40/40'}" alt="المستخدم" class="post-avatar">
+            <img src="${author.avatarUrl || '/placeholder.svg'}" alt="المستخدم" class="post-avatar">
             <div class="post-header-info">
                 <h4 class="post-author">${author.displayName || 'مستخدم'}</h4>
                 <p class="post-time">${timeAgo}</p>
@@ -211,19 +211,62 @@ postSubmitBtn.addEventListener('click', async () => {
         return;
     }
 
-    // Placeholder for API call
-    console.log('Submitting post:', { content, mediaFile });
-
-    // Create a new post element locally for immediate feedback
-    const newPost = {
-        author: { displayName: 'أنت', avatarUrl: 'https://picsum.photos/40/40?random=1' },
-        content: content,
-        mediaUrl: mediaFile ? URL.createObjectURL(mediaFile) : null,
-        createdAt: new Date().toISOString()
-    };
-
-    const postElement = createPostElement(newPost);
-    feedSection.prepend(postElement);
+// 1. Upload media if available
+	    let mediaUrls = [];
+	    if (mediaFile) {
+	        const formData = new FormData();
+	        formData.append('files', mediaFile);
+	
+	        try {
+	            const uploadResponse = await fetch(`${API_BASE_URL}/upload`, {
+	                method: 'POST',
+	                headers: {
+	                    'Authorization': `Bearer ${authToken}`
+	                },
+	                body: formData
+	            });
+	
+	            if (!uploadResponse.ok) {
+	                throw new Error('Media upload failed');
+	            }
+	
+	            const uploadData = await uploadResponse.json();
+	            mediaUrls = uploadData.files;
+	        } catch (error) {
+	            console.error('Error uploading media:', error);
+	            alert('فشل تحميل الوسائط. لن يتم نشر المنشور.');
+	            return;
+	        }
+	    }
+	
+	    // 2. Submit post to API
+	    try {
+	        const postResponse = await fetch(`${API_BASE_URL}/posts`, {
+	            method: 'POST',
+	            headers: {
+	                'Content-Type': 'application/json',
+	                'Authorization': `Bearer ${authToken}`
+	            },
+	            body: JSON.stringify({
+	                content: content,
+	                postType: mediaUrls.length > 0 ? 'media' : 'text', // تحديد نوع المنشور
+	                mediaUrls: mediaUrls,
+	            })
+	        });
+	
+	        if (!postResponse.ok) {
+	            throw new Error('Post submission failed');
+	        }
+	
+	        // 3. Reload feed to show the new post from the database
+	        await loadFeed();
+	        
+	        console.log('Post submitted successfully.');
+	    } catch (error) {
+	        console.error('Error submitting post:', error);
+	        alert('فشل نشر المنشور. يرجى المحاولة مرة أخرى.');
+	        return;
+	    }
 
     // Clear composer
     postTextarea.value = '';
@@ -246,25 +289,8 @@ if (settingsBtn) {
 // ============ Initialization ============
 window.addEventListener('load', function() {
     // In a real app, you would load posts from an API
-    // For now, we can add some dummy posts
-    const dummyPosts = [
-        {
-            author: { displayName: 'علي حسن', avatarUrl: 'https://picsum.photos/40/40?random=2' },
-            content: 'يوم رائع في الطبيعة! 🌲☀️',
-            mediaUrl: 'https://picsum.photos/600/400?random=20',
-            createdAt: new Date(Date.now() - 3600000).toISOString(), // 1 hour ago
-            likeCount: 15,
-            commentCount: 4
-        },
-        {
-            author: { displayName: 'فاطمة الزهراء', avatarUrl: 'https://picsum.photos/40/40?random=3' },
-            content: 'أستمتع بكتاب جديد هذا المساء. #قراءة',
-            createdAt: new Date(Date.now() - 86400000).toISOString(), // 1 day ago
-            likeCount: 32,
-            commentCount: 8
-        }
-    ];
-    displayPosts(dummyPosts);
+// Load posts from the API
+	    loadFeed();
     console.log('✅ Nexora loaded successfully with new UI logic');
 });
 
