@@ -16,8 +16,8 @@ const userSchema = new Schema({
     avatarUrl: { type: String, default: '' },
     bannerUrl: { type: String, default: '' },
     privacyLevel: { type: String, enum: ['public', 'private'], default: 'public' },
-    followers: [{ type: String, ref: 'User' }], // مصفوفة من IDs المستخدمين الذين يتابعونه
-    following: [{ type: String, ref: 'User' }], // مصفوفة من IDs المستخدمين الذين يتابعهم
+    followers: [{ type: Schema.Types.ObjectId, ref: 'User' }], // مصفوفة من IDs المستخدمين الذين يتابعونه
+    following: [{ type: Schema.Types.ObjectId, ref: 'User' }], // مصفوفة من IDs المستخدمين الذين يتابعهم
 }, { timestamps: true });
 
 // =================================================================
@@ -25,13 +25,13 @@ const userSchema = new Schema({
 // =================================================================
 const postSchema = new Schema({
 
-    userId: { type: String, ref: 'User', required: true },
+    userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     content: { type: String, required: true },
     postType: { type: String, enum: ['text', 'image', 'video', 'poll'], default: 'text' },
     mediaUrls: [{ type: String }],
     location: { type: String },
     hashtags: [{ type: String }],
-    mentions: [{ type: String, ref: 'User' }],
+    mentions: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     isMonetized: { type: Boolean, default: false },
     likeCount: { type: Number, default: 0 },
     commentCount: { type: Number, default: 0 },
@@ -43,8 +43,8 @@ const postSchema = new Schema({
 // =================================================================
 const likeSchema = new Schema({
 
-    postId: { type: String, ref: 'Post', required: true },
-    userId: { type: String, ref: 'User', required: true },
+    postId: { type: Schema.Types.ObjectId, ref: 'Post', required: true },
+    userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     // يمكن إضافة نوع التفاعل هنا لاحقًا إذا لزم الأمر
 }, { timestamps: true });
 
@@ -53,10 +53,10 @@ const likeSchema = new Schema({
 // =================================================================
 const commentSchema = new Schema({
 
-    postId: { type: String, ref: 'Post', required: true },
-    userId: { type: String, ref: 'User', required: true },
+    postId: { type: Schema.Types.ObjectId, ref: 'Post', required: true },
+    userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     content: { type: String, required: true },
-    parentCommentId: { type: String, ref: 'Comment', default: null },
+    parentCommentId: { type: Schema.Types.ObjectId, ref: 'Comment', default: null },
     likeCount: { type: Number, default: 0 },
 }, { timestamps: true });
 
@@ -65,9 +65,9 @@ const commentSchema = new Schema({
 // =================================================================
 const notificationSchema = new Schema({
 
-    userId: { type: String, ref: 'User', required: true },
+    userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     type: { type: String, required: true, enum: ['like', 'comment', 'follow', 'mention'] },
-    sourceId: { type: String }, // ID of the post, comment, or user that triggered the notification
+    sourceId: { type: Schema.Types.ObjectId }, // ID of the post, comment, or user that triggered the notification
     isRead: { type: Boolean, default: false },
 }, { timestamps: true });
 
@@ -76,8 +76,8 @@ const notificationSchema = new Schema({
 // سنستخدمه لتسهيل استعلامات المتابعة/المتابَعين
 // =================================================================
 const relationshipSchema = new Schema({
-    followerId: { type: String, ref: 'User', required: true },
-    followingId: { type: String, ref: 'User', required: true },
+    followerId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    followingId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
 }, { timestamps: true });
 
 // إنشاء النماذج

@@ -43,7 +43,7 @@ router.post('/', authenticateToken, async (req, res) => {
 // دالة مساعدة لتحويل المنشورات من قاعدة البيانات (لم تعد ضرورية مع Mongoose)
 const formatPost = (post) => ({
   id: post._id.toString(),
-  userId: post.userId,
+  userId: post.userId ? post.userId._id.toString() : null,
   content: post.content,
   postType: post.postType,
   mediaUrls: post.mediaUrls,
@@ -57,7 +57,7 @@ const formatPost = (post) => ({
   createdAt: post.createdAt,
   updatedAt: post.updatedAt,
   author: post.userId ? {
-    id: post.userId._id,
+    id: post.userId._id.toString(),
     username: post.userId.username,
     displayName: post.userId.displayName,
     avatarUrl: post.userId.avatarUrl,
@@ -116,7 +116,7 @@ router.put('/:postId', authenticateToken, async (req, res) => {
       return res.status(404).json({ error: 'Post not found' });
     }
 
-    if (post.userId !== userId) {
+    if (post.userId.toString() !== userId) {
       return res.status(403).json({ error: 'Unauthorized' });
     }
 
@@ -149,7 +149,7 @@ router.delete('/:postId', authenticateToken, async (req, res) => {
       return res.status(404).json({ error: 'Post not found' });
     }
 
-    if (post.userId !== userId) {
+    if (post.userId.toString() !== userId) {
       return res.status(403).json({ error: 'Unauthorized' });
     }
 

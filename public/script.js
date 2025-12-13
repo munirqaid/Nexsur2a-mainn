@@ -206,7 +206,7 @@ captureImageBtn.addEventListener('click', () => {
 // Post Submission
 postSubmitBtn.addEventListener('click', async () => {
     // تحديث authToken من localStorage قبل كل محاولة نشر
-    const authToken = localStorage.getItem('authToken');
+    const authToken = localStorage.getItem('token');
 
     const content = postTextarea.value.trim();
     if (!content && !mediaFile) {
