@@ -280,7 +280,8 @@
                 const data = await response.json();
 
                 if (response.ok) {
-                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('authToken', data.token);
+                    localStorage.setItem('token', data.token); // للتوافقية العكسية
                     localStorage.setItem('user', JSON.stringify(data.user));
                     window.location.href = '/home.html';
                 } else {

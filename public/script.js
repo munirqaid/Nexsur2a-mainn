@@ -64,17 +64,41 @@ window.addEventListener('click', function(event) {
 // ============ Feed Functions ============
 async function loadFeed() {
     try {
-        const response = await fetch(`${API_BASE_URL}/posts`);
+        // إضافة timestamp لتجنب caching
+        const timestamp = new Date().getTime();
+        const response = await fetch(`${API_BASE_URL}/posts?t=${timestamp}`, {
+            cache: 'no-store',
+            headers: {
+                'Cache-Control': 'no-cache, no-store, must-revalidate',
+                'Pragma': 'no-cache',
+                'Expires': '0'
+            }
+        });
         const data = await response.json();
         
         if (data.posts && data.posts.length > 0) {
             displayPosts(data.posts);
+            // حفظ المنشورات في localStorage كنسخة احتياطية
+            localStorage.setItem('nexora_posts_cache', JSON.stringify(data.posts));
+            localStorage.setItem('nexora_posts_cache_time', timestamp.toString());
         } else {
             feedSection.innerHTML = '<p class="empty-feed">لا توجد منشورات حالياً. كن أول من ينشر!</p>';
         }
     } catch (error) {
         console.error('Error loading feed:', error);
-        feedSection.innerHTML = '<p class="empty-feed error">حدث خطأ في تحميل الخلاصة</p>';
+        // محاولة استعادة البيانات من localStorage في حالة الخطأ
+        const cachedPosts = localStorage.getItem('nexora_posts_cache');
+        if (cachedPosts) {
+            try {
+                const posts = JSON.parse(cachedPosts);
+                displayPosts(posts);
+                console.log('Loaded posts from cache');
+            } catch (e) {
+                feedSection.innerHTML = '<p class="empty-feed error">حدث خطأ في تحميل الخلاصة</p>';
+            }
+        } else {
+            feedSection.innerHTML = '<p class="empty-feed error">حدث خطأ في تحميل الخلاصة</p>';
+        }
     }
 }
 
@@ -206,7 +230,8 @@ captureImageBtn.addEventListener('click', () => {
 // Post Submission
 postSubmitBtn.addEventListener('click', async () => {
     // تحديث authToken من localStorage قبل كل محاولة نشر
-    const authToken = localStorage.getItem('authToken');
+    // تحقق من كلا الأسماء المحتملة للتوكن (token أو authToken)
+    const authToken = localStorage.getItem('authToken') || localStorage.getItem('token');
 
     const content = postTextarea.value.trim();
     if (!content && !mediaFile) {
@@ -226,13 +251,14 @@ postSubmitBtn.addEventListener('click', async () => {
 	        formData.append('files', mediaFile);
 	
 	        try {
-	            const uploadResponse = await fetch(`${API_BASE_URL}/upload`, {
-	                method: 'POST',
-	                headers: {
-	                    'Authorization': `Bearer ${authToken}`
-	                },
-	                body: formData
-	            });
+            const uploadResponse = await fetch(`${API_BASE_URL}/upload`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${authToken}`,
+                    'Accept': 'application/json'
+                },
+                body: formData
+            });
 	
 if (!uploadResponse.ok) {
                 if (uploadResponse.status === 401 || uploadResponse.status === 403) {
@@ -252,18 +278,19 @@ if (!uploadResponse.ok) {
 	
 	    // 2. Submit post to API
 	    try {
-	        const postResponse = await fetch(`${API_BASE_URL}/posts`, {
-	            method: 'POST',
-	            headers: {
-	                'Content-Type': 'application/json',
-	                'Authorization': `Bearer ${authToken}`
-	            },
-	            body: JSON.stringify({
-	                content: content,
-	                postType: mediaUrls.length > 0 ? 'media' : 'text', // تحديد نوع المنشور
-	                mediaUrls: mediaUrls,
-	            })
-	        });
+        const postResponse = await fetch(`${API_BASE_URL}/posts`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${authToken}`,
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                content: content,
+                postType: mediaUrls.length > 0 ? 'media' : 'text', // تحديد نوع المنشور
+                mediaUrls: mediaUrls,
+            })
+        });
 	
 if (!postResponse.ok) {
             if (postResponse.status === 401 || postResponse.status === 403) {
@@ -272,10 +299,12 @@ if (!postResponse.ok) {
             throw new Error('Post submission failed with status: ' + postResponse.status);
         }
 	
-	        // 3. Reload feed to show the new post from the database
-	        await loadFeed();
-	        
-	        console.log('Post submitted successfully.');
+    // 3. Reload feed to show the new post from the database
+        // إضافة تأخير بسيط للتأكد من حفظ البيانات في قاعدة البيانات
+        setTimeout(() => {
+            loadFeed();
+            console.log('Post submitted successfully.');
+        }, 500);
     } catch (error) {
         console.error('Error submitting post:', error);
         let errorMessage = 'فشل نشر المنشور. يرجى المحاولة مرة أخرى.';
@@ -294,6 +323,7 @@ if (!postResponse.ok) {
     mediaPreview.style.display = 'none';
     mediaFile = null;
     mediaFileInput.value = ''; // Reset file input
+    }, 500); // إغلاق setTimeout من السطر السابق
 });
 
 
