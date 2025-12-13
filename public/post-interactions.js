@@ -2,7 +2,7 @@
 // هذا الملف يتعامل مع الإعجابات والتعليقات والمشاركات والكاميرا
 
 const API_BASE_URL = 'http://localhost:3000/api';
-let authToken = localStorage.getItem('authToken');
+let authToken = localStorage.getItem('token');
 
 // ============ Like Functionality ============
 async function toggleLike(postId, button) {

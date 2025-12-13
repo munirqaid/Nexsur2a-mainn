@@ -1,6 +1,6 @@
 // ============ Global Variables ============
 const API_BASE_URL = 'http://localhost:3000/api';
-let authToken = localStorage.getItem('authToken');
+let authToken = localStorage.getItem('token');
 let currentTool = 'video-editor';
 
 // ============ DOM Elements ============
