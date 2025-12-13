@@ -42,7 +42,7 @@ router.post('/', authenticateToken, async (req, res) => {
 
 // دالة مساعدة لتحويل المنشورات من قاعدة البيانات (لم تعد ضرورية مع Mongoose)
 const formatPost = (post) => ({
-  id: post._id,
+  id: post._id.toString(),
   userId: post.userId,
   content: post.content,
   postType: post.postType,
