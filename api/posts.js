@@ -37,6 +37,8 @@ router.post('/', authenticateToken, async (req, res) => {
     });
   } catch (error) {
     console.error('Error creating post:', error.message || error);
+    console.error('Full Error Stack:', error.stack);
+    console.error('Request Body:', req.body);
     res.status(500).json({ error: 'Failed to create post' });
   }
 });
