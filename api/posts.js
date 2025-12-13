@@ -35,7 +35,7 @@ router.post('/', authenticateToken, async (req, res) => {
       postId: newPost._id,
     });
   } catch (error) {
-    console.error('Error creating post:', error);
+    console.error('Error creating post:', error.message || error);
     res.status(500).json({ error: 'Failed to create post' });
   }
 });
