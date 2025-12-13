@@ -1,5 +1,6 @@
 import express from 'express';
 import { v4 as uuidv4 } from 'uuid';
+import mongoose from 'mongoose';
 import { Post, User, Like } from '../database/models.js';
 import { authenticateToken } from './auth.js';
 
@@ -24,7 +25,7 @@ router.post('/', authenticateToken, async (req, res) => {
       mediaUrls: mediaUrls || [],
       location: location || null,
       hashtags: hashtags || [],
-      mentions: mentions || [],
+    mentions: (mentions && Array.isArray(mentions) && mentions.every(m => mongoose.Types.ObjectId.isValid(m))) ? mentions : [],
       isMonetized: isMonetized || false,
     });
 
