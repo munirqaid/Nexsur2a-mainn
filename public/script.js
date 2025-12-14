@@ -189,7 +189,6 @@ if (composerEmojiBtn) {
 // if (composerPollBtn) {
     //     composerPollBtn.addEventListener('click', () => alert('ميزة الاستطلاع قيد التطوير!'));
 // }
-}
 
 mediaFileInput.addEventListener('change', (event) => {
     const file = event.target.files[0];
@@ -218,7 +217,8 @@ document.getElementById('galleryMediaBtn').addEventListener('click', () => {
 // ============ Camera Functions ============
 async function startCameraStream() {
     const videoElement = document.getElementById('camera-video');
-
+    const captureImageBtn = document.getElementById('captureImageBtn');
+    const recordVideoBtn = document.getElementById('recordVideoBtn');
 
     if (stream) {
         stopCameraStream();
@@ -229,6 +229,22 @@ async function startCameraStream() {
         videoElement.srcObject = stream;
         openModal(cameraModal);
         console.log('Camera stream started');
+
+        // Event listeners for camera controls
+        if (captureImageBtn) {
+            captureImageBtn.onclick = () => {
+                alert('التقاط الصورة قيد التطوير!');
+                // Add logic to capture image from video stream
+            };
+        }
+
+        if (recordVideoBtn) {
+            recordVideoBtn.onclick = () => {
+                alert('تسجيل الفيديو قيد التطوير!');
+                // Add logic to record video from video stream
+            };
+        }
+
     } catch (error) {
         console.error('Error accessing camera:', error);
         alert('لا يمكن الوصول إلى الكاميرا. يرجى التحقق من الأذونات.');
@@ -244,10 +260,7 @@ function stopCameraStream() {
     }
 }
 
-// Add event listeners for camera controls
-// Camera control buttons are defined inside startCameraStream to ensure they are available when the modal is opened.
-// The event listeners for camera controls are now inside startCameraStream.
-}
+
 
 // ============ Post Submission ============
 if (publishBtn) {
