@@ -1,5 +1,5 @@
 // ============ Global Variables ============
-const API_BASE_URL = 'http://localhost:3000/api';
+const API_BASE_URL = '/api'; // تم التعديل لاستخدام مسار نسبي ليعمل على Railway
 let authToken = localStorage.getItem('authToken');
 let mediaFile = null; // لتخزين ملف الوسائط المختار
 
