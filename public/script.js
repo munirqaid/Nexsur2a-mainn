@@ -308,9 +308,16 @@ if (settingsBtn) {
 
 // ============ Initialization ============
 window.addEventListener('load', function() {
-    // In a real app, you would load posts from an API
-// Load posts from the API
-	    loadFeed();
+    // التحقق من وجود رمز الدخول وتوجيه المستخدم إذا لم يكن موجوداً
+    if (!authToken) {
+        // افتراض أن صفحة تسجيل الدخول هي login.html
+        // إذا لم تكن موجودة، يجب على المستخدم التأكد من وجودها أو تعديل هذا المسار
+        // window.location.href = 'login.html'; 
+        console.warn('No authentication token found. User needs to log in.');
+    }
+    
+    // Load posts from the API
+		    loadFeed();
     console.log('✅ Nexora loaded successfully with new UI logic');
 });
 
