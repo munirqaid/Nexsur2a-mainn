@@ -4,17 +4,17 @@ let mediaFile = null;
 
 // ============ DOM Elements ============
 const feedSection = document.getElementById('postsContainer');
-const settingsBtn = document.getElementById('settingsSidebarBtn');
-const profileBtn = document.getElementById('profileSidebarBtn');
-const logoutBtn = document.getElementById('logoutBtn');
+// const settingsBtn = document.getElementById('settingsSidebarBtn'); // Removed as it's not in index.html
+// const profileBtn = document.getElementById('profileSidebarBtn'); // Removed as it's not in index.html
+// const logoutBtn = document.getElementById('logoutBtn'); // Removed as it's not in index.html
 
 // Post Composer Elements
-const postInput = document.getElementById('postInput');
-const composerImageBtn = document.getElementById('composerImageBtn');
-const composerImageUploadBtn = document.getElementById('composerImageUploadBtn');
-const composerVideoBtn = document.getElementById('composerVideoBtn');
-const composerPollBtn = document.getElementById('composerPollBtn');
-const publishBtn = document.getElementById('publishBtn');
+const postInput = document.getElementById('postTextarea');
+const composerMediaBtn = document.getElementById('composerMediaBtn');
+const composerCameraBtn = document.getElementById('composerCameraBtn');
+const composerEmojiBtn = document.getElementById('composerEmojiBtn');
+// const composerPollBtn = document.getElementById('composerPollBtn'); // Removed as it's not in index.html
+const publishBtn = document.getElementById('postSubmitBtn');
 const mediaPreview = document.getElementById('mediaPreview');
 const mediaFileInput = document.getElementById('mediaFileInput');
 
@@ -22,6 +22,45 @@ const mediaFileInput = document.getElementById('mediaFileInput');
 let stream = null;
 
 // ============ Modal Functions ============
+const notificationsModal = document.getElementById('notificationsModal');
+const settingsModal = document.getElementById('settingsModal');
+const mediaSelectModal = document.getElementById('mediaSelectModal');
+const cameraModal = document.getElementById('cameraModal');
+
+// Get the buttons that open the modals
+const settingsBtn = document.getElementById('settingsBtn');
+const notificationsBtn = document.getElementById('notificationsBtn');
+
+// Get the <span> element that closes the modal
+const closeButtons = document.querySelectorAll('.modal-close');
+
+// When the user clicks on the button, open the modal
+if (settingsBtn) {
+    settingsBtn.onclick = function() {
+        openModal(settingsModal);
+    }
+}
+
+if (notificationsBtn) {
+    notificationsBtn.onclick = function() {
+        openModal(notificationsModal);
+    }
+}
+
+// When the user clicks on <span> (x), close the modal
+closeButtons.forEach(btn => {
+    btn.onclick = function() {
+        const modal = btn.closest('.modal');
+        closeModal(modal);
+    }
+});
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target.classList.contains('modal')) {
+        closeModal(event.target);
+    }
+}
 function openModal(modal) {
     if (modal) modal.classList.add('active');
 }
@@ -130,24 +169,26 @@ function getTimeAgo(date) {
 }
 
 // ============ Post Composer Functions ============
-if (composerImageBtn) {
-    composerImageBtn.addEventListener('click', () => {
+if (composerMediaBtn) {
+    composerMediaBtn.addEventListener('click', () => {
+        // startCameraStream(); // This is incorrect for media button. It should open the media select modal.
+        openModal(document.getElementById('mediaSelectModal'));
+    });
+}
+
+if (composerCameraBtn) {
+    composerCameraBtn.addEventListener('click', () => {
         startCameraStream();
     });
 }
 
-if (composerImageUploadBtn) {
-    composerImageUploadBtn.addEventListener('click', () => {
-        mediaFileInput.click();
-    });
+if (composerEmojiBtn) {
+    composerEmojiBtn.addEventListener('click', () => alert('ميزة الإيموجي قيد التطوير!'));
 }
 
-if (composerVideoBtn) {
-    composerVideoBtn.addEventListener('click', () => alert('ميزة الفيديو قيد التطوير!'));
-}
-
-if (composerPollBtn) {
-    composerPollBtn.addEventListener('click', () => alert('ميزة الاستطلاع قيد التطوير!'));
+// if (composerPollBtn) {
+    //     composerPollBtn.addEventListener('click', () => alert('ميزة الاستطلاع قيد التطوير!'));
+// }
 }
 
 mediaFileInput.addEventListener('change', (event) => {
@@ -163,10 +204,30 @@ mediaFileInput.addEventListener('change', (event) => {
     }
 });
 
+// ============ Media Functions ============
+document.getElementById('uploadMediaBtn').addEventListener('click', () => {
+    document.getElementById('mediaFileInput').click();
+    closeModal(document.getElementById('mediaSelectModal'));
+});
+
+document.getElementById('galleryMediaBtn').addEventListener('click', () => {
+    alert('ميزة المعرض (التخزين الداخلي) قيد التطوير!');
+    closeModal(document.getElementById('mediaSelectModal'));
+});
+
 // ============ Camera Functions ============
 async function startCameraStream() {
+    const videoElement = document.getElementById('camera-video');
+
+
+    if (stream) {
+        stopCameraStream();
+    }
+
     try {
         stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+        videoElement.srcObject = stream;
+        openModal(cameraModal);
         console.log('Camera stream started');
     } catch (error) {
         console.error('Error accessing camera:', error);
@@ -175,10 +236,17 @@ async function startCameraStream() {
 }
 
 function stopCameraStream() {
+    const videoElement = document.getElementById('camera-video');
     if (stream) {
         stream.getTracks().forEach(track => track.stop());
         stream = null;
+        videoElement.srcObject = null;
     }
+}
+
+// Add event listeners for camera controls
+// Camera control buttons are defined inside startCameraStream to ensure they are available when the modal is opened.
+// The event listeners for camera controls are now inside startCameraStream.
 }
 
 // ============ Post Submission ============
@@ -272,26 +340,7 @@ if (publishBtn) {
 }
 
 // ============ Event Listeners for Navbar ============
-if (settingsBtn) {
-    settingsBtn.addEventListener('click', () => {
-        alert('الإعدادات قيد التطوير!');
-    });
-}
-
-if (profileBtn) {
-    profileBtn.addEventListener('click', () => {
-        alert('الملف الشخصي قيد التطوير!');
-    });
-}
-
-if (logoutBtn) {
-    logoutBtn.addEventListener('click', () => {
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        window.location.href = '/auth.html';
-    });
-}
+// Event listeners for settings and notifications are now handled in the Modal Functions section.
 
 // ============ User Avatar Update ============
 function updateUserAvatar() {
