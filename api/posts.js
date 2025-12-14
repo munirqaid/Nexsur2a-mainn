@@ -9,10 +9,10 @@ const router = express.Router();
 // ============= Routes =============
 
 // إنشاء منشور جديد
-router.post('/', async (req, res) => {
+router.post('/', authenticateToken, async (req, res) => {
     try {
         const { content, postType, mediaUrls, location, hashtags, mentions, isMonetized } = req.body;
-        const userId = req.body.userId; // تم حذف authenticateToken بناءً على طلب المستخدم، يجب أن يتم تمرير userId من الواجهة الأمامية
+        const userId = req.user.id; // تم استعادة استخدام authenticateToken للحصول على معرف المستخدم من التوكن
 
         if (!content && !postType) {
             return res.status(400).json({ error: 'Content and post type are required' });
@@ -149,11 +149,11 @@ router.get('/:postId', async (req, res) => {
 });
 
 // تحديث منشور
-router.put('/:postId', async (req, res) => {
+router.put('/:postId', authenticateToken, async (req, res) => {
     try {
         const { postId } = req.params;
         const { content, postType, mediaUrls, location, hashtags, mentions, isMonetized } = req.body;
-        const userId = req.body.userId; // تم حذف authenticateToken بناءً على طلب المستخدم، يجب أن يتم تمرير userId من الواجهة الأمامية
+        const userId = req.user.id; // تم استعادة استخدام authenticateToken للحصول على معرف المستخدم من التوكن
 
         if (!mongoose.Types.ObjectId.isValid(postId)) {
             return res.status(400).json({ error: 'Invalid post ID' });
@@ -183,10 +183,10 @@ router.put('/:postId', async (req, res) => {
 });
 
 // حذف منشور
-router.delete('/:postId', async (req, res) => {
+router.delete('/:postId', authenticateToken, async (req, res) => {
     try {
         const { postId } = req.params;
-        const userId = req.body.userId; // تم حذف authenticateToken بناءً على طلب المستخدم، يجب أن يتم تمرير userId من الواجهة الأمامية
+        const userId = req.user.id; // تم استعادة استخدام authenticateToken للحصول على معرف المستخدم من التوكن
 
         if (!mongoose.Types.ObjectId.isValid(postId)) {
             return res.status(400).json({ error: 'Invalid post ID' });
@@ -210,10 +210,10 @@ router.delete('/:postId', async (req, res) => {
 });
 
 // إضافة تفاعل (إعجاب)
-router.post('/:postId/react', async (req, res) => {
+router.post('/:postId/react', authenticateToken, async (req, res) => {
     try {
         const { postId } = req.params;
-        const userId = req.body.userId; // تم حذف authenticateToken بناءً على طلب المستخدم، يجب أن يتم تمرير userId من الواجهة الأمامية
+        const userId = req.user.id; // تم استعادة استخدام authenticateToken للحصول على معرف المستخدم من التوكن
         const { reactionType = 'like' } = req.body; // يمكن توسيعها لتشمل أنواع تفاعلات أخرى
 
         if (!mongoose.Types.ObjectId.isValid(postId)) {
