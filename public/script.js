@@ -1,36 +1,27 @@
 // ============ Global Variables ============
 const API_BASE_URL = '/api'; // تم التعديل لاستخدام مسار نسبي ليعمل على Railway
-let authToken = localStorage.getItem('authToken');
 let mediaFile = null; // لتخزين ملف الوسائط المختار
 
 // ============ DOM Elements ============
-const feedSection = document.getElementById('feedSection');
-const notificationsBtn = document.getElementById('notificationsBtn');
-const settingsBtn = document.getElementById('settingsBtn');
-
-// Modals
-const notificationsModal = document.getElementById('notificationsModal');
-const settingsModal = document.getElementById('settingsModal');
-const mediaSelectModal = document.getElementById('mediaSelectModal');
-const cameraModal = document.getElementById('cameraModal');
+const feedSection = document.getElementById('postsContainer');
+const settingsBtn = document.getElementById('settingsSidebarBtn');
+const profileBtn = document.getElementById('profileSidebarBtn');
+const logoutBtn = document.getElementById('logoutBtn');
+const userProfileBtn = document.getElementById('userProfileBtn');
 
 // Post Composer Elements
-const postTextarea = document.getElementById('postTextarea');
-const composerMediaBtn = document.getElementById('composerMediaBtn');
-const composerCameraBtn = document.getElementById('composerCameraBtn');
-const composerEmojiBtn = document.getElementById('composerEmojiBtn');
-const postSubmitBtn = document.getElementById('postSubmitBtn');
+const postInput = document.getElementById('postInput');
+const composerImageBtn = document.getElementById('composerImageBtn');
+const composerImageUploadBtn = document.getElementById('composerImageUploadBtn');
+const composerVideoBtn = document.getElementById('composerVideoBtn');
+const composerPollBtn = document.getElementById('composerPollBtn');
+const publishBtn = document.getElementById('publishBtn');
 const mediaPreview = document.getElementById('mediaPreview');
 
 // Media Selection Elements
-const uploadMediaBtn = document.getElementById('uploadMediaBtn');
-const galleryMediaBtn = document.getElementById('galleryMediaBtn');
 const mediaFileInput = document.getElementById('mediaFileInput');
 
 // Camera Elements
-const cameraVideo = document.getElementById('camera-video');
-const cameraCanvas = document.getElementById('camera-canvas');
-const captureImageBtn = document.getElementById('captureImageBtn');
 let stream = null; // للحفاظ على تيار الكاميرا
 
 // ============ Modal Functions ============
@@ -64,17 +55,41 @@ window.addEventListener('click', function(event) {
 // ============ Feed Functions ============
 async function loadFeed() {
     try {
-        const response = await fetch(`${API_BASE_URL}/posts`);
+        // إضافة timestamp لتجنب caching
+        const timestamp = new Date().getTime();
+        const response = await fetch(`${API_BASE_URL}/posts?t=${timestamp}`, {
+            cache: 'no-store',
+            headers: {
+                'Cache-Control': 'no-cache, no-store, must-revalidate',
+                'Pragma': 'no-cache',
+                'Expires': '0'
+            }
+        });
         const data = await response.json();
         
         if (data.posts && data.posts.length > 0) {
             displayPosts(data.posts);
+            // حفظ المنشورات في localStorage كنسخة احتياطية
+            localStorage.setItem('nexora_posts_cache', JSON.stringify(data.posts));
+            localStorage.setItem('nexora_posts_cache_time', timestamp.toString());
         } else {
             feedSection.innerHTML = '<p class="empty-feed">لا توجد منشورات حالياً. كن أول من ينشر!</p>';
         }
     } catch (error) {
         console.error('Error loading feed:', error);
-        feedSection.innerHTML = '<p class="empty-feed error">حدث خطأ في تحميل الخلاصة</p>';
+        // محاولة استعادة البيانات من localStorage في حالة الخطأ
+        const cachedPosts = localStorage.getItem('nexora_posts_cache');
+        if (cachedPosts) {
+            try {
+                const posts = JSON.parse(cachedPosts);
+                displayPosts(posts);
+                console.log('Loaded posts from cache');
+            } catch (e) {
+                feedSection.innerHTML = '<p class="empty-feed error">حدث خطأ في تحميل الخلاصة</p>';
+            }
+        } else {
+            feedSection.innerHTML = '<p class="empty-feed error">حدث خطأ في تحميل الخلاصة</p>';
+        }
     }
 }
 
@@ -140,16 +155,25 @@ function getTimeAgo(date) {
 }
 
 // ============ Post Composer Functions ============
-composerMediaBtn.addEventListener('click', () => openModal(mediaSelectModal));
-composerCameraBtn.addEventListener('click', () => {
-    openModal(cameraModal);
-    startCameraStream();
-});
-composerEmojiBtn.addEventListener('click', () => alert('ميزة الإيموجي قيد التطوير!'));
+if (composerImageBtn) {
+    composerImageBtn.addEventListener('click', () => {
+        startCameraStream();
+    });
+}
 
-// Media Selection
-uploadMediaBtn.addEventListener('click', () => mediaFileInput.click());
-galleryMediaBtn.addEventListener('click', () => alert('ميزة المعرض قيد التطوير!'));
+if (composerImageUploadBtn) {
+    composerImageUploadBtn.addEventListener('click', () => {
+        mediaFileInput.click();
+    });
+}
+
+if (composerVideoBtn) {
+    composerVideoBtn.addEventListener('click', () => alert('ميزة الفيديو قيد التطوير!'));
+}
+
+if (composerPollBtn) {
+    composerPollBtn.addEventListener('click', () => alert('ميزة الاستطلاع قيد التطوير!'));
+}
 
 mediaFileInput.addEventListener('change', (event) => {
     const file = event.target.files[0];
@@ -161,7 +185,6 @@ mediaFileInput.addEventListener('change', (event) => {
             mediaPreview.style.display = 'block';
         };
         reader.readAsDataURL(file);
-        closeModal(mediaSelectModal);
     }
 });
 
@@ -169,11 +192,10 @@ mediaFileInput.addEventListener('change', (event) => {
 async function startCameraStream() {
     try {
         stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
-        cameraVideo.srcObject = stream;
+        console.log('Camera stream started');
     } catch (error) {
         console.error('Error accessing camera:', error);
         alert('لا يمكن الوصول إلى الكاميرا. يرجى التحقق من الأذونات.');
-        closeModal(cameraModal);
     }
 }
 
@@ -184,31 +206,14 @@ function stopCameraStream() {
     }
 }
 
-captureImageBtn.addEventListener('click', () => {
-    cameraCanvas.width = cameraVideo.videoWidth;
-    cameraCanvas.height = cameraVideo.videoHeight;
-    const context = cameraCanvas.getContext('2d');
-    context.drawImage(cameraVideo, 0, 0, cameraCanvas.width, cameraCanvas.height);
-    
-    const dataUrl = cameraCanvas.toDataURL('image/png');
-    mediaPreview.innerHTML = `<img src="${dataUrl}" alt="صورة ملتقطة">`;
-    mediaPreview.style.display = 'block';
-    
-    // تحويل الصورة إلى ملف لاستخدامه لاحقاً
-    fetch(dataUrl).then(res => res.blob()).then(blob => {
-        mediaFile = new File([blob], 'capture.png', { type: 'image/png' });
-    });
-
-    stopCameraStream();
-    closeModal(cameraModal);
-});
-
 // Post Submission
-postSubmitBtn.addEventListener('click', async () => {
-    // تحديث authToken من localStorage قبل كل محاولة نشر
-    authToken = localStorage.getItem('authToken');
+if (publishBtn) {
+    publishBtn.addEventListener('click', async () => {
+        // تحديث authToken من localStorage قبل كل محاولة نشر
+        // تحقق من كلا الأسماء المحتملة للتوكن (token أو authToken)
+        const authToken = localStorage.getItem('authToken') || localStorage.getItem('token');
 
-    const content = postTextarea.value.trim();
+        const content = postInput.value.trim();
     if (!content && !mediaFile) {
         alert('يرجى كتابة نص أو إضافة وسائط.');
         return;
@@ -288,72 +293,63 @@ if (!postResponse.ok) {
         return;
     }
 
-    // Clear composer
-    postTextarea.value = '';
-    mediaPreview.innerHTML = '';
-    mediaPreview.style.display = 'none';
-    mediaFile = null;
-    mediaFileInput.value = ''; // Reset file input
-});
+        // Clear composer
+        postInput.value = '';
+        mediaPreview.innerHTML = '';
+        mediaPreview.style.display = 'none';
+        mediaFile = null;
+        mediaFileInput.value = ''; // Reset file input
+    });
+}
 
 
 // ============ Event Listeners for Navbar ============
-if (notificationsBtn) {
-    notificationsBtn.addEventListener('click', () => openModal(notificationsModal));
+if (settingsBtn) {
+    settingsBtn.addEventListener('click', () => {
+        alert('الإعدادات قيد التطوير!');
+    });
 }
 
-if (settingsBtn) {
-    settingsBtn.addEventListener('click', () => openModal(settingsModal));
+if (profileBtn) {
+    profileBtn.addEventListener('click', () => {
+        alert('الملف الشخصي قيد التطوير!');
+    });
+}
+
+if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        window.location.href = '/auth.html';
+    });
+}
+
+// ============ User Avatar Update ============
+function updateUserAvatar() {
+    const user = localStorage.getItem('user');
+    if (user) {
+        try {
+            const userData = JSON.parse(user);
+            const initials = (userData.displayName || userData.username || 'A').charAt(0).toUpperCase();
+            const creatorAvatar = document.getElementById('creatorAvatar');
+            const userAvatarNav = document.getElementById('userAvatarNav');
+            const userNameNav = document.getElementById('userNameNav');
+            
+            if (creatorAvatar) creatorAvatar.textContent = initials;
+            if (userAvatarNav) userAvatarNav.textContent = initials;
+            if (userNameNav) userNameNav.textContent = userData.displayName || userData.username || 'المستخدم';
+        } catch (e) {
+            console.error('Error parsing user data:', e);
+        }
+    }
 }
 
 // ============ Initialization ============
 window.addEventListener('load', function() {
-    // التحقق من وجود رمز الدخول وتوجيه المستخدم إذا لم يكن موجوداً
-    if (!authToken) {
-        // افتراض أن صفحة تسجيل الدخول هي login.html
-        // إذا لم تكن موجودة، يجب على المستخدم التأكد من وجودها أو تعديل هذا المسار
-        // window.location.href = 'login.html'; 
-        console.warn('No authentication token found. User needs to log in.');
-    }
-    
-    // Load posts from the API
-		    loadFeed();
-    console.log('✅ Nexora loaded successfully with new UI logic');
+    loadFeed();
+    updateUserAvatar();
+    console.log('✅ Nexora loaded successfully!');
 });
 
-// ============ Settings Functions ============
-const saveSettingsBtn = document.getElementById('saveSettingsBtn');
-const privacySelect = document.getElementById('privacySelect');
-const passwordInput = document.getElementById('passwordInput');
-const notificationsToggle = document.getElementById('notificationsToggle');
 
-function loadSettings() {
-    const savedPrivacy = localStorage.getItem('nexora_privacy') || 'public';
-    const savedNotifications = localStorage.getItem('nexora_notifications') !== 'false'; // true by default
-
-    if (privacySelect) privacySelect.value = savedPrivacy;
-    if (notificationsToggle) notificationsToggle.checked = savedNotifications;
-}
-
-if (saveSettingsBtn) {
-    saveSettingsBtn.addEventListener('click', () => {
-        const privacy = privacySelect ? privacySelect.value : 'public';
-        const notifications = notificationsToggle ? notificationsToggle.checked : true;
-        const newPassword = passwordInput ? passwordInput.value : '';
-
-        localStorage.setItem('nexora_privacy', privacy);
-        localStorage.setItem('nexora_notifications', notifications);
-
-        if (newPassword.trim() !== '') {
-            // Placeholder for API call to change password
-            alert('سيتم تغيير كلمة المرور (تحتاج إلى تطوير في الخلفية).');
-            passwordInput.value = '';
-        }
-
-        alert('تم حفظ الإعدادات بنجاح!');
-        closeModal(settingsModal);
-    });
-}
-
-// Load settings on page load
-window.addEventListener('load', loadSettings);
