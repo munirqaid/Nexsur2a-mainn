@@ -1,6 +1,6 @@
 // ============ Global Variables ============
 const API_BASE_URL = 'http://localhost:3000/api';
-let authToken = localStorage.getItem('token');
+let authToken = localStorage.getItem('authToken');
 let currentConversation = null;
 let currentUser = null;
 let messages = [];

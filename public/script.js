@@ -1,6 +1,6 @@
 // ============ Global Variables ============
 const API_BASE_URL = 'http://localhost:3000/api';
-let authToken = localStorage.getItem('token');
+let authToken = localStorage.getItem('authToken');
 let mediaFile = null; // لتخزين ملف الوسائط المختار
 
 // ============ DOM Elements ============
@@ -206,7 +206,7 @@ captureImageBtn.addEventListener('click', () => {
 // Post Submission
 postSubmitBtn.addEventListener('click', async () => {
     // تحديث authToken من localStorage قبل كل محاولة نشر
-    authToken = localStorage.getItem('token');
+    authToken = localStorage.getItem('authToken');
 
     const content = postTextarea.value.trim();
     if (!content && !mediaFile) {
