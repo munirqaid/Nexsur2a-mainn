@@ -14,7 +14,8 @@ export const authenticateToken = (req, res, next) => {
   const token = authHeader && authHeader.split(' ')[1];
 
   if (!token) {
-    return res.status(401).json({ error: 'Access token required' });
+    console.error('Authentication Failed: No token provided in Authorization header.');
+    return res.status(401).json({ error: 'Access token required. Please log in.' });
   }
 
   jwt.verify(token, JWT_SECRET, (err, user) => {
