@@ -506,6 +506,107 @@
             to { transform: rotate(360deg); }
         }
 
+        /* ===== MODALS ===== */
+        .modal {
+            display: none; /* مخفي افتراضياً */
+            position: fixed; /* البقاء في نفس المكان */
+            z-index: 1000; /* فوق كل شيء */
+            left: 0;
+            top: 0;
+            width: 100%; /* عرض كامل */
+            height: 100%; /* ارتفاع كامل */
+            overflow: auto; /* تمكين التمرير إذا لزم الأمر */
+            background-color: rgba(0,0,0,0.4); /* خلفية معتمة */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* يمكن تعديل العرض */
+            max-width: 500px;
+            border-radius: 10px;
+            position: relative;
+            animation-name: animatetop;
+            animation-duration: 0.4s
+        }
+
+        @keyframes animatetop {
+            from {top: -300px; opacity: 0}
+            to {top: 0; opacity: 1}
+        }
+
+        .modal-close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .modal-close:hover,
+        .modal-close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-btn {
+            background: linear-gradient(45deg, #fd1d1d, #833ab4);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            margin-top: 10px;
+            display: block;
+            width: 100%;
+            text-align: center;
+        }
+
+        .modal-btn:hover {
+            opacity: 0.9;
+        }
+
+        .settings-section {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #eee;
+            border-radius: 5px;
+        }
+
+        .settings-section label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .settings-section input[type="password"],
+        .settings-section select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        #camera-video {
+            width: 100%;
+            max-height: 300px;
+            background: #000;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
         /* ===== RESPONSIVE ===== */
         @media (max-width: 1024px) {
             .main-container {
@@ -648,6 +749,71 @@
         </div>
 
         <!-- RIGHT SIDEBAR -->
+        
+        <!-- MODALS CONTAINER -->
+        <div id="modals-container">
+            <!-- Media Selection Modal -->
+            <div id="mediaSelectModal" class="modal">
+                <div class="modal-content">
+                    <span class="modal-close">&times;</span>
+                    <h2>اختيار الوسائط</h2>
+                    <p>كيف تود إضافة الوسائط؟</p>
+                    <button id="uploadMediaBtn" class="modal-btn">رفع من الجهاز</button>
+                    <button id="galleryMediaBtn" class="modal-btn">اختيار من المعرض</button>
+                    <input type="file" id="mediaFileInput" accept="image/*,video/*" style="display: none;">
+                </div>
+            </div>
+
+            <!-- Camera Modal -->
+            <div id="cameraModal" class="modal">
+                <div class="modal-content">
+                    <span class="modal-close">&times;</span>
+                    <h2>الكاميرا</h2>
+                    <video id="camera-video" autoplay></video>
+                    <canvas id="camera-canvas" style="display: none;"></canvas>
+                    <button id="captureImageBtn" class="modal-btn">التقاط صورة</button>
+                </div>
+            </div>
+
+            <!-- Notifications Modal -->
+            <div id="notificationsModal" class="modal">
+                <div class="modal-content">
+                    <span class="modal-close">&times;</span>
+                    <h2>التنبيهات</h2>
+                    <p>لا توجد تنبيهات جديدة حالياً.</p>
+                </div>
+            </div>
+
+            <!-- Settings Modal -->
+            <div id="settingsModal" class="modal">
+                <div class="modal-content">
+                    <span class="modal-close">&times;</span>
+                    <h2>الإعدادات</h2>
+                    <div class="settings-section">
+                        <h3>إعدادات الخصوصية</h3>
+                        <label for="privacySelect">من يمكنه رؤية منشوراتي؟</label>
+                        <select id="privacySelect">
+                            <option value="public">الكل</option>
+                            <option value="friends">الأصدقاء فقط</option>
+                            <option value="private">أنا فقط</option>
+                        </select>
+                    </div>
+                    <div class="settings-section">
+                        <h3>إعدادات الحساب</h3>
+                        <label for="passwordInput">تغيير كلمة المرور</label>
+                        <input type="password" id="passwordInput" placeholder="كلمة المرور الجديدة">
+                    </div>
+                    <div class="settings-section">
+                        <h3>إعدادات التنبيهات</h3>
+                        <label for="notificationsToggle">تشغيل/إيقاف الإشعارات</label>
+                        <input type="checkbox" id="notificationsToggle" checked>
+                    </div>
+                    <button id="saveSettingsBtn" class="modal-btn">حفظ الإعدادات</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- END MODALS CONTAINER -->
         <div class="right-sidebar">
             <div class="sidebar-title">الأكثر متابعة</div>
             
@@ -701,28 +867,9 @@
             });
         });
 
-        // Publish button
-        document.getElementById('publishBtn').addEventListener('click', function() {
-            const postText = document.getElementById('postInput').value;
-            if (postText.trim()) {
-                alert('تم نشر المنشور: ' + postText);
-                document.getElementById('postInput').value = '';
-            }
-        });
+        
 
-        // Camera and Media buttons (Placeholder for functionality)
-        document.querySelectorAll('.post-creator-icons .icon-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const title = this.getAttribute('title');
-                alert('تم النقر على: ' + title + '. يجب إضافة منطق فتح نافذة رفع الوسائط هنا.');
-            });
-        });
-
-        // Settings button (Sidebar item)
-        document.querySelector('.sidebar-item:nth-child(7)').addEventListener('click', function() {
-            alert('تم النقر على الإعدادات. يجب إضافة منطق التوجيه إلى صفحة الإعدادات هنا.');
-            // window.location.href = '/settings.html'; // يمكن تفعيل هذا لاحقاً
-        });
+        
 
         // Check authentication
         window.addEventListener('load', function() {
@@ -732,5 +879,6 @@
             }
         });
     </script>
+    <script src="script.js"></script>
 </body>
 </html>
