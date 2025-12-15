@@ -710,6 +710,20 @@
             }
         });
 
+        // Camera and Media buttons (Placeholder for functionality)
+        document.querySelectorAll('.post-creator-icons .icon-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const title = this.getAttribute('title');
+                alert('تم النقر على: ' + title + '. يجب إضافة منطق فتح نافذة رفع الوسائط هنا.');
+            });
+        });
+
+        // Settings button (Sidebar item)
+        document.querySelector('.sidebar-item:nth-child(7)').addEventListener('click', function() {
+            alert('تم النقر على الإعدادات. يجب إضافة منطق التوجيه إلى صفحة الإعدادات هنا.');
+            // window.location.href = '/settings.html'; // يمكن تفعيل هذا لاحقاً
+        });
+
         // Check authentication
         window.addEventListener('load', function() {
             const token = localStorage.getItem('token');
