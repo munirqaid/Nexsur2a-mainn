@@ -63,26 +63,38 @@ window.addEventListener('click', function(event) {
 
 // ============ Feed Functions ============
 async function loadFeed() {
+    const postsFeed = document.getElementById('postsFeed');
+    
+    // 1. مؤشر التحميل
+    postsFeed.innerHTML = '<div class="loading"><div class="spinner"></div><p>جارٍ تحميل المنشورات...</p></div>';
+
     try {
         const response = await fetch(`${API_BASE_URL}/posts`);
+        
+        if (!response.ok) {
+            throw new Error('فشل جلب المنشورات من الخادم');
+        }
+
         const data = await response.json();
         
         if (data.posts && data.posts.length > 0) {
             displayPosts(data.posts);
         } else {
-            feedSection.innerHTML = '<p class="empty-feed">لا توجد منشورات حالياً. كن أول من ينشر!</p>';
+            postsFeed.innerHTML = '<p class="empty-feed">لا توجد منشورات حالياً. كن أول من ينشر!</p>';
         }
     } catch (error) {
+        // 2. معالجة الأخطاء
         console.error('Error loading feed:', error);
-        feedSection.innerHTML = '<p class="empty-feed error">حدث خطأ في تحميل الخلاصة</p>';
+        postsFeed.innerHTML = `<p class="empty-feed error">حدث خطأ في تحميل الخلاصة: ${error.message}</p>`;
     }
 }
 
 function displayPosts(posts) {
-    feedSection.innerHTML = '';
+    const postsFeed = document.getElementById('postsFeed');
+    postsFeed.innerHTML = '';
     posts.forEach(post => {
         const postElement = createPostElement(post);
-        feedSection.appendChild(postElement);
+        postsFeed.appendChild(postElement);
     });
 }
 
@@ -211,26 +223,59 @@ postSubmitBtn.addEventListener('click', async () => {
         return;
     }
 
-    // Placeholder for API call
-    console.log('Submitting post:', { content, mediaFile });
+    // Show loading indicator
+    postSubmitBtn.disabled = true;
+    postSubmitBtn.innerHTML = '<div class="spinner"></div>';
 
-    // Create a new post element locally for immediate feedback
-    const newPost = {
-        author: { displayName: 'أنت', avatarUrl: 'https://picsum.photos/40/40?random=1' },
-        content: content,
-        mediaUrl: mediaFile ? URL.createObjectURL(mediaFile) : null,
-        createdAt: new Date().toISOString()
-    };
+    const formData = new FormData();
+    formData.append('content', content);
+    // يجب إضافة user ID هنا، لكن بما أننا لا نملك نظام تسجيل دخول كامل، سنستخدم قيمة وهمية
+    // في التطبيق الحقيقي، سيتم الحصول على الـ userId من الـ authToken
+    // سنفترض أن الـ API سيستخدم الـ userId من الـ token
+    // formData.append('userId', 'dummy-user-id'); 
 
-    const postElement = createPostElement(newPost);
-    feedSection.prepend(postElement);
+    if (mediaFile) {
+        // يجب رفع الملف أولاً، لكن سنرسله مباشرة مع المنشور مؤقتاً
+        formData.append('media', mediaFile);
+    }
 
-    // Clear composer
-    postTextarea.value = '';
-    mediaPreview.innerHTML = '';
-    mediaPreview.style.display = 'none';
-    mediaFile = null;
-    mediaFileInput.value = ''; // Reset file input
+    try {
+        const response = await fetch(`${API_BASE_URL}/posts`, {
+            method: 'POST',
+            headers: {
+                // لا يمكن إرسال Content-Type: application/json مع FormData
+                // لكن يمكن إرسال Authorization header
+                'Authorization': `Bearer ${authToken}`
+            },
+            body: formData
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Failed to create post');
+        }
+
+        const result = await response.json();
+        console.log('Post created:', result);
+
+        // Clear composer
+        postTextarea.value = '';
+        mediaPreview.innerHTML = '';
+        mediaPreview.style.display = 'none';
+        mediaFile = null;
+        mediaFileInput.value = ''; // Reset file input
+
+        // Reload the feed to show the new post
+        await loadFeed();
+
+    } catch (error) {
+        console.error('Error creating post:', error);
+        alert('حدث خطأ أثناء نشر المنشور: ' + error.message);
+    } finally {
+        // Hide loading indicator
+        postSubmitBtn.disabled = false;
+        postSubmitBtn.innerHTML = 'نشر';
+    }
 });
 
 
@@ -245,9 +290,10 @@ if (settingsBtn) {
 
 // ============ Initialization ============
 window.addEventListener('load', function() {
+    loadFeed();
     // In a real app, you would load posts from an API
     // For now, we can add some dummy posts
-    const dummyPosts = [
+    // const dummyPosts = [
         {
             author: { displayName: 'علي حسن', avatarUrl: 'https://picsum.photos/40/40?random=2' },
             content: 'يوم رائع في الطبيعة! 🌲☀️',
@@ -264,7 +310,7 @@ window.addEventListener('load', function() {
             commentCount: 8
         }
     ];
-    displayPosts(dummyPosts);
+    // displayPosts(dummyPosts);
     console.log('✅ Nexora loaded successfully with new UI logic');
 });
 
