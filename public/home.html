@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nexora - الخلاصة</title>
-    <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700;800&family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -15,23 +14,27 @@
         }
 
         body {
-            background: #0B0D12;
-            color: #fff;
-            font-family: 'Cairo', sans-serif;
+            background: #fff;
+            color: #262626;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Cairo', sans-serif;
         }
 
+        /* ===== NAVBAR ===== */
         .navbar {
-            background: rgba(11, 13, 18, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(42, 124, 255, 0.2);
-            padding: 15px 20px;
+            background: #fff;
+            border-bottom: 1px solid #dbdbdb;
+            padding: 0 20px;
             position: sticky;
             top: 0;
             z-index: 100;
+            height: 60px;
+            display: flex;
+            align-items: center;
         }
 
         .navbar-container {
             max-width: 1400px;
+            width: 100%;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
@@ -39,65 +42,114 @@
         }
 
         .logo {
-            font-size: 1.5em;
-            font-weight: 800;
-            background: linear-gradient(135deg, #2A7CFF 0%, #A259FF 100%);
+            font-size: 1.8em;
+            font-weight: 700;
+            background: linear-gradient(45deg, #fd1d1d, #833ab4, #fd1d1d);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            font-family: 'Billabong', cursive;
+            letter-spacing: 2px;
+        }
+
+        .nav-center {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            margin: 0 20px;
+        }
+
+        .search-box {
+            background: #f0f0f0;
+            border: none;
+            border-radius: 25px;
+            padding: 8px 16px;
+            width: 250px;
+            font-size: 0.9em;
+            font-family: 'Cairo', sans-serif;
+            color: #262626;
+        }
+
+        .search-box::placeholder {
+            color: #999;
+        }
+
+        .search-box:focus {
+            outline: none;
+            background: #f0f0f0;
+            border: 1px solid #ccc;
         }
 
         .nav-icons {
             display: flex;
-            gap: 15px;
+            gap: 20px;
             align-items: center;
         }
 
         .nav-icon-btn {
-            background: rgba(255, 255, 255, 0.1);
+            background: none;
             border: none;
-            color: #fff;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
+            color: #262626;
+            font-size: 1.3em;
             cursor: pointer;
+            transition: all 0.2s ease;
+            padding: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
+            position: relative;
         }
 
         .nav-icon-btn:hover {
-            background: rgba(42, 124, 255, 0.3);
+            color: #fd1d1d;
+            transform: scale(1.1);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: #fd1d1d;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7em;
+            font-weight: 700;
         }
 
         .user-profile-btn {
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 8px 15px;
-            background: rgba(42, 124, 255, 0.2);
-            border: 1px solid rgba(42, 124, 255, 0.3);
-            border-radius: 20px;
+            padding: 5px 10px;
+            background: none;
+            border: none;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
         }
 
         .user-profile-btn:hover {
-            background: rgba(42, 124, 255, 0.3);
+            opacity: 0.7;
         }
 
         .user-avatar {
             width: 32px;
             height: 32px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #2A7CFF 0%, #A259FF 100%);
+            background: linear-gradient(45deg, #fd1d1d, #833ab4);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
+            color: white;
+            border: 2px solid #262626;
         }
 
+        /* ===== MAIN CONTAINER ===== */
         .main-container {
             max-width: 1400px;
             margin: 0 auto;
@@ -107,11 +159,12 @@
             gap: 20px;
         }
 
+        /* ===== SIDEBAR ===== */
         .sidebar {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            padding: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: #fff;
+            border-radius: 0;
+            padding: 0;
+            border: none;
             height: fit-content;
             position: sticky;
             top: 80px;
@@ -119,24 +172,35 @@
 
         .sidebar-item {
             padding: 12px 15px;
-            margin-bottom: 10px;
-            border-radius: 10px;
+            margin-bottom: 5px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 15px;
+            font-size: 0.95em;
+            color: #262626;
+            font-weight: 500;
         }
 
         .sidebar-item:hover {
-            background: rgba(42, 124, 255, 0.2);
+            background: #f5f5f5;
         }
 
         .sidebar-item.active {
-            background: rgba(42, 124, 255, 0.3);
-            color: #2A7CFF;
+            background: #f0f0f0;
+            color: #fd1d1d;
+            font-weight: 700;
         }
 
+        .sidebar-item i {
+            font-size: 1.3em;
+            width: 25px;
+            text-align: center;
+        }
+
+        /* ===== FEED ===== */
         .feed-container {
             display: flex;
             flex-direction: column;
@@ -144,46 +208,51 @@
         }
 
         .post-creator {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 20px;
-            backdrop-filter: blur(10px);
+            background: #fff;
+            border: 1px solid #dbdbdb;
+            border-radius: 8px;
+            padding: 15px;
+            backdrop-filter: none;
         }
 
         .post-creator-header {
             display: flex;
-            gap: 15px;
-            margin-bottom: 15px;
+            gap: 12px;
+            margin-bottom: 12px;
+            align-items: center;
         }
 
         .post-creator-avatar {
-            width: 45px;
-            height: 45px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #2A7CFF 0%, #A259FF 100%);
+            background: linear-gradient(45deg, #fd1d1d, #833ab4);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
+            color: white;
+            border: 2px solid #262626;
+            flex-shrink: 0;
         }
 
         .post-creator-input {
             flex: 1;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: #f0f0f0;
+            border: none;
             border-radius: 25px;
-            padding: 12px 20px;
-            color: #fff;
+            padding: 10px 16px;
+            color: #262626;
             font-family: 'Cairo', sans-serif;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
+            font-size: 0.9em;
         }
 
         .post-creator-input:focus {
             outline: none;
-            background: rgba(255, 255, 255, 0.12);
-            border-color: #2A7CFF;
+            background: #f0f0f0;
+            box-shadow: 0 0 0 2px rgba(253, 29, 29, 0.1);
         }
 
         .post-creator-actions {
@@ -191,74 +260,87 @@
             gap: 10px;
             justify-content: space-between;
             align-items: center;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #f0f0f0;
         }
 
         .post-creator-icons {
             display: flex;
-            gap: 10px;
+            gap: 15px;
         }
 
         .icon-btn {
             background: transparent;
             border: none;
-            color: #2A7CFF;
+            color: #262626;
             cursor: pointer;
-            font-size: 1.2em;
-            transition: all 0.3s ease;
+            font-size: 1.1em;
+            transition: all 0.2s ease;
+            padding: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .icon-btn:hover {
-            color: #A259FF;
-            transform: scale(1.1);
+            color: #fd1d1d;
+            transform: scale(1.15);
         }
 
         .post-btn {
-            background: linear-gradient(135deg, #2A7CFF 0%, #A259FF 100%);
+            background: linear-gradient(45deg, #fd1d1d, #833ab4);
             color: white;
             border: none;
-            padding: 10px 25px;
+            padding: 8px 20px;
             border-radius: 20px;
             cursor: pointer;
             font-weight: 600;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
+            font-size: 0.9em;
         }
 
         .post-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(42, 124, 255, 0.3);
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(253, 29, 29, 0.3);
         }
 
+        /* ===== POST CARD ===== */
         .post-card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 20px;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
+            background: #fff;
+            border: 1px solid #dbdbdb;
+            border-radius: 8px;
+            overflow: hidden;
+            backdrop-filter: none;
+            transition: all 0.2s ease;
         }
 
         .post-card:hover {
-            border-color: rgba(42, 124, 255, 0.3);
-            box-shadow: 0 10px 30px rgba(42, 124, 255, 0.1);
+            border-color: #999;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
         .post-header {
             display: flex;
             align-items: center;
             gap: 12px;
-            margin-bottom: 15px;
+            padding: 12px 15px;
+            border-bottom: 1px solid #f0f0f0;
         }
 
         .post-avatar {
-            width: 45px;
-            height: 45px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #2A7CFF 0%, #A259FF 100%);
+            background: linear-gradient(45deg, #fd1d1d, #833ab4);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
             cursor: pointer;
+            color: white;
+            border: 2px solid #262626;
+            flex-shrink: 0;
         }
 
         .post-user-info {
@@ -268,122 +350,169 @@
         .post-username {
             font-weight: 600;
             cursor: pointer;
+            color: #262626;
+            font-size: 0.9em;
         }
 
         .post-username:hover {
-            color: #2A7CFF;
+            color: #fd1d1d;
         }
 
         .post-time {
-            font-size: 0.85em;
-            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.8em;
+            color: #999;
+        }
+
+        .post-menu-btn {
+            background: none;
+            border: none;
+            color: #262626;
+            cursor: pointer;
+            font-size: 1.2em;
+            padding: 5px;
+        }
+
+        .post-menu-btn:hover {
+            color: #fd1d1d;
         }
 
         .post-content {
-            margin-bottom: 15px;
-            line-height: 1.6;
+            padding: 0 15px 12px 15px;
+            line-height: 1.5;
+            color: #262626;
+            font-size: 0.9em;
         }
 
         .post-image {
             width: 100%;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            max-height: 400px;
+            max-height: 500px;
             object-fit: cover;
+            background: #f0f0f0;
         }
 
         .post-actions {
             display: flex;
-            justify-content: space-around;
-            padding-top: 15px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            justify-content: space-between;
+            padding: 12px 15px;
+            border-top: 1px solid #f0f0f0;
+            border-bottom: 1px solid #f0f0f0;
         }
 
         .post-action {
             display: flex;
             align-items: center;
             gap: 8px;
-            color: rgba(255, 255, 255, 0.6);
+            color: #262626;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             flex: 1;
             justify-content: center;
-            padding: 8px;
-            border-radius: 8px;
+            padding: 5px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            font-weight: 500;
         }
 
         .post-action:hover {
-            color: #2A7CFF;
-            background: rgba(42, 124, 255, 0.1);
+            color: #fd1d1d;
+            background: #f5f5f5;
         }
 
         .post-action.liked {
-            color: #ff6b6b;
+            color: #fd1d1d;
         }
 
+        .post-action.liked i {
+            color: #fd1d1d;
+        }
+
+        .post-stats {
+            padding: 8px 15px;
+            font-size: 0.85em;
+            color: #999;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .post-stats-item {
+            display: inline;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+
+        .post-stats-item:hover {
+            color: #262626;
+        }
+
+        /* ===== RIGHT SIDEBAR ===== */
         .right-sidebar {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            padding: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: #fff;
+            border-radius: 0;
+            padding: 0;
+            border: none;
             height: fit-content;
             position: sticky;
             top: 80px;
         }
 
         .sidebar-title {
-            font-size: 1.2em;
+            font-size: 1em;
             font-weight: 700;
             margin-bottom: 15px;
+            color: #262626;
         }
 
         .trending-item {
             padding: 12px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid #f0f0f0;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
         }
 
         .trending-item:hover {
-            color: #2A7CFF;
+            background: #f5f5f5;
+            padding-left: 5px;
         }
 
         .trending-tag {
-            color: #2A7CFF;
-            font-weight: 600;
+            color: #262626;
+            font-weight: 700;
+            font-size: 0.9em;
         }
 
         .trending-count {
-            font-size: 0.85em;
-            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.8em;
+            color: #999;
+            display: block;
+            margin-top: 3px;
         }
 
         .loading {
             text-align: center;
             padding: 20px;
-            color: rgba(255, 255, 255, 0.6);
+            color: #999;
         }
 
         .spinner {
             display: inline-block;
             width: 30px;
             height: 30px;
-            border: 3px solid rgba(42, 124, 255, 0.3);
-            border-top-color: #2A7CFF;
+            border: 3px solid #f0f0f0;
+            border-top-color: #fd1d1d;
             border-radius: 50%;
-            animation: spin 1s linear infinite;
+            animation: spin 0.8s linear infinite;
         }
 
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
 
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 1024px) {
             .main-container {
-                grid-template-columns: 1fr 300px;
+                grid-template-columns: 200px 1fr;
             }
 
-            .sidebar {
+            .right-sidebar {
                 display: none;
             }
         }
@@ -391,95 +520,120 @@
         @media (max-width: 768px) {
             .main-container {
                 grid-template-columns: 1fr;
+                padding: 10px;
             }
 
-            .right-sidebar {
+            .sidebar {
                 display: none;
+            }
+
+            .nav-center {
+                display: none;
+            }
+
+            .logo {
+                font-size: 1.3em;
+            }
+
+            .nav-icons {
+                gap: 10px;
+            }
+
+            .navbar {
+                padding: 0 10px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- الشريط العلوي -->
-    <nav class="navbar">
+    <!-- NAVBAR -->
+    <div class="navbar">
         <div class="navbar-container">
-            <div class="logo">NEXORA</div>
+            <div class="logo">
+                <i class="fas fa-camera"></i> Nexora
+            </div>
+
+            <div class="nav-center">
+                <input type="text" class="search-box" placeholder="ابحث عن أشخاص أو منشورات...">
+            </div>
+
             <div class="nav-icons">
-                <button class="nav-icon-btn" title="البحث">
-                    <i class="fas fa-search"></i>
+                <button class="nav-icon-btn" title="الاستكشاف">
+                    <i class="fas fa-compass"></i>
                 </button>
                 <button class="nav-icon-btn" title="الإشعارات">
-                    <i class="fas fa-bell"></i>
+                    <i class="fas fa-heart"></i>
+                    <span class="notification-badge">3</span>
                 </button>
                 <button class="nav-icon-btn" title="الرسائل">
-                    <i class="fas fa-envelope"></i>
+                    <i class="fas fa-paper-plane"></i>
+                    <span class="notification-badge">2</span>
                 </button>
-                <button class="user-profile-btn" id="userProfileBtn">
-                    <div class="user-avatar" id="userAvatarNav">A</div>
-                    <span id="userNameNav">المستخدم</span>
-                </button>
-                <button class="nav-icon-btn" title="تسجيل الخروج" id="logoutBtn">
-                    <i class="fas fa-sign-out-alt"></i>
+                <button class="user-profile-btn" title="الملف الشخصي">
+                    <div class="user-avatar">أ</div>
                 </button>
             </div>
         </div>
-    </nav>
+    </div>
 
-    <!-- المحتوى الرئيسي -->
+    <!-- MAIN CONTENT -->
     <div class="main-container">
-        <!-- الشريط الجانبي الأيسر -->
-        <aside class="sidebar">
+        <!-- LEFT SIDEBAR -->
+        <div class="sidebar">
             <div class="sidebar-item active">
                 <i class="fas fa-home"></i>
-                <span>الصفحة الرئيسية</span>
+                <span>الرئيسية</span>
             </div>
             <div class="sidebar-item">
                 <i class="fas fa-compass"></i>
                 <span>الاستكشاف</span>
             </div>
             <div class="sidebar-item">
-                <i class="fas fa-bell"></i>
+                <i class="fas fa-heart"></i>
                 <span>الإشعارات</span>
             </div>
             <div class="sidebar-item">
-                <i class="fas fa-envelope"></i>
+                <i class="fas fa-paper-plane"></i>
                 <span>الرسائل</span>
             </div>
             <div class="sidebar-item">
                 <i class="fas fa-bookmark"></i>
                 <span>المحفوظات</span>
             </div>
-            <div class="sidebar-item" id="profileSidebarBtn">
+            <div class="sidebar-item">
                 <i class="fas fa-user"></i>
                 <span>الملف الشخصي</span>
             </div>
-            <div class="sidebar-item" id="settingsSidebarBtn">
+            <div class="sidebar-item">
                 <i class="fas fa-cog"></i>
                 <span>الإعدادات</span>
             </div>
-        </aside>
+            <div class="sidebar-item">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>تسجيل الخروج</span>
+            </div>
+        </div>
 
-        <!-- الخلاصة -->
+        <!-- FEED -->
         <div class="feed-container">
-            <!-- منشئ المنشور -->
+            <!-- POST CREATOR -->
             <div class="post-creator">
                 <div class="post-creator-header">
-                    <div class="post-creator-avatar" id="creatorAvatar">A</div>
-                    <input type="text" class="post-creator-input" id="postInput" placeholder="ماذا في بالك الآن؟">
+                    <div class="post-creator-avatar">أ</div>
+                    <input type="text" class="post-creator-input" placeholder="ماذا يدور في بالك؟" id="postInput">
                 </div>
                 <div class="post-creator-actions">
-	                    <div id="mediaPreview" style="display: none; margin-top: 10px; padding: 10px; background: rgba(42, 124, 255, 0.1); border-radius: 8px; color: #2A7CFF; font-size: 0.9em;"></div>
                     <div class="post-creator-icons">
-                        <button class="icon-btn" title="صورة" id="composerImageBtn">
-                            <i class="fas fa-camera"></i>
-                        </button>
-                        <button class="icon-btn" title="صورة من الجهاز" id="composerImageUploadBtn">
+                        <button class="icon-btn" title="إضافة صورة">
                             <i class="fas fa-image"></i>
                         </button>
-                        <button class="icon-btn" title="فيديو" id="composerVideoBtn">
+                        <button class="icon-btn" title="إضافة فيديو">
                             <i class="fas fa-video"></i>
                         </button>
-                        <button class="icon-btn" title="استطلاع" id="composerPollBtn">
+                        <button class="icon-btn" title="إضافة موقع">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </button>
+                        <button class="icon-btn" title="إضافة استطلاع">
                             <i class="fas fa-poll"></i>
                         </button>
                     </div>
@@ -487,325 +641,200 @@
                 </div>
             </div>
 
-            <!-- المنشورات -->
-            <div id="postsContainer">
-                <!-- حقل إدخال الملفات المخفي -->
-                <input type="file" id="mediaFileInput" accept="image/*,video/*" style="display: none;">
-                <div class="loading">
-                    <div class="spinner"></div>
-                    <p>جاري تحميل المنشورات...</p>
+            <!-- POSTS FEED -->
+            <div id="postsFeed">
+                <!-- POST 1 -->
+                <div class="post-card">
+                    <div class="post-header">
+                        <div class="post-avatar">أ</div>
+                        <div class="post-user-info">
+                            <div class="post-username">أحمد محمد</div>
+                            <div class="post-time">منذ ساعة</div>
+                        </div>
+                        <button class="post-menu-btn">
+                            <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                    </div>
+                    <div class="post-content">
+                        يوم جميل مع الأصدقاء! 🌟 استمتعنا بوقت رائع معاً.
+                    </div>
+                    <img src="https://via.placeholder.com/500x400?text=صورة+المنشور" class="post-image" alt="صورة المنشور">
+                    <div class="post-stats">
+                        <span class="post-stats-item">❤️ 234 إعجاب</span>
+                        <span class="post-stats-item">💬 45 تعليق</span>
+                    </div>
+                    <div class="post-actions">
+                        <button class="post-action">
+                            <i class="far fa-heart"></i>
+                            <span>إعجاب</span>
+                        </button>
+                        <button class="post-action">
+                            <i class="far fa-comment"></i>
+                            <span>تعليق</span>
+                        </button>
+                        <button class="post-action">
+                            <i class="fas fa-share"></i>
+                            <span>مشاركة</span>
+                        </button>
+                        <button class="post-action">
+                            <i class="far fa-bookmark"></i>
+                            <span>حفظ</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- POST 2 -->
+                <div class="post-card">
+                    <div class="post-header">
+                        <div class="post-avatar">ف</div>
+                        <div class="post-user-info">
+                            <div class="post-username">فاطمة علي</div>
+                            <div class="post-time">منذ ساعتين</div>
+                        </div>
+                        <button class="post-menu-btn">
+                            <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                    </div>
+                    <div class="post-content">
+                        جديد في مدونتي! تعرفوا على أفضل الأماكن السياحية في المدينة 🏖️
+                    </div>
+                    <img src="https://via.placeholder.com/500x400?text=صورة+سياحية" class="post-image" alt="صورة سياحية">
+                    <div class="post-stats">
+                        <span class="post-stats-item">❤️ 512 إعجاب</span>
+                        <span class="post-stats-item">💬 89 تعليق</span>
+                    </div>
+                    <div class="post-actions">
+                        <button class="post-action">
+                            <i class="far fa-heart"></i>
+                            <span>إعجاب</span>
+                        </button>
+                        <button class="post-action">
+                            <i class="far fa-comment"></i>
+                            <span>تعليق</span>
+                        </button>
+                        <button class="post-action">
+                            <i class="fas fa-share"></i>
+                            <span>مشاركة</span>
+                        </button>
+                        <button class="post-action">
+                            <i class="far fa-bookmark"></i>
+                            <span>حفظ</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- POST 3 -->
+                <div class="post-card">
+                    <div class="post-header">
+                        <div class="post-avatar">م</div>
+                        <div class="post-user-info">
+                            <div class="post-username">محمود سالم</div>
+                            <div class="post-time">منذ 3 ساعات</div>
+                        </div>
+                        <button class="post-menu-btn">
+                            <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                    </div>
+                    <div class="post-content">
+                        تطوير ويب: نصائح مهمة لكل مبتدئ في المجال 💻 اتعلموا معي!
+                    </div>
+                    <img src="https://via.placeholder.com/500x400?text=تطوير+ويب" class="post-image" alt="تطوير ويب">
+                    <div class="post-stats">
+                        <span class="post-stats-item">❤️ 789 إعجاب</span>
+                        <span class="post-stats-item">💬 156 تعليق</span>
+                    </div>
+                    <div class="post-actions">
+                        <button class="post-action">
+                            <i class="far fa-heart"></i>
+                            <span>إعجاب</span>
+                        </button>
+                        <button class="post-action">
+                            <i class="far fa-comment"></i>
+                            <span>تعليق</span>
+                        </button>
+                        <button class="post-action">
+                            <i class="fas fa-share"></i>
+                            <span>مشاركة</span>
+                        </button>
+                        <button class="post-action">
+                            <i class="far fa-bookmark"></i>
+                            <span>حفظ</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- الشريط الجانبي الأيمن -->
-        <aside class="right-sidebar">
-            <div class="sidebar-title">المواضيع الرائجة</div>
+        <!-- RIGHT SIDEBAR -->
+        <div class="right-sidebar">
+            <div class="sidebar-title">الأكثر متابعة</div>
+            
             <div class="trending-item">
-                <div class="trending-tag">#تقنية</div>
-                <div class="trending-count">125 ألف منشور</div>
+                <div class="trending-tag">#تطوير_الويب</div>
+                <div class="trending-count">45.2K منشور</div>
             </div>
+
             <div class="trending-item">
-                <div class="trending-tag">#برمجة</div>
-                <div class="trending-count">98 ألف منشور</div>
+                <div class="trending-tag">#التصوير_الفوتوغرافي</div>
+                <div class="trending-count">128K منشور</div>
             </div>
+
             <div class="trending-item">
-                <div class="trending-tag">#ويب</div>
-                <div class="trending-count">87 ألف منشور</div>
+                <div class="trending-tag">#السفر_والسياحة</div>
+                <div class="trending-count">234K منشور</div>
             </div>
+
             <div class="trending-item">
-                <div class="trending-tag">#تطوير</div>
-                <div class="trending-count">76 ألف منشور</div>
+                <div class="trending-tag">#التكنولوجيا</div>
+                <div class="trending-count">567K منشور</div>
             </div>
-        </aside>
+
+            <div class="trending-item">
+                <div class="trending-tag">#الطعام_والطهي</div>
+                <div class="trending-count">892K منشور</div>
+            </div>
+        </div>
     </div>
 
     <script>
-        const token = localStorage.getItem('token');
-        const user = JSON.parse(localStorage.getItem('user') || '{}');
-
-        // التحقق من تسجيل الدخول
-        if (!token) {
-            window.location.href = '/auth.html';
-        }
-
-        // تحديث بيانات المستخدم
-        document.getElementById('userNameNav').textContent = user.displayName || user.username;
-        document.getElementById('userAvatarNav').textContent = (user.displayName || user.username).charAt(0).toUpperCase();
-        document.getElementById('creatorAvatar').textContent = (user.displayName || user.username).charAt(0).toUpperCase();
-
-        // تسجيل الخروج
-        document.getElementById('logoutBtn').addEventListener('click', () => {
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
-            window.location.href = '/auth.html';
-        });
-
-        // الذهاب إلى الملف الشخصي
-        document.getElementById('userProfileBtn').addEventListener('click', () => {
-            window.location.href = `/profile.html?userId=${user.id}`;
-        });
-
-        document.getElementById('profileSidebarBtn').addEventListener('click', () => {
-            window.location.href = `/profile.html?userId=${user.id}`;
-        });
-
-        // نشر منشور جديد
-        document.getElementById('publishBtn').addEventListener('click', async () => {
-            const content = document.getElementById('postInput').value.trim();
-            if (!content) {
-                alert('يرجى كتابة شيء ما');
-                return;
-            }
-
-	            try {
-	                const postType = uploadedMediaUrls.length > 0 ? 'media' : 'text';
-	                const response = await fetch('/api/posts', {
-	                    method: 'POST',
-	                    headers: {
-	                        'Content-Type': 'application/json',
-	                        'Authorization': `Bearer ${token}`
-	                    },
-	                    body: JSON.stringify({
-	                        content,
-	                        postType: postType,
-	                        mediaUrls: uploadedMediaUrls,
-	                        hashtags: [],
-	                        mentions: []
-	                    })
-	                });
-
-	                if (response.ok) {
-	                    document.getElementById('postInput').value = '';
-	                    uploadedMediaUrls = []; // مسح الروابط بعد النشر
-	                    mediaPreview.style.display = 'none';
-	                    loadPosts();
-	                } else {
-                    alert('فشل نشر المنشور');
+        // Like button functionality
+        document.querySelectorAll('.post-action').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (this.innerHTML.includes('إعجاب')) {
+                    this.classList.toggle('liked');
+                    if (this.classList.contains('liked')) {
+                        this.innerHTML = '<i class="fas fa-heart"></i><span>أعجبك</span>';
+                    } else {
+                        this.innerHTML = '<i class="far fa-heart"></i><span>إعجاب</span>';
+                    }
                 }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('حدث خطأ');
-            }
-        });
-
-        // تحميل المنشورات
-        async function loadPosts() {
-            try {
-                const response = await fetch('/api/posts?page=1&limit=20', {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-
-                const data = await response.json();
-                const container = document.getElementById('postsContainer');
-                container.innerHTML = '';
-
-                if (data.posts && data.posts.length > 0) {
-                    data.posts.forEach(post => {
-                        const postCard = createPostCard(post);
-                        container.appendChild(postCard);
-                    });
-                } else {
-                    container.innerHTML = '<div class="loading"><p>لا توجد منشورات حتى الآن</p></div>';
-                }
-            } catch (error) {
-                console.error('Error loading posts:', error);
-                document.getElementById('postsContainer').innerHTML = '<div class="loading"><p>خطأ في تحميل المنشورات</p></div>';
-            }
-        }
-
-        function createPostCard(post) {
-            const card = document.createElement('div');
-            card.className = 'post-card';
-
-            const timeAgo = getTimeAgo(post.createdAt);
-
-            card.innerHTML = `
-                <div class="post-header">
-                    <div class="post-avatar">${(post.author?.displayName || 'U').charAt(0).toUpperCase()}</div>
-                    <div class="post-user-info">
-                        <div class="post-username">${post.author?.displayName || 'مستخدم'}</div>
-                        <div class="post-time">@${post.author?.username || 'user'} • ${timeAgo}</div>
-                    </div>
-                </div>
-                <div class="post-content">${escapeHtml(post.content)}</div>
-                ${post.mediaUrls && post.mediaUrls.length > 0 ? `<img src="${post.mediaUrls[0]}" alt="Post image" class="post-image">` : ''}
-                <div class="post-actions">
-	                    <div class="post-action" onclick="openCommentModal('${post.id}')">
-	                        <i class="fas fa-comment"></i>
-	                        <span>${post.commentCount || 0}</span>
-	                    </div>
-                    <div class="post-action" onclick="likePost('${post.id}')">
-                        <i class="fas fa-heart"></i>
-                        <span>${post.likeCount || 0}</span>
-                    </div>
-	                    <div class="post-action" onclick="sharePost('${post.id}')">
-	                        <i class="fas fa-share"></i>
-	                        <span>${post.shareCount || 0}</span>
-	                    </div>
-                </div>
-            `;
-
-            return card;
-        }
-
-        function getTimeAgo(dateString) {
-            const date = new Date(dateString);
-            const now = new Date();
-            const seconds = Math.floor((now - date) / 1000);
-
-            if (seconds < 60) return 'الآن';
-            if (seconds < 3600) return `${Math.floor(seconds / 60)} دقيقة`;
-            if (seconds < 86400) return `${Math.floor(seconds / 3600)} ساعة`;
-            return `${Math.floor(seconds / 86400)} يوم`;
-        }
-
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
-        async function likePost(postId) {
-            try {
-                const response = await fetch(`/api/posts/${postId}/react`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({ reactionType: 'like' })
-                });
-
-                if (response.ok) {
-                    loadPosts();
-                }
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        }
-
-        // تحميل المنشورات عند فتح الصفحة
-        loadPosts();
-
-        // معالجات الأحداث للأزرار غير المستجيبة
-        const mediaFileInput = document.getElementById('mediaFileInput');
-        const composerImageBtn = document.getElementById('composerImageBtn');
-        const composerVideoBtn = document.getElementById('composerVideoBtn');
-        const settingsSidebarBtn = document.getElementById('settingsSidebarBtn');
-
-        // زر الصورة
-        if (composerImageBtn) {
-            composerImageBtn.addEventListener('click', () => {
-                mediaFileInput.setAttribute('accept', 'image/*');
-                mediaFileInput.click();
             });
-        }
+        });
 
-        // زر الفيديو
-        if (composerVideoBtn) {
-            composerVideoBtn.addEventListener('click', () => {
-                mediaFileInput.setAttribute('accept', 'video/*');
-                mediaFileInput.click();
+        // Sidebar navigation
+        document.querySelectorAll('.sidebar-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
             });
-        }
+        });
 
-	        // زر الإعدادات
-	        if (settingsSidebarBtn) {
-	            settingsSidebarBtn.addEventListener('click', () => {
-	                alert('وظيفة الإعدادات قيد التطوير');
-	                // window.location.href = '/settings.html';
-	            });
-	        }
+        // Publish button
+        document.getElementById('publishBtn').addEventListener('click', function() {
+            const postText = document.getElementById('postInput').value;
+            if (postText.trim()) {
+                alert('تم نشر المنشور: ' + postText);
+                document.getElementById('postInput').value = '';
+            }
+        });
 
-	        // دالة وهمية للتعليقات
-	        function openCommentModal(postId) {
-	            alert(\`فتح نافذة التعليقات للمنشور رقم: \${postId}\`);
-	        }
-	
-	        // دالة وهمية للمشاركة
-	        function sharePost(postId) {
-	            alert(\`مشاركة المنشور رقم: \${postId}\`);
-	        }
-	
-	        // معالج حدث تغيير الملف (لرفع الصور/الفيديو)
-	        const mediaPreview = document.getElementById('mediaPreview');
-	        let uploadedMediaUrls = [];
-	
-	        async function uploadMediaToPost(file) {
-	            const formData = new FormData();
-	            formData.append('files', file);
-	
-	            try {
-	                mediaPreview.textContent = \`جاري رفع الملف: \${file.name}...\`;
-	                mediaPreview.style.display = 'block';
-	
-	                const response = await fetch('/api/upload', {
-	                    method: 'POST',
-	                    headers: {
-	                        'Authorization': \`Bearer ${token}\`
-	                    },
-	                    body: formData
-	                });
-	
-	                if (response.ok) {
-	                    const data = await response.json();
-	                    uploadedMediaUrls = data.files;
-	                    mediaPreview.textContent = \`تم رفع الملف بنجاح: \${file.name}\`;
-	                } else {
-	                    const errorData = await response.json();
-	                    mediaPreview.textContent = \`فشل الرفع: \${errorData.error || 'خطأ غير معروف'}\`;
-	                    uploadedMediaUrls = [];
-	                }
-	            } catch (error) {
-	                console.error('Upload error:', error);
-	                mediaPreview.textContent = 'حدث خطأ أثناء الرفع.';
-	                uploadedMediaUrls = [];
-	            }
-	        }
-	
-	        if (mediaFileInput) {
-	            mediaFileInput.addEventListener('change', (event) => {
-	                const file = event.target.files[0];
-	                if (file) {
-	                    uploadMediaToPost(file);
-	                }
-	            });
-	        }
-	
-	        // ربط زر الكاميرا (الذي لم يكن يعمل)
-	        const composerCameraBtn = document.getElementById('composerImageBtn');
-	        if (composerCameraBtn) {
-	            composerCameraBtn.addEventListener('click', () => {
-	                alert('فتح الكاميرا (يتطلب WebRTC API)');
-	            });
-	        }
-	
-	        // ربط زر رفع الصورة من الجهاز
-	        const composerImageUploadBtn = document.getElementById('composerImageUploadBtn');
-	        if (composerImageUploadBtn) {
-	            composerImageUploadBtn.addEventListener('click', () => {
-	                mediaFileInput.setAttribute('accept', 'image/*');
-	                mediaFileInput.click();
-	            });
-	        }
-	
-	        // ربط زر الفيديو
-	        const composerVideoBtn = document.getElementById('composerVideoBtn');
-	        if (composerVideoBtn) {
-	            composerVideoBtn.addEventListener('click', () => {
-	                mediaFileInput.setAttribute('accept', 'video/*');
-	                mediaFileInput.click();
-	            });
-	        }
-	
-	        // ربط زر الاستطلاع
-	        const composerPollBtn = document.getElementById('composerPollBtn');
-	        if (composerPollBtn) {
-	            composerPollBtn.addEventListener('click', () => {
-	                alert('إنشاء استطلاع');
-	            });
-	        }
+        // Check authentication
+        window.addEventListener('load', function() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = '/auth.html';
+            }
+        });
     </script>
 </body>
 </html>
