@@ -282,8 +282,6 @@
                 if (response.ok) {
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('user', JSON.stringify(data.user));
-                    console.log('✅ Token saved successfully:', data.token.substring(0, 20) + '...');
-                    console.log('✅ User saved:', data.user.username);
                     window.location.href = '/home.html';
                 } else {
                     errorDiv.textContent = data.error || 'خطأ في تسجيل الدخول';

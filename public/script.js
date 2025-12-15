@@ -1,66 +1,39 @@
 // ============ Global Variables ============
-const API_BASE_URL = '/api';
-let mediaFile = null;
+const API_BASE_URL = 'http://localhost:3000/api';
+let authToken = localStorage.getItem('authToken');
+let mediaFile = null; // لتخزين ملف الوسائط المختار
 
 // ============ DOM Elements ============
-const feedSection = document.getElementById('postsContainer');
-// const settingsBtn = document.getElementById('settingsSidebarBtn'); // Removed as it's not in index.html
-// const profileBtn = document.getElementById('profileSidebarBtn'); // Removed as it's not in index.html
-// const logoutBtn = document.getElementById('logoutBtn'); // Removed as it's not in index.html
+const feedSection = document.getElementById('feedSection');
+const notificationsBtn = document.getElementById('notificationsBtn');
+const settingsBtn = document.getElementById('settingsBtn');
 
-// Post Composer Elements
-const postInput = document.getElementById('postTextarea');
-const composerMediaBtn = document.getElementById('composerMediaBtn');
-const composerCameraBtn = document.getElementById('composerCameraBtn');
-const composerEmojiBtn = document.getElementById('composerEmojiBtn');
-// const composerPollBtn = document.getElementById('composerPollBtn'); // Removed as it's not in index.html
-const publishBtn = document.getElementById('postSubmitBtn');
-const mediaPreview = document.getElementById('mediaPreview');
-const mediaFileInput = document.getElementById('mediaFileInput');
-
-// Camera Elements
-let stream = null;
-
-// ============ Modal Functions ============
+// Modals
 const notificationsModal = document.getElementById('notificationsModal');
 const settingsModal = document.getElementById('settingsModal');
 const mediaSelectModal = document.getElementById('mediaSelectModal');
 const cameraModal = document.getElementById('cameraModal');
 
-// Get the buttons that open the modals
-const settingsBtn = document.getElementById('settingsBtn');
-const notificationsBtn = document.getElementById('notificationsBtn');
+// Post Composer Elements
+const postTextarea = document.getElementById('postTextarea');
+const composerMediaBtn = document.getElementById('composerMediaBtn');
+const composerCameraBtn = document.getElementById('composerCameraBtn');
+const composerEmojiBtn = document.getElementById('composerEmojiBtn');
+const postSubmitBtn = document.getElementById('postSubmitBtn');
+const mediaPreview = document.getElementById('mediaPreview');
 
-// Get the <span> element that closes the modal
-const closeButtons = document.querySelectorAll('.modal-close');
+// Media Selection Elements
+const uploadMediaBtn = document.getElementById('uploadMediaBtn');
+const galleryMediaBtn = document.getElementById('galleryMediaBtn');
+const mediaFileInput = document.getElementById('mediaFileInput');
 
-// When the user clicks on the button, open the modal
-if (settingsBtn) {
-    settingsBtn.onclick = function() {
-        openModal(settingsModal);
-    }
-}
+// Camera Elements
+const cameraVideo = document.getElementById('camera-video');
+const cameraCanvas = document.getElementById('camera-canvas');
+const captureImageBtn = document.getElementById('captureImageBtn');
+let stream = null; // للحفاظ على تيار الكاميرا
 
-if (notificationsBtn) {
-    notificationsBtn.onclick = function() {
-        openModal(notificationsModal);
-    }
-}
-
-// When the user clicks on <span> (x), close the modal
-closeButtons.forEach(btn => {
-    btn.onclick = function() {
-        const modal = btn.closest('.modal');
-        closeModal(modal);
-    }
-});
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    if (event.target.classList.contains('modal')) {
-        closeModal(event.target);
-    }
-}
+// ============ Modal Functions ============
 function openModal(modal) {
     if (modal) modal.classList.add('active');
 }
@@ -69,41 +42,39 @@ function closeModal(modal) {
     if (modal) modal.classList.remove('active');
 }
 
+document.querySelectorAll('.modal-close').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const modal = this.closest('.modal');
+        closeModal(modal);
+        if (modal === cameraModal) {
+            stopCameraStream();
+        }
+    });
+});
+
+window.addEventListener('click', function(event) {
+    if (event.target.classList.contains('modal')) {
+        closeModal(event.target);
+        if (event.target === cameraModal) {
+            stopCameraStream();
+        }
+    }
+});
+
 // ============ Feed Functions ============
 async function loadFeed() {
     try {
-        const timestamp = new Date().getTime();
-        const response = await fetch(`${API_BASE_URL}/posts?t=${timestamp}`, {
-            cache: 'no-store',
-            headers: {
-                'Cache-Control': 'no-cache, no-store, must-revalidate',
-                'Pragma': 'no-cache',
-                'Expires': '0'
-            }
-        });
+        const response = await fetch(`${API_BASE_URL}/posts`);
         const data = await response.json();
         
         if (data.posts && data.posts.length > 0) {
             displayPosts(data.posts);
-            localStorage.setItem('nexora_posts_cache', JSON.stringify(data.posts));
-            localStorage.setItem('nexora_posts_cache_time', timestamp.toString());
         } else {
             feedSection.innerHTML = '<p class="empty-feed">لا توجد منشورات حالياً. كن أول من ينشر!</p>';
         }
     } catch (error) {
         console.error('Error loading feed:', error);
-        const cachedPosts = localStorage.getItem('nexora_posts_cache');
-        if (cachedPosts) {
-            try {
-                const posts = JSON.parse(cachedPosts);
-                displayPosts(posts);
-                console.log('Loaded posts from cache');
-            } catch (e) {
-                feedSection.innerHTML = '<p class="empty-feed error">حدث خطأ في تحميل الخلاصة</p>';
-            }
-        } else {
-            feedSection.innerHTML = '<p class="empty-feed error">حدث خطأ في تحميل الخلاصة</p>';
-        }
+        feedSection.innerHTML = '<p class="empty-feed error">حدث خطأ في تحميل الخلاصة</p>';
     }
 }
 
@@ -119,16 +90,16 @@ function createPostElement(post) {
     const div = document.createElement('div');
     div.className = 'post-card';
     
-    const author = post.author || { displayName: 'مستخدم', avatarUrl: '/placeholder.svg' };
-    const mediaHtml = post.mediaUrls && post.mediaUrls.length > 0
-        ? `<div class="post-image"><img src="${post.mediaUrls[0]}" alt="صورة المنشور"></div>`
+    const author = post.author || { displayName: 'مستخدم', avatarUrl: 'https://picsum.photos/40/40' };
+    const mediaHtml = post.mediaUrl
+        ? `<div class="post-image"><img src="${post.mediaUrl}" alt="صورة المنشور"></div>`
         : '';
     
     const timeAgo = post.createdAt ? getTimeAgo(new Date(post.createdAt)) : 'الآن';
     
     div.innerHTML = `
         <div class="post-header">
-            <img src="${author.avatarUrl || '/placeholder.svg'}" alt="المستخدم" class="post-avatar">
+            <img src="${author.avatarUrl || 'https://picsum.photos/40/40'}" alt="المستخدم" class="post-avatar">
             <div class="post-header-info">
                 <h4 class="post-author">${author.displayName || 'مستخدم'}</h4>
                 <p class="post-time">${timeAgo}</p>
@@ -169,26 +140,16 @@ function getTimeAgo(date) {
 }
 
 // ============ Post Composer Functions ============
-if (composerMediaBtn) {
-    composerMediaBtn.addEventListener('click', () => {
-        // startCameraStream(); // This is incorrect for media button. It should open the media select modal.
-        openModal(document.getElementById('mediaSelectModal'));
-    });
-}
+composerMediaBtn.addEventListener('click', () => openModal(mediaSelectModal));
+composerCameraBtn.addEventListener('click', () => {
+    openModal(cameraModal);
+    startCameraStream();
+});
+composerEmojiBtn.addEventListener('click', () => alert('ميزة الإيموجي قيد التطوير!'));
 
-if (composerCameraBtn) {
-    composerCameraBtn.addEventListener('click', () => {
-        startCameraStream();
-    });
-}
-
-if (composerEmojiBtn) {
-    composerEmojiBtn.addEventListener('click', () => alert('ميزة الإيموجي قيد التطوير!'));
-}
-
-// if (composerPollBtn) {
-    //     composerPollBtn.addEventListener('click', () => alert('ميزة الاستطلاع قيد التطوير!'));
-// }
+// Media Selection
+uploadMediaBtn.addEventListener('click', () => mediaFileInput.click());
+galleryMediaBtn.addEventListener('click', () => alert('ميزة المعرض قيد التطوير!'));
 
 mediaFileInput.addEventListener('change', (event) => {
     const file = event.target.files[0];
@@ -200,184 +161,146 @@ mediaFileInput.addEventListener('change', (event) => {
             mediaPreview.style.display = 'block';
         };
         reader.readAsDataURL(file);
+        closeModal(mediaSelectModal);
     }
 });
 
-// ============ Media Functions ============
-document.getElementById('uploadMediaBtn').addEventListener('click', () => {
-    document.getElementById('mediaFileInput').click();
-    closeModal(document.getElementById('mediaSelectModal'));
-});
-
-document.getElementById('galleryMediaBtn').addEventListener('click', () => {
-    alert('ميزة المعرض (التخزين الداخلي) قيد التطوير!');
-    closeModal(document.getElementById('mediaSelectModal'));
-});
-
-// ============ Camera Functions ============
+// Camera Functions
 async function startCameraStream() {
-    const videoElement = document.getElementById('camera-video');
-    const captureImageBtn = document.getElementById('captureImageBtn');
-    const recordVideoBtn = document.getElementById('recordVideoBtn');
-
-    if (stream) {
-        stopCameraStream();
-    }
-
     try {
         stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
-        videoElement.srcObject = stream;
-        openModal(cameraModal);
-        console.log('Camera stream started');
-
-        // Event listeners for camera controls
-        if (captureImageBtn) {
-            captureImageBtn.onclick = () => {
-                alert('التقاط الصورة قيد التطوير!');
-                // Add logic to capture image from video stream
-            };
-        }
-
-        if (recordVideoBtn) {
-            recordVideoBtn.onclick = () => {
-                alert('تسجيل الفيديو قيد التطوير!');
-                // Add logic to record video from video stream
-            };
-        }
-
+        cameraVideo.srcObject = stream;
     } catch (error) {
         console.error('Error accessing camera:', error);
         alert('لا يمكن الوصول إلى الكاميرا. يرجى التحقق من الأذونات.');
+        closeModal(cameraModal);
     }
 }
 
 function stopCameraStream() {
-    const videoElement = document.getElementById('camera-video');
     if (stream) {
         stream.getTracks().forEach(track => track.stop());
         stream = null;
-        videoElement.srcObject = null;
     }
 }
 
-
-
-// ============ Post Submission ============
-if (publishBtn) {
-    publishBtn.addEventListener('click', async () => {
-        const authToken = localStorage.getItem('authToken') || localStorage.getItem('token');
-        const content = postInput.value.trim();
-        
-        if (!content && !mediaFile) {
-            alert('يرجى كتابة نص أو إضافة وسائط.');
-            return;
-        }
-
-        if (!authToken) {
-            alert('يرجى تسجيل الدخول أولاً لنشر منشور.');
-            return;
-        }
-
-        let mediaUrls = [];
-        if (mediaFile) {
-            const formData = new FormData();
-            formData.append('files', mediaFile);
-
-            try {
-                const uploadResponse = await fetch(`${API_BASE_URL}/upload`, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${authToken}`
-                    },
-                    body: formData
-                });
-
-                if (!uploadResponse.ok) {
-                    if (uploadResponse.status === 401 || uploadResponse.status === 403) {
-                        throw new Error('Authentication failed. Please log in again.');
-                    }
-                    throw new Error('Media upload failed with status: ' + uploadResponse.status);
-                }
-
-                const uploadData = await uploadResponse.json();
-                mediaUrls = uploadData.files;
-            } catch (error) {
-                console.error('Error uploading media:', error);
-                alert('فشل تحميل الوسائط. لن يتم نشر المنشور.');
-                return;
-            }
-        }
-
-        try {
-            const postResponse = await fetch(`${API_BASE_URL}/posts`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${authToken}`
-                },
-                body: JSON.stringify({
-                    content: content,
-                    postType: mediaUrls.length > 0 ? 'media' : 'text',
-                    mediaUrls: mediaUrls,
-                })
-            });
-
-            if (!postResponse.ok) {
-                if (postResponse.status === 401 || postResponse.status === 403) {
-                    throw new Error('Authentication failed. Please log in first.');
-                }
-                throw new Error('Post submission failed with status: ' + postResponse.status);
-            }
-
-            setTimeout(() => {
-                loadFeed();
-                console.log('Post submitted successfully.');
-            }, 500);
-
-            postInput.value = '';
-            mediaPreview.innerHTML = '';
-            mediaPreview.style.display = 'none';
-            mediaFile = null;
-            mediaFileInput.value = '';
-        } catch (error) {
-            console.error('Error submitting post:', error);
-            let errorMessage = 'فشل نشر المنشور. يرجى المحاولة مرة أخرى.';
-            if (error.message.includes('Authentication failed')) {
-                errorMessage = 'فشل التوثيق. يرجى تسجيل الدخول أولاً.';
-            } else if (error.message.includes('Post submission failed with status')) {
-                errorMessage = `فشل نشر المنشور. رمز الخطأ: ${error.message.split(': ')[1]}`;
-            }
-            alert(errorMessage);
-        }
+captureImageBtn.addEventListener('click', () => {
+    cameraCanvas.width = cameraVideo.videoWidth;
+    cameraCanvas.height = cameraVideo.videoHeight;
+    const context = cameraCanvas.getContext('2d');
+    context.drawImage(cameraVideo, 0, 0, cameraCanvas.width, cameraCanvas.height);
+    
+    const dataUrl = cameraCanvas.toDataURL('image/png');
+    mediaPreview.innerHTML = `<img src="${dataUrl}" alt="صورة ملتقطة">`;
+    mediaPreview.style.display = 'block';
+    
+    // تحويل الصورة إلى ملف لاستخدامه لاحقاً
+    fetch(dataUrl).then(res => res.blob()).then(blob => {
+        mediaFile = new File([blob], 'capture.png', { type: 'image/png' });
     });
-}
+
+    stopCameraStream();
+    closeModal(cameraModal);
+});
+
+// Post Submission
+postSubmitBtn.addEventListener('click', async () => {
+    const content = postTextarea.value.trim();
+    if (!content && !mediaFile) {
+        alert('يرجى كتابة نص أو إضافة وسائط.');
+        return;
+    }
+
+    // Placeholder for API call
+    console.log('Submitting post:', { content, mediaFile });
+
+    // Create a new post element locally for immediate feedback
+    const newPost = {
+        author: { displayName: 'أنت', avatarUrl: 'https://picsum.photos/40/40?random=1' },
+        content: content,
+        mediaUrl: mediaFile ? URL.createObjectURL(mediaFile) : null,
+        createdAt: new Date().toISOString()
+    };
+
+    const postElement = createPostElement(newPost);
+    feedSection.prepend(postElement);
+
+    // Clear composer
+    postTextarea.value = '';
+    mediaPreview.innerHTML = '';
+    mediaPreview.style.display = 'none';
+    mediaFile = null;
+    mediaFileInput.value = ''; // Reset file input
+});
+
 
 // ============ Event Listeners for Navbar ============
-// Event listeners for settings and notifications are now handled in the Modal Functions section.
+if (notificationsBtn) {
+    notificationsBtn.addEventListener('click', () => openModal(notificationsModal));
+}
 
-// ============ User Avatar Update ============
-function updateUserAvatar() {
-    const user = localStorage.getItem('user');
-    if (user) {
-        try {
-            const userData = JSON.parse(user);
-            const initials = (userData.displayName || userData.username || 'A').charAt(0).toUpperCase();
-            const creatorAvatar = document.getElementById('creatorAvatar');
-            const userAvatarNav = document.getElementById('userAvatarNav');
-            const userNameNav = document.getElementById('userNameNav');
-            
-            if (creatorAvatar) creatorAvatar.textContent = initials;
-            if (userAvatarNav) userAvatarNav.textContent = initials;
-            if (userNameNav) userNameNav.textContent = userData.displayName || userData.username || 'المستخدم';
-        } catch (e) {
-            console.error('Error parsing user data:', e);
-        }
-    }
+if (settingsBtn) {
+    settingsBtn.addEventListener('click', () => openModal(settingsModal));
 }
 
 // ============ Initialization ============
 window.addEventListener('load', function() {
-    loadFeed();
-    updateUserAvatar();
-    console.log('✅ Nexora loaded successfully!');
+    // In a real app, you would load posts from an API
+    // For now, we can add some dummy posts
+    const dummyPosts = [
+        {
+            author: { displayName: 'علي حسن', avatarUrl: 'https://picsum.photos/40/40?random=2' },
+            content: 'يوم رائع في الطبيعة! 🌲☀️',
+            mediaUrl: 'https://picsum.photos/600/400?random=20',
+            createdAt: new Date(Date.now() - 3600000).toISOString(), // 1 hour ago
+            likeCount: 15,
+            commentCount: 4
+        },
+        {
+            author: { displayName: 'فاطمة الزهراء', avatarUrl: 'https://picsum.photos/40/40?random=3' },
+            content: 'أستمتع بكتاب جديد هذا المساء. #قراءة',
+            createdAt: new Date(Date.now() - 86400000).toISOString(), // 1 day ago
+            likeCount: 32,
+            commentCount: 8
+        }
+    ];
+    displayPosts(dummyPosts);
+    console.log('✅ Nexora loaded successfully with new UI logic');
 });
+
+// ============ Settings Functions ============
+const saveSettingsBtn = document.getElementById('saveSettingsBtn');
+const privacySelect = document.getElementById('privacySelect');
+const passwordInput = document.getElementById('passwordInput');
+const notificationsToggle = document.getElementById('notificationsToggle');
+
+function loadSettings() {
+    const savedPrivacy = localStorage.getItem('nexora_privacy') || 'public';
+    const savedNotifications = localStorage.getItem('nexora_notifications') !== 'false'; // true by default
+
+    if (privacySelect) privacySelect.value = savedPrivacy;
+    if (notificationsToggle) notificationsToggle.checked = savedNotifications;
+}
+
+if (saveSettingsBtn) {
+    saveSettingsBtn.addEventListener('click', () => {
+        const privacy = privacySelect ? privacySelect.value : 'public';
+        const notifications = notificationsToggle ? notificationsToggle.checked : true;
+        const newPassword = passwordInput ? passwordInput.value : '';
+
+        localStorage.setItem('nexora_privacy', privacy);
+        localStorage.setItem('nexora_notifications', notifications);
+
+        if (newPassword.trim() !== '') {
+            // Placeholder for API call to change password
+            alert('سيتم تغيير كلمة المرور (تحتاج إلى تطوير في الخلفية).');
+            passwordInput.value = '';
+        }
+
+        alert('تم حفظ الإعدادات بنجاح!');
+        closeModal(settingsModal);
+    });
+}
+
+// Load settings on page load
+window.addEventListener('load', loadSettings);
