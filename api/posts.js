@@ -21,7 +21,7 @@ router.post('/', authenticateToken, async (req, res) => {
       userId,
       content,
       postType,
-      mediaUrls: mediaUrls || [],
+      mediaUrls: Array.isArray(mediaUrls) ? mediaUrls : [],
       location: location || null,
       hashtags: hashtags || [],
       mentions: mentions || [],

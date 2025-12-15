@@ -110,9 +110,18 @@ function createPostElement(post) {
     div.className = 'post-card';
     
     const author = post.author || { displayName: 'مستخدم', avatarUrl: 'https://picsum.photos/40/40' };
-    const mediaHtml = post.mediaUrl
-        ? `<div class="post-image"><img src="${post.mediaUrl}" alt="صورة المنشور"></div>`
-        : '';
+	    let mediaHtml = '';
+	    if (post.mediaUrls && post.mediaUrls.length > 0) {
+	        // عرض أول وسيطة فقط في الوقت الحالي
+	        const mediaUrl = post.mediaUrls[0];
+	        const isVideo = mediaUrl.match(/\.(mp4|webm|ogg)$/i);
+	        
+	        if (isVideo) {
+	            mediaHtml = `<div class="post-media"><video controls src="${mediaUrl}" alt="فيديو المنشور"></video></div>`;
+	        } else {
+	            mediaHtml = `<div class="post-media"><img src="${mediaUrl}" alt="صورة المنشور"></div>`;
+	        }
+	    }
     
     const timeAgo = post.createdAt ? getTimeAgo(new Date(post.createdAt)) : 'الآن';
     
@@ -234,35 +243,59 @@ postSubmitBtn.addEventListener('click', async () => {
     postSubmitBtn.disabled = true;
     postSubmitBtn.innerHTML = '<div class="spinner"></div>';
 
-    const formData = new FormData();
-    formData.append('content', content);
-    // يجب إضافة user ID هنا، لكن بما أننا لا نملك نظام تسجيل دخول كامل، سنستخدم قيمة وهمية
-    // في التطبيق الحقيقي، سيتم الحصول على الـ userId من الـ authToken
-    // سنفترض أن الـ API سيستخدم الـ userId من الـ token
-    // formData.append('userId', 'dummy-user-id'); 
-
-    if (mediaFile) {
-        // يجب رفع الملف أولاً، لكن سنرسله مباشرة مع المنشور مؤقتاً
-        formData.append('media', mediaFile);
-    }
+    let mediaUrls = [];
 
     try {
-        const response = await fetch(`${API_BASE_URL}/posts`, {
+        // 1. رفع الملفات أولاً إذا كانت موجودة
+        if (mediaFile) {
+            const uploadFormData = new FormData();
+            uploadFormData.append('files', mediaFile); // 'files' هو اسم الحقل المتوقع في api/upload.js
+
+            // مؤشر تحميل خاص لعملية الرفع
+            postSubmitBtn.innerHTML = '<div class="spinner"></div> جاري الرفع...';
+
+            const uploadResponse = await fetch(`${API_BASE_URL}/upload`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${authToken}`
+                },
+                body: uploadFormData
+            });
+
+            if (!uploadResponse.ok) {
+                const errorData = await uploadResponse.json();
+                throw new Error(errorData.error || 'Failed to upload media');
+            }
+
+            const uploadResult = await uploadResponse.json();
+            mediaUrls = uploadResult.files;
+        }
+
+        // 2. إنشاء المنشور
+        postSubmitBtn.innerHTML = '<div class="spinner"></div> جاري النشر...';
+
+        const postData = {
+            content: content,
+            postType: mediaUrls.length > 0 ? 'media' : 'text', // تحديد نوع المنشور
+            mediaUrls: mediaUrls,
+            // يمكن إضافة حقول أخرى مثل location, hashtags, mentions, isMonetized
+        };
+
+        const postResponse = await fetch(`${API_BASE_URL}/posts`, {
             method: 'POST',
             headers: {
-                // لا يمكن إرسال Content-Type: application/json مع FormData
-                // لكن يمكن إرسال Authorization header
+                'Content-Type': 'application/json',
                 'Authorization': `Bearer ${authToken}`
             },
-            body: formData
+            body: JSON.stringify(postData)
         });
 
-        if (!response.ok) {
-            const errorData = await response.json();
+        if (!postResponse.ok) {
+            const errorData = await postResponse.json();
             throw new Error(errorData.error || 'Failed to create post');
         }
 
-        const result = await response.json();
+        const result = await postResponse.json();
         console.log('Post created:', result);
 
         // Clear composer
