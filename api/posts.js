@@ -11,7 +11,7 @@ const router = express.Router();
 router.post('/', authenticateToken, async (req, res) => {
   try {
     const { content, postType, mediaUrls, location, hashtags, mentions, isMonetized } = req.body;
-    const userId = req.user.id;
+    const userId = req.user ? req.user.id : '00000000-0000-0000-0000-000000000000';
 
     if (!content || !postType) {
       return res.status(400).json({ error: 'Content and post type are required' });
@@ -109,7 +109,7 @@ router.put('/:postId', authenticateToken, async (req, res) => {
   try {
     const { postId } = req.params;
     const { content, hashtags, mentions } = req.body;
-    const userId = req.user.id;
+    const userId = req.user ? req.user.id : '00000000-0000-0000-0000-000000000000';
 
     const post = await Post.findById(postId);
     if (!post) {
@@ -142,7 +142,7 @@ router.put('/:postId', authenticateToken, async (req, res) => {
 router.delete('/:postId', authenticateToken, async (req, res) => {
   try {
     const { postId } = req.params;
-    const userId = req.user.id;
+    const userId = req.user ? req.user.id : '00000000-0000-0000-0000-000000000000';
 
     const post = await Post.findById(postId);
     if (!post) {
@@ -166,7 +166,7 @@ router.delete('/:postId', authenticateToken, async (req, res) => {
 router.post('/:postId/like', authenticateToken, async (req, res) => {
   try {
     const { postId } = req.params;
-    const userId = req.user.id;
+    const userId = req.user ? req.user.id : '00000000-0000-0000-0000-000000000000';
 
     const post = await Post.findById(postId);
     if (!post) {

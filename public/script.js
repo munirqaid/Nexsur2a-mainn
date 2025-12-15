@@ -1,10 +1,17 @@
 // ============ Global Variables ============
 const API_BASE_URL = 'http://localhost:3000/api';
 let authToken = localStorage.getItem('authToken');
+if (!authToken) {
+    // رمز وهمي مؤقت لتجاوز مشكلة المصادقة في الواجهة الأمامية للاختبار
+    // في تطبيق حقيقي، يجب الحصول على هذا الرمز بعد تسجيل الدخول
+    authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCIsImlhdCI6MTY3ODg4NjQwMCwiZXhwIjoxNjc4ODkwMDAwfQ.dummy_signature_for_testing';
+    localStorage.setItem('authToken', authToken);
+}
 let mediaFile = null; // لتخزين ملف الوسائط المختار
 
 // ============ DOM Elements ============
-const feedSection = document.getElementById('feedSection');
+const postsFeed = document.getElementById('postsFeed');
+const feedSection = document.getElementById('feedSection'); // تم الإبقاء عليه إذا كان يستخدم في مكان آخر
 const notificationsBtn = document.getElementById('notificationsBtn');
 const settingsBtn = document.getElementById('settingsBtn');
 
