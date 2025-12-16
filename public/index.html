@@ -19,15 +19,7 @@
             </div>
 
             <div class="navbar-icons-right">
-                <!-- أيقونة الإعدادات -->
-                <button class="nav-icon-btn" title="الإعدادات" id="settingsBtn">
-                    <i class="fas fa-cog"></i>
-                </button>
-                <!-- أيقونة التنبيهات -->
-                <button class="nav-icon-btn" title="التنبيهات" id="notificationsBtn">
-                    <i class="fas fa-bell"></i>
-                    <span class="badge" id="notificationBadge">7</span>
-                </button>
+                
                 <!-- أيقونة الملف الشخصي -->
                 <a href="profile.html" class="nav-icon-btn" title="الملف الشخصي" id="profileBtn">
                     <i class="fas fa-user"></i>
@@ -69,142 +61,12 @@
                     </div>
                 </section>
 
-                <!-- مربع كتابة المنشور (Composer) -->
-                <section class="post-composer">
-                    <div class="composer-header">
-                        <img src="https://picsum.photos/40/40?random=1" alt="صورتك" class="composer-avatar">
-                        <textarea class="composer-input" placeholder="ماذا يدور في ذهنك؟" id="postTextarea"></textarea>
-                    </div>
-                    
-                    <div class="composer-media-preview" id="mediaPreview">
-                        <!-- معاينة الوسائط هنا -->
-                    </div>
-
-                    <div class="composer-divider"></div>
-                    
-                    <div class="composer-footer">
-                        <!-- أيقونة الوسائط (تحميل من المعرض/التخزين) -->
-                        <button class="composer-btn" id="composerMediaBtn">
-                            <i class="fas fa-images"></i>
-                            <span>وسائط</span>
-                        </button>
-                        <!-- أيقونة الكاميرا (التقاط صورة/فيديو) -->
-                        <button class="composer-btn" id="composerCameraBtn">
-                            <i class="fas fa-camera"></i>
-                            <span>كاميرا</span>
-                        </button>
-                        <!-- أيقونة الإيموجي -->
-                        <button class="composer-btn" id="composerEmojiBtn">
-                            <i class="fas fa-face-smile"></i>
-                            <span>إيموجي</span>
-                        </button>
-                        <!-- زر النشر -->
-                        <button class="btn btn-primary" id="postSubmitBtn">
-                            <i class="fas fa-paper-plane"></i>
-                            <span>نشر</span>
-                        </button>
-                    </div>
-                </section>
-
-                <!-- منطقة الخلاصات (المنشورات) -->
-                <section class="feed-section" id="feedSection">
-                    <!-- المنشورات سيتم تحميلها هنا -->
-                </section>
+                
             </div>
         </div>
     </main>
 
-    <!-- Modal للإشعارات -->
-    <div id="notificationsModal" class="modal">
-        <div class="modal-content notifications-modal">
-            <div class="modal-header">
-                <h2>الإشعارات</h2>
-                <button class="modal-close">&times;</button>
-            </div>
-            <div class="notifications-list" id="notificationsList">
-                <!-- الإشعارات سيتم تحميلها هنا -->
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal للإعدادات -->
-    <div id="settingsModal" class="modal">
-        <div class="modal-content settings-modal">
-            <div class="modal-header">
-                <h2>الإعدادات</h2>
-                <button class="modal-close">&times;</button>
-            </div>
-            <div class="settings-body">
-                <h3>إعدادات الخصوصية</h3>
-                <div class="setting-item">
-                    <label for="privacySelect">من يمكنه رؤية منشوراتي؟</label>
-                    <select id="privacySelect">
-                        <option value="public">الكل</option>
-                        <option value="friends">الأصدقاء فقط</option>
-                        <option value="private">أنا فقط</option>
-                    </select>
-                </div>
-                
-                <h3 style="margin-top: 2rem;">إعدادات الحساب</h3>
-                <div class="setting-item">
-                    <label for="passwordInput">تغيير كلمة المرور</label>
-                    <input type="password" id="passwordInput" placeholder="كلمة المرور الجديدة">
-                </div>
-                
-                <h3 style="margin-top: 2rem;">إعدادات التنبيهات</h3>
-                <div class="setting-item">
-                    <label for="notificationsToggle">تشغيل/إيقاف الإشعارات</label>
-                    <input type="checkbox" id="notificationsToggle" checked>
-                </div>
-
-                <button class="btn btn-primary" id="saveSettingsBtn">حفظ التغييرات</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal لاختيار الوسائط (جديد) -->
-    <div id="mediaSelectModal" class="modal">
-        <div class="modal-content media-select-modal">
-            <div class="modal-header">
-                <h2>اختيار الوسائط</h2>
-                <button class="modal-close">&times;</button>
-            </div>
-            <div class="media-options">
-                <button class="btn btn-secondary media-option-btn" id="uploadMediaBtn">
-                    <i class="fas fa-upload"></i>
-                    <span>تحميل من الجهاز</span>
-                </button>
-                <button class="btn btn-secondary media-option-btn" id="galleryMediaBtn">
-                    <i class="fas fa-images"></i>
-                    <span>المعرض (التخزين الداخلي)</span>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal للكاميرا (جديد) -->
-    <div id="cameraModal" class="modal">
-        <div class="modal-content camera-modal-content">
-            <div class="modal-header">
-                <h2>الكاميرا</h2>
-                <button class="modal-close">&times;</button>
-            </div>
-            <div class="camera-container">
-                <video id="camera-video" autoplay></video>
-                <canvas id="camera-canvas" style="display: none;"></canvas>
-            </div>
-            <div class="camera-controls">
-                <button class="btn btn-primary camera-btn" id="captureImageBtn">
-                    <i class="fas fa-camera"></i>
-                    <span>التقاط صورة</span>
-                </button>
-                <button class="btn btn-secondary camera-btn" id="recordVideoBtn">
-                    <i class="fas fa-video"></i>
-                    <span>تسجيل فيديو</span>
-                </button>
-            </div>
-        </div>
-    </div>
+    
 
     <!-- حقل إدخال ملف مخفي -->
     <input type="file" id="mediaFileInput" accept="image/*,video/*" style="display: none;">
