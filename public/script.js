@@ -26,7 +26,14 @@ async function loadFeed() {
         const response = await fetch(`${API_BASE_URL}/posts`);
         
         if (!response.ok) {
-            throw new Error('فشل جلب المنشورات من الخادم');
+            let errorText = 'فشل جلب المنشورات من الخادم';
+            try {
+                const errorData = await response.json();
+                errorText = errorData.error || errorText;
+            } catch (e) {
+                errorText = response.statusText || 'خطأ غير معروف';
+            }
+            throw new Error(errorText);
         }
 
         const data = await response.json();
@@ -133,8 +140,14 @@ if (postSubmitBtn) {
             });
 
             if (!postResponse.ok) {
-                const errorData = await postResponse.json();
-                throw new Error(errorData.error || 'Failed to create post');
+                let errorText = 'Failed to create post';
+                try {
+                    const errorData = await postResponse.json();
+                    errorText = errorData.error || errorText;
+                } catch (e) {
+                    errorText = postResponse.statusText || 'Unknown error';
+                }
+                throw new Error(errorText);
             }
 
             const result = await postResponse.json();
