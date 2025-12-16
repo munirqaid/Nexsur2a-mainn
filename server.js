@@ -10,10 +10,10 @@ import authRoutes from './api/auth.js';
 import usersRoutes from './api/users.js';
 import postsRoutes from './api/posts.js';
 import commentsRoutes from './api/comments.js';
-import notificationsRoutes from './api/notifications.js';
+
 import searchRoutes from './api/search.js';
-import creatorRoutes from './api/creator.js';
-import uploadRoutes from './api/upload.js';
+
+
 
 dotenv.config();
 
@@ -33,10 +33,10 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api/posts', postsRoutes);
 app.use('/api/comments', commentsRoutes);
-app.use('/api/notifications', notificationsRoutes);
+
 app.use('/api/search', searchRoutes);
-app.use('/api/creator', creatorRoutes);
-app.use('/api/upload', uploadRoutes);
+
+
 
 // ============ Health Check ============
 app.get('/api/health', (req, res) => {

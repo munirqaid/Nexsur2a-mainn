@@ -1073,53 +1073,7 @@ body {
     box-shadow: 0 5px 15px rgba(42, 124, 255, 0.3);
 }
 
-/* ============ Camera Modal ============ */
-.camera-modal-content {
-    max-width: 500px;
-}
 
-.camera-container {
-    position: relative;
-    width: 100%;
-    padding: 1rem;
-    background: var(--bg-color);
-}
-
-#camera-video,
-#camera-canvas {
-    width: 100%;
-    border-radius: 10px;
-    max-height: 400px;
-    object-fit: cover;
-}
-
-.camera-controls {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    padding: 1rem;
-    border-top: 1px solid var(--border-color);
-    flex-wrap: wrap;
-}
-
-.camera-btn {
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-    color: white;
-    border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 20px;
-    cursor: pointer;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    transition: all 0.3s ease;
-}
-
-.camera-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(42, 124, 255, 0.3);
-}
 
 /* ============ New Post Form ============ */
 .new-post-form {
@@ -1193,58 +1147,7 @@ body {
         width: 100%;
     }
 =======
-/* ============ Settings Modal Styles ============ */
-.settings-modal {
-    max-width: 600px;
-}
 
-.setting-item {
-    margin-bottom: 1.5rem;
-}
-
-.setting-item label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-    color: var(--text-color);
-}
-
-.setting-item input[type="file"],
-.setting-item textarea,
-.setting-item select {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    font-size: 1rem;
-    resize: vertical;
-}
-
-.settings-body h3 {
-    color: var(--primary-color);
-    margin-top: 1.5rem;
-    margin-bottom: 1rem;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 0.5rem;
-}
-
-.btn-primary {
-    background-color: var(--primary-color);
-    color: var(--color-cloud-white);
-    border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: background-color 0.2s;
-}
-
-.btn-primary:hover {
-    background-color: var(--color-electric-blue);
->>>>>>> 35cf68b (Feat: Applied light theme, fixed post actions layout, added settings modal, and fixed media buttons)
-}
 
 /* ============ Stories Section ============ */
 .stories-section {
@@ -1354,20 +1257,7 @@ body {
     font-weight: 500;
 }
 
-.composer-media-preview {
-    display: none;
-    margin-top: 1rem;
-    border-radius: var(--radius);
-    overflow: hidden;
-    max-height: 300px;
-    background-color: var(--bg-color);
-}
 
-.composer-media-preview img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
 
 .composer-footer {
     display: flex;

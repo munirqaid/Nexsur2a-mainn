@@ -7,38 +7,38 @@ if (!authToken) {
     authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCIsImlhdCI6MTY3ODg4NjQwMCwiZXhwIjoxNjc4ODkwMDAwfQ.dummy_signature_for_testing';
     localStorage.setItem('authToken', authToken);
 }
-let mediaFile = null; // لتخزين ملف الوسائط المختار
+
 
 // ============ DOM Elements ============
 const postsFeed = document.getElementById('postsFeed');
 const feedSection = document.getElementById('feedSection'); // تم الإبقاء عليه إذا كان يستخدم في مكان آخر
-const notificationsBtn = document.getElementById('notificationsBtn');
-const settingsBtn = document.getElementById('settingsBtn');
+
+
 
 // Modals
-const notificationsModal = document.getElementById('notificationsModal');
-const settingsModal = document.getElementById('settingsModal');
-const mediaSelectModal = document.getElementById('mediaSelectModal');
-const cameraModal = document.getElementById('cameraModal');
+
+
+
+
 
 // Post Composer Elements
 const postTextarea = document.getElementById('postTextarea');
-const composerMediaBtn = document.getElementById('composerMediaBtn');
-const composerCameraBtn = document.getElementById('composerCameraBtn');
+
+
 const composerEmojiBtn = document.getElementById('composerEmojiBtn');
 const postSubmitBtn = document.getElementById('postSubmitBtn');
 const mediaPreview = document.getElementById('mediaPreview');
 
 // Media Selection Elements
-const uploadMediaBtn = document.getElementById('uploadMediaBtn');
-const galleryMediaBtn = document.getElementById('galleryMediaBtn');
-const mediaFileInput = document.getElementById('mediaFileInput');
 
-// Camera Elements
-const cameraVideo = document.getElementById('camera-video');
-const cameraCanvas = document.getElementById('camera-canvas');
-const captureImageBtn = document.getElementById('captureImageBtn');
-let stream = null; // للحفاظ على تيار الكاميرا
+
+
+
+
+
+
+
+
 
 // ============ Modal Functions ============
 function openModal(modal) {
@@ -53,18 +53,14 @@ document.querySelectorAll('.modal-close').forEach(btn => {
     btn.addEventListener('click', function() {
         const modal = this.closest('.modal');
         closeModal(modal);
-        if (modal === cameraModal) {
-            stopCameraStream();
-        }
+
     });
 });
 
 window.addEventListener('click', function(event) {
     if (event.target.classList.contains('modal')) {
         closeModal(event.target);
-        if (event.target === cameraModal) {
-            stopCameraStream();
-        }
+
     }
 });
 
@@ -168,73 +164,18 @@ function getTimeAgo(date) {
 }
 
 // ============ Post Composer Functions ============
-composerMediaBtn.addEventListener('click', () => openModal(mediaSelectModal));
-composerCameraBtn.addEventListener('click', () => {
-    openModal(cameraModal);
-    startCameraStream();
-});
+
+
 composerEmojiBtn.addEventListener('click', () => alert('ميزة الإيموجي قيد التطوير!'));
 
-// Media Selection
-uploadMediaBtn.addEventListener('click', () => mediaFileInput.click());
-galleryMediaBtn.addEventListener('click', () => alert('ميزة المعرض قيد التطوير!'));
 
-mediaFileInput.addEventListener('change', (event) => {
-    const file = event.target.files[0];
-    if (file) {
-        mediaFile = file;
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            mediaPreview.innerHTML = `<img src="${e.target.result}" alt="معاينة الوسائط">`;
-            mediaPreview.style.display = 'block';
-        };
-        reader.readAsDataURL(file);
-        closeModal(mediaSelectModal);
-    }
-});
 
-// Camera Functions
-async function startCameraStream() {
-    try {
-        stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
-        cameraVideo.srcObject = stream;
-    } catch (error) {
-        console.error('Error accessing camera:', error);
-        alert('لا يمكن الوصول إلى الكاميرا. يرجى التحقق من الأذونات.');
-        closeModal(cameraModal);
-    }
-}
 
-function stopCameraStream() {
-    if (stream) {
-        stream.getTracks().forEach(track => track.stop());
-        stream = null;
-    }
-}
-
-captureImageBtn.addEventListener('click', () => {
-    cameraCanvas.width = cameraVideo.videoWidth;
-    cameraCanvas.height = cameraVideo.videoHeight;
-    const context = cameraCanvas.getContext('2d');
-    context.drawImage(cameraVideo, 0, 0, cameraCanvas.width, cameraCanvas.height);
-    
-    const dataUrl = cameraCanvas.toDataURL('image/png');
-    mediaPreview.innerHTML = `<img src="${dataUrl}" alt="صورة ملتقطة">`;
-    mediaPreview.style.display = 'block';
-    
-    // تحويل الصورة إلى ملف لاستخدامه لاحقاً
-    fetch(dataUrl).then(res => res.blob()).then(blob => {
-        mediaFile = new File([blob], 'capture.png', { type: 'image/png' });
-    });
-
-    stopCameraStream();
-    closeModal(cameraModal);
-});
 
 // Post Submission
 postSubmitBtn.addEventListener('click', async () => {
     const content = postTextarea.value.trim();
-    if (!content && !mediaFile) {
+
         alert('يرجى كتابة نص أو إضافة وسائط.');
         return;
     }
@@ -243,41 +184,12 @@ postSubmitBtn.addEventListener('click', async () => {
     postSubmitBtn.disabled = true;
     postSubmitBtn.innerHTML = '<div class="spinner"></div>';
 
-    let mediaUrls = [];
 
-    try {
-        // 1. رفع الملفات أولاً إذا كانت موجودة
-        if (mediaFile) {
-            const uploadFormData = new FormData();
-            uploadFormData.append('files', mediaFile); // 'files' هو اسم الحقل المتوقع في api/upload.js
-
-            // مؤشر تحميل خاص لعملية الرفع
-            postSubmitBtn.innerHTML = '<div class="spinner"></div> جاري الرفع...';
-
-            const uploadResponse = await fetch(`${API_BASE_URL}/upload`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${authToken}`
-                },
-                body: uploadFormData
-            });
-
-            if (!uploadResponse.ok) {
-                const errorData = await uploadResponse.json();
-                throw new Error(errorData.error || 'Failed to upload media');
-            }
-
-            const uploadResult = await uploadResponse.json();
-            mediaUrls = uploadResult.files;
-        }
-
-        // 2. إنشاء المنشور
         postSubmitBtn.innerHTML = '<div class="spinner"></div> جاري النشر...';
 
         const postData = {
             content: content,
-            postType: mediaUrls.length > 0 ? 'media' : 'text', // تحديد نوع المنشور
-            mediaUrls: mediaUrls,
+
             // يمكن إضافة حقول أخرى مثل location, hashtags, mentions, isMonetized
         };
 

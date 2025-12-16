@@ -662,10 +662,7 @@
                 <button class="nav-icon-btn" title="الاستكشاف">
                     <i class="fas fa-compass"></i>
                 </button>
-                <button class="nav-icon-btn" title="الإشعارات">
-                    <i class="fas fa-heart"></i>
-                    <span class="notification-badge">3</span>
-                </button>
+
                 <button class="nav-icon-btn" title="الرسائل">
                     <i class="fas fa-paper-plane"></i>
                     <span class="notification-badge">2</span>
@@ -689,10 +686,7 @@
                 <i class="fas fa-compass"></i>
                 <span>الاستكشاف</span>
             </div>
-            <div class="sidebar-item">
-                <i class="fas fa-heart"></i>
-                <span>الإشعارات</span>
-            </div>
+
             <div class="sidebar-item">
                 <i class="fas fa-paper-plane"></i>
                 <span>الرسائل</span>
@@ -705,10 +699,7 @@
                 <i class="fas fa-user"></i>
                 <span>الملف الشخصي</span>
             </div>
-            <div class="sidebar-item">
-                <i class="fas fa-cog"></i>
-                <span>الإعدادات</span>
-            </div>
+
             <div class="sidebar-item">
                 <i class="fas fa-sign-out-alt"></i>
                 <span>تسجيل الخروج</span>
@@ -725,12 +716,7 @@
                 </div>
                 <div class="post-creator-actions">
                     <div class="post-creator-icons">
-                        <button class="icon-btn" title="إضافة صورة">
-                            <i class="fas fa-image"></i>
-                        </button>
-                        <button class="icon-btn" title="إضافة فيديو">
-                            <i class="fas fa-video"></i>
-                        </button>
+
                         <button class="icon-btn" title="إضافة موقع">
                             <i class="fas fa-map-marker-alt"></i>
                         </button>
@@ -753,64 +739,13 @@
         <!-- MODALS CONTAINER -->
         <div id="modals-container">
             <!-- Media Selection Modal -->
-            <div id="mediaSelectModal" class="modal">
-                <div class="modal-content">
-                    <span class="modal-close">&times;</span>
-                    <h2>اختيار الوسائط</h2>
-                    <p>كيف تود إضافة الوسائط؟</p>
-                    <button id="uploadMediaBtn" class="modal-btn">رفع من الجهاز</button>
-                    <button id="galleryMediaBtn" class="modal-btn">اختيار من المعرض</button>
-                    <input type="file" id="mediaFileInput" accept="image/*,video/*" style="display: none;">
-                </div>
-            </div>
 
-            <!-- Camera Modal -->
-            <div id="cameraModal" class="modal">
-                <div class="modal-content">
-                    <span class="modal-close">&times;</span>
-                    <h2>الكاميرا</h2>
-                    <video id="camera-video" autoplay></video>
-                    <canvas id="camera-canvas" style="display: none;"></canvas>
-                    <button id="captureImageBtn" class="modal-btn">التقاط صورة</button>
-                </div>
-            </div>
 
-            <!-- Notifications Modal -->
-            <div id="notificationsModal" class="modal">
-                <div class="modal-content">
-                    <span class="modal-close">&times;</span>
-                    <h2>التنبيهات</h2>
-                    <p>لا توجد تنبيهات جديدة حالياً.</p>
-                </div>
-            </div>
 
-            <!-- Settings Modal -->
-            <div id="settingsModal" class="modal">
-                <div class="modal-content">
-                    <span class="modal-close">&times;</span>
-                    <h2>الإعدادات</h2>
-                    <div class="settings-section">
-                        <h3>إعدادات الخصوصية</h3>
-                        <label for="privacySelect">من يمكنه رؤية منشوراتي؟</label>
-                        <select id="privacySelect">
-                            <option value="public">الكل</option>
-                            <option value="friends">الأصدقاء فقط</option>
-                            <option value="private">أنا فقط</option>
-                        </select>
-                    </div>
-                    <div class="settings-section">
-                        <h3>إعدادات الحساب</h3>
-                        <label for="passwordInput">تغيير كلمة المرور</label>
-                        <input type="password" id="passwordInput" placeholder="كلمة المرور الجديدة">
-                    </div>
-                    <div class="settings-section">
-                        <h3>إعدادات التنبيهات</h3>
-                        <label for="notificationsToggle">تشغيل/إيقاف الإشعارات</label>
-                        <input type="checkbox" id="notificationsToggle" checked>
-                    </div>
-                    <button id="saveSettingsBtn" class="modal-btn">حفظ الإعدادات</button>
-                </div>
-            </div>
+
+
+
+
         </div>
         
         <!-- END MODALS CONTAINER -->
