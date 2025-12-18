@@ -13,14 +13,14 @@ router.post('/', authenticateToken, async (req, res) => {
     const { content, postType, mediaUrls, location, hashtags, mentions, isMonetized } = req.body;
     const userId = req.user ? req.user.id : '00000000-0000-0000-0000-000000000000';
 
-    if (!content || !postType) {
-      return res.status(400).json({ error: 'Content and post type are required' });
+    if (!content) {
+      return res.status(400).json({ error: 'Content is required' });
     }
 
     const newPost = new Post({
       userId,
       content,
-      postType,
+      postType: postType || 'text', // تعيين القيمة الافتراضية 'text' إذا لم يتم توفيرها
       mediaUrls: Array.isArray(mediaUrls) ? mediaUrls : [],
       location: location || null,
       hashtags: hashtags || [],

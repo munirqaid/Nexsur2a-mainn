@@ -127,6 +127,7 @@ if (postSubmitBtn) {
         try {
             const postData = {
                 content: content,
+                postType: 'text', // تحديد نوع المنشور كنص
                 // لا توجد وسائط حالياً
             };
 
