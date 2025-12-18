@@ -206,6 +206,16 @@ npm install
 
 **الحل:** تأكد من وجود ملف `.env` وأنه يحتوي على `MONGO_URI`.
 
+### الخطأ: "Failed to create post" أو "Invalid or expired token"
+
+**الحل:** تأكد من وجود ملف `.env` وأنه يحتوي على `JWT_SECRET` بقيمة قوية. هذا المتغير ضروري لعملية المصادقة ونشر المنشورات.
+
+```env
+JWT_SECRET="your-strong-secret-key-here"
+```
+
+**الحل:** تأكد من وجود ملف `.env` وأنه يحتوي على `MONGO_URI`.
+
 ### الخطأ: "Port 3000 is already in use"
 
 **الحل:** غير المنفذ في ملف `.env`:
