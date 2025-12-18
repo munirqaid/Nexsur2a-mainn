@@ -17,6 +17,12 @@ export const authenticateToken = (req, res, next) => {
     return res.status(401).json({ error: 'Access token required' });
   }
 
+  // تجاوز التحقق من التوكن في بيئة التطوير
+  if (process.env.NODE_ENV !== 'production' && token === 'dummy_signature_for_testing') {
+    req.user = { id: '00000000-0000-0000-0000-000000000000' }; // استخدام ID وهمي
+    return next();
+  }
+
   jwt.verify(token, JWT_SECRET, (err, user) => {
     if (err) {
       return res.status(403).json({ error: 'Invalid or expired token' });
