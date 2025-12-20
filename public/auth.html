@@ -282,7 +282,7 @@
                 if (response.ok) {
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('user', JSON.stringify(data.user));
-                    window.location.href = '/home.html';
+                    window.location.href = '/index.html';
                 } else {
                     errorDiv.textContent = data.error || 'خطأ في تسجيل الدخول';
                     errorDiv.classList.add('show');

@@ -119,6 +119,7 @@ function getTimeAgo(date) {
 // ============ Logout Function ============
 function logout() {
     localStorage.removeItem('token');
+    localStorage.removeItem('authToken');
     localStorage.removeItem('user');
     window.location.href = '/auth.html';
 }
