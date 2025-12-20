@@ -80,7 +80,7 @@ function createPostElement(post) {
 
     // منطق إظهار زر الحذف
     const currentUser = JSON.parse(localStorage.getItem('user'));
-    const isMyPost = currentUser && (currentUser.id === post.author.id || currentUser.id === post.author._id);
+    const isMyPost = currentUser && post.author && (currentUser.id === post.author.id || currentUser.id === post.author._id);
     const deleteBtnStyle = isMyPost ? '' : 'display: none;';
     
     const timeAgo = post.createdAt ? getTimeAgo(new Date(post.createdAt)) : 'الآن';
