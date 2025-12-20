@@ -119,7 +119,7 @@ router.put('/:postId', authenticateToken, async (req, res) => {
     // التحقق من أن المستخدم هو صاحب المنشور
     // نستخدم .equals() للمقارنة بين ObjectId و String
     if (!post.userId.equals(userId)) {
-      return res.status(403).json({ error: 'Unauthorized' });
+      return res.status(403).json({ message: 'Unauthorized: You do not own this post' });
     }
 
     const updateData = {};
@@ -154,7 +154,7 @@ router.delete('/:postId', authenticateToken, async (req, res) => {
     // التحقق من أن المستخدم هو صاحب المنشور
     // نستخدم .equals() للمقارنة بين ObjectId و String
     if (!post.userId.equals(userId)) {
-      return res.status(403).json({ error: 'Unauthorized' });
+      return res.status(403).json({ message: 'Unauthorized: You do not own this post' });
     }
 
     await Post.findByIdAndDelete(postId);

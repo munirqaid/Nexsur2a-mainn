@@ -75,6 +75,8 @@ function displayPosts(posts) {
 function createPostElement(post) {
     const div = document.createElement('div');
     div.className = 'post-card';
+    div.id = `post-${post._id}`; // إضافة ID للمساعدة في الحذف
+    div.style.position = 'relative'; // لضمان تموضع القائمة بشكل صحيح
     
     const author = post.author || { displayName: 'مستخدم', avatarUrl: 'https://picsum.photos/40/40' };
 
@@ -98,13 +100,16 @@ function createPostElement(post) {
                     <a href="#" class="menu-item" data-action="save">
                         <i class="fas fa-bookmark"></i> حفظ المنشور
                     </a>
-                    <a href="#" class="menu-item" data-action="report">
-                        <i class="fas fa-flag"></i> إبلاغ
-                    </a>
-                    <!-- زر الحذف يظهر فقط إذا كان المستخدم هو صاحب المنشور -->
-                    <a href="#" class="menu-item delete-post-btn" data-post-id="${post._id}" style="${deleteBtnStyle}">
+                    ${isMyPost ? `
+                    <a href="#" class="menu-item delete-post-btn" data-post-id="${post._id}" style="color: #ff4757;">
                         <i class="fas fa-trash-alt"></i> حذف المنشور
                     </a>
+                    ` : ''}
+                    
+                    <a href="#" class="menu-item" data-action="report">
+                        <i class="fas fa-flag"></i> إبلاغ عن المنشور
+                    </a>
+                    
                 </div>
             </div>
         </div>
@@ -194,8 +199,8 @@ async function loadNotifications() {
         if (data.notifications && data.notifications.length > 0) {
             notificationsList.innerHTML = '';
             data.notifications.forEach(notif => {
-                const item = document.createElement('div');
-                item.className = `notification-item ${notif.isRead ? '' : 'unread'}`;
+           const postElement = document.createElement('div');
+        postElement.style.position = 'relative'; // إضافة هذه الخاصية لضمان تموضع القائمة بشكل صحيح               item.className = `notification-item ${notif.isRead ? '' : 'unread'}`;
                 item.innerHTML = `
                     <div class="notification-content">
                         <p>${notif.message || 'لديك إشعار جديد'}</p>
@@ -247,6 +252,50 @@ async function loadUserPosts() {
         userFeedSection.innerHTML = '<p style="text-align: center; padding: 20px; color: red;">حدث خطأ أثناء تحميل المنشورات.</p>';
     }
 }
+
+// ============ Post Menu Logic ============
+
+// منطق حذف المنشور
+document.addEventListener('click', async (e) => {
+    if (e.target.closest('.delete-post-btn')) {
+        e.preventDefault();
+        const deleteButton = e.target.closest('.delete-post-btn');
+        const postId = deleteButton.getAttribute('data-post-id');
+        
+        if (confirm('هل أنت متأكد من رغبتك في حذف هذا المنشور؟')) {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`/api/posts/${postId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    // إزالة المنشور من واجهة المستخدم
+                    const postElement = document.getElementById(`post-${postId}`);
+                    if (postElement) {
+                        postElement.remove();
+                    }
+                    alert('تم حذف المنشور بنجاح.');
+                    // تحديث عداد المنشورات إذا كان موجودًا
+                    const postCountElement = document.getElementById('postCount');
+                    if (postCountElement) {
+                        postCountElement.innerText = parseInt(postCountElement.innerText) - 1;
+                    }
+                } else {
+                    const errorData = await response.json();
+                    alert(`فشل الحذف: ${errorData.message || 'حدث خطأ غير معروف.'}`);
+                }
+            } catch (error) {
+                console.error('خطأ في عملية الحذف:', error);
+                alert('فشل الحذف: تعذر الاتصال بالخادم.');
+            }
+        }
+    }
+});
 
 // ============ Post Menu Logic ============
 function setupPostMenuListeners() {
