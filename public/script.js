@@ -1,6 +1,13 @@
 // ============ Global Variables ============
-const API_BASE_URL = 'http://localhost:3000/api';
-let authToken = localStorage.getItem('token');
+const API_BASE_URL = window.location.origin + '/api';
+let authToken = localStorage.getItem('token') || localStorage.getItem('authToken');
+
+// التأكد من وجود التوكن في كلا المفتاحين لضمان التوافق
+if (authToken) {
+    localStorage.setItem('token', authToken);
+    localStorage.setItem('authToken', authToken);
+}
+
 if (!authToken && !window.location.pathname.includes('auth.html')) {
     window.location.href = '/auth.html';
 }
@@ -106,67 +113,7 @@ function getTimeAgo(date) {
 }
 
 
-// ============ Post Composer Functions ============
-
-if (postSubmitBtn) {
-    postSubmitBtn.addEventListener('click', async () => {
-        const content = postTextarea.value.trim();
-
-        if (content === '') {
-            alert('يرجى كتابة نص في المنشور.');
-            return;
-        }
-
-        // Show loading indicator
-        postSubmitBtn.disabled = true;
-        postSubmitBtn.innerHTML = '<div class="spinner"></div> جاري النشر...';
-
-        try {
-            const postData = {
-                content: content,
-                postType: 'text', // تحديد نوع المنشور كنص
-                // لا توجد وسائط حالياً
-            };
-
-            const postResponse = await fetch(`${API_BASE_URL}/posts`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                },
-                body: JSON.stringify(postData)
-            });
-
-            if (!postResponse.ok) {
-                let errorText = 'Failed to create post';
-                try {
-                    const errorData = await postResponse.json();
-                    errorText = errorData.error || errorText;
-                } catch (e) {
-                    errorText = postResponse.statusText || 'Unknown error';
-                }
-                throw new Error(errorText);
-            }
-
-            const result = await postResponse.json();
-            console.log('Post created:', result);
-
-            // Clear composer
-            postTextarea.value = '';
-
-            // Reload the feed to show the new post
-            await loadFeed();
-
-        } catch (error) {
-            console.error('Error creating post:', error);
-            alert('حدث خطأ أثناء نشر المنشور: ' + error.message);
-        } finally {
-            // Hide loading indicator
-            postSubmitBtn.disabled = false;
-            postSubmitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> <span>نشر</span>';
-        }
-    });
-}
+// ============ Post Composer Logic is now handled in initializeApp ============
 
 
 // ============ Logout Function ============
@@ -267,36 +214,40 @@ async function loadUserPosts() {
 }
 
 // ============ Initialization ============
-window.addEventListener('load', function() {
+function initializeApp() {
+    console.log('🚀 Initializing Nexora UI...');
+    
     // إعداد المودالز
     setupModals();
 
     // زر تسجيل الخروج
     const logoutBtn = document.getElementById('logoutBtn');
     if (logoutBtn) {
-        logoutBtn.addEventListener('click', (e) => {
+        logoutBtn.onclick = (e) => {
             e.preventDefault();
             logout();
-        });
+        };
     }
 
     // زر الإشعارات
     const notificationsBtn = document.getElementById('notificationsBtn');
     const notificationsModal = document.getElementById('notificationsModal');
     if (notificationsBtn && notificationsModal) {
-        notificationsBtn.addEventListener('click', () => {
+        notificationsBtn.onclick = (e) => {
+            e.preventDefault();
             notificationsModal.classList.add('active');
             loadNotifications();
-        });
+        };
     }
 
     // زر الإعدادات
     const settingsBtn = document.getElementById('settingsBtn');
     const settingsModal = document.getElementById('settingsModal');
     if (settingsBtn && settingsModal) {
-        settingsBtn.addEventListener('click', () => {
+        settingsBtn.onclick = (e) => {
+            e.preventDefault();
             settingsModal.classList.add('active');
-        });
+        };
     }
 
     // تحميل البيانات إذا كان المستخدم مسجلاً
@@ -306,5 +257,56 @@ window.addEventListener('load', function() {
             loadUserPosts();
         }
     }
-    console.log('✅ Nexora loaded successfully with new UI logic');
-});
+    
+    // تفعيل زر النشر إذا كان موجوداً
+    const postSubmitBtn = document.getElementById('postSubmitBtn');
+    if (postSubmitBtn) {
+        postSubmitBtn.onclick = handlePostSubmit;
+    }
+
+    console.log('✅ Nexora UI initialized successfully');
+}
+
+// دالة معالجة النشر المنفصلة لضمان الربط الصحيح
+async function handlePostSubmit() {
+    const postTextarea = document.getElementById('postTextarea');
+    const content = postTextarea.value.trim();
+
+    if (content === '') {
+        alert('يرجى كتابة نص في المنشور.');
+        return;
+    }
+
+    const btn = document.getElementById('postSubmitBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<div class="spinner"></div> جاري النشر...';
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/posts`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${authToken}`
+            },
+            body: JSON.stringify({ content, postType: 'text' })
+        });
+
+        if (!response.ok) throw new Error('فشل النشر');
+
+        postTextarea.value = '';
+        await loadFeed();
+    } catch (error) {
+        console.error('Error:', error);
+        alert('حدث خطأ أثناء النشر');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-paper-plane"></i> <span>نشر</span>';
+    }
+}
+
+// استخدام DOMContentLoaded لضمان تحميل جميع العناصر قبل التنفيذ
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeApp);
+} else {
+    initializeApp();
+}
