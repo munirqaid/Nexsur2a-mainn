@@ -1,6 +1,15 @@
 // ============ Global Variables ============
 const API_BASE_URL = 'http://localhost:3000/api';
-let authToken = localStorage.getItem('authToken');
+let authToken = localStorage.getItem('token');
+if (!authToken && !window.location.pathname.includes('auth.html')) {
+    window.location.href = '/auth.html';
+}
+
+function logout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    window.location.href = '/auth.html';
+}
 let currentCategory = 'all';
 let currentFilters = {
     contentType: ['posts', 'images', 'videos'],
@@ -749,9 +758,19 @@ async function performSearch(query) {
     }
 }
 
-// ============ Initialization ============
+// ============ Initializati// ============ Initialization ============
 window.addEventListener('load', function() {
-    // Load initial content
-    loadContent('all');
+    // إضافة مستمع لحدث الضغط على زر تسجيل الخروج إذا كان موجوداً
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            logout();
+        });
+    }
+
+    if (authToken) {
+        loadContent('all');
+    }
     console.log('✅ Explore page loaded successfully');
 });

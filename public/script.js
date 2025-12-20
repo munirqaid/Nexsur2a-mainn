@@ -1,11 +1,8 @@
 // ============ Global Variables ============
 const API_BASE_URL = 'http://localhost:3000/api';
-let authToken = localStorage.getItem('authToken');
-if (!authToken) {
-    // رمز وهمي مؤقت لتجاوز مشكلة المصادقة في الواجهة الأمامية للاختبار
-    // في تطبيق حقيقي، يجب الحصول على هذا الرمز بعد تسجيل الدخول
-    authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCIsImlhdCI6MTY3ODg4NjQwMCwiZXhwIjoxNjc4ODg5MDAwMH0.dummy_signature_for_testing';
-    localStorage.setItem('authToken', authToken);
+let authToken = localStorage.getItem('token');
+if (!authToken && !window.location.pathname.includes('auth.html')) {
+    window.location.href = '/auth.html';
 }
 
 
@@ -135,7 +132,7 @@ if (postSubmitBtn) {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${authToken}`
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },
                 body: JSON.stringify(postData)
             });
@@ -172,8 +169,26 @@ if (postSubmitBtn) {
 }
 
 
+// ============ Logout Function ============
+function logout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    window.location.href = '/auth.html';
+}
+
 // ============ Initialization ============
 window.addEventListener('load', function() {
-    loadFeed();
+    // إضافة مستمع لحدث الضغط على زر تسجيل الخروج إذا كان موجوداً
+    const logoutBtn = document.getElementById('logoutBtn') || document.querySelector('.sidebar-item i.fa-sign-out-alt')?.parentElement;
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            logout();
+        });
+    }
+
+    if (authToken) {
+        loadFeed();
+    }
     console.log('✅ Nexora loaded successfully with new UI logic');
 });

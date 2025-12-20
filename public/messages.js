@@ -1,6 +1,15 @@
 // ============ Global Variables ============
 const API_BASE_URL = 'http://localhost:3000/api';
-let authToken = localStorage.getItem('authToken');
+let authToken = localStorage.getItem('token');
+if (!authToken && !window.location.pathname.includes('auth.html')) {
+    window.location.href = '/auth.html';
+}
+
+function logout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    window.location.href = '/auth.html';
+}
 let currentConversation = null;
 let currentUser = null;
 let messages = [];
@@ -434,6 +443,18 @@ function getTimeAgo(date) {
 
 // ============ Initialization ============
 window.addEventListener('load', function() {
-    loadConversations();
-    console.log('✅ Messaging system loaded successfully');
+    // إضافة مستمع لحدث الضغط على زر تسجيل الخروج إذا كان موجوداً
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            logout();
+        });
+    }
+
+    if (authToken) {
+        loadConversations();
+        loadUsers();
+    }
+    console.log('✅ Messages page loaded successfully');
 });
