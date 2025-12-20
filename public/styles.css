@@ -543,6 +543,7 @@ body {
 /* ============ Post Dropdown Menu ============ */
 .post-menu-container {
     position: relative;
+    z-index: 10; /* لضمان ظهور القائمة فوق العناصر الأخرى */
     /* إزالة display: inline-block لضمان عدم تأثيره على التموضع */
 }
 
