@@ -117,7 +117,8 @@ router.put('/:postId', authenticateToken, async (req, res) => {
     }
 
     // التحقق من أن المستخدم هو صاحب المنشور
-    if (post.userId.toString() !== userId.toString()) {
+    // نستخدم .equals() للمقارنة بين ObjectId و String
+    if (!post.userId.equals(userId)) {
       return res.status(403).json({ error: 'Unauthorized' });
     }
 
@@ -151,7 +152,8 @@ router.delete('/:postId', authenticateToken, async (req, res) => {
     }
 
     // التحقق من أن المستخدم هو صاحب المنشور
-    if (post.userId.toString() !== userId.toString()) {
+    // نستخدم .equals() للمقارنة بين ObjectId و String
+    if (!post.userId.equals(userId)) {
       return res.status(403).json({ error: 'Unauthorized' });
     }
 
