@@ -9,7 +9,9 @@ if (authToken) {
 }
 
 if (!authToken && !window.location.pathname.includes('auth.html')) {
-    window.location.href = '/auth.html';
+    if (redirect) {
+        window.location.replace('/auth.html');
+    }
 }
 
 
@@ -27,7 +29,11 @@ async function loadFeed() {
     feedSection.innerHTML = '<div class="loading" style="text-align: center; padding: 20px;"><div class="spinner" style="margin: 0 auto;"></div><p>جارٍ تحميل المنشورات...</p></div>';
 
     try {
-        const response = await fetch(`${API_BASE_URL}/posts`);
+        const response = await fetch(`${API_BASE_URL}/posts`, {
+            headers: {
+                'Authorization': `Bearer ${authToken}`
+            }
+        });
         
         if (!response.ok) {
             let errorText = 'فشل جلب المنشورات من الخادم';
@@ -117,11 +123,13 @@ function getTimeAgo(date) {
 
 
 // ============ Logout Function ============
-function logout() {
+function logout(redirect = true) {
     localStorage.removeItem('token');
     localStorage.removeItem('authToken');
     localStorage.removeItem('user');
-    window.location.href = '/auth.html';
+    if (redirect) {
+        window.location.replace('/auth.html');
+    }
 }
 
 // ============ UI Interaction Functions ============
@@ -215,8 +223,17 @@ async function loadUserPosts() {
 }
 
 // ============ Initialization ============
-function initializeApp() {
+async function initializeApp() {
     console.log('🚀 Initializing Nexora UI...');
+
+    // التحقق من صلاحية التوكن وتحديث حالة الواجهة
+    if (authToken) {
+        const isValid = await verifyToken();
+        if (!isValid) {
+            logout(false); // تسجيل خروج صامت إذا كان التوكن غير صالح
+            return;
+        }
+    }
     
     // إعداد المودالز
     setupModals();
@@ -302,6 +319,22 @@ async function handlePostSubmit() {
     } finally {
         btn.disabled = false;
         btn.innerHTML = '<i class="fas fa-paper-plane"></i> <span>نشر</span>';
+    }
+}
+
+// دالة للتحقق من صلاحية التوكن
+async function verifyToken() {
+    if (!authToken) return false;
+    try {
+        const response = await fetch(`${API_BASE_URL}/auth/verify`, {
+            headers: {
+                'Authorization': `Bearer ${authToken}`
+            }
+        });
+        return response.ok;
+    } catch (error) {
+        console.error('Token verification failed:', error);
+        return false;
     }
 }
 
