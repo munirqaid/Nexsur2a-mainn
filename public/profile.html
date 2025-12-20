@@ -22,14 +22,18 @@
             </div>
 
             <div class="navbar-icons-right">
+                <!-- أيقونة الإشعارات -->
+                <button class="nav-icon-btn" title="الإشعارات" id="notificationsBtn">
+                    <i class="fas fa-bell"></i>
+                    <span class="badge" id="notificationBadge">0</span>
+                </button>
+                <!-- أيقونة الملف الشخصي -->
+                <a href="profile.html" class="nav-icon-btn" title="الملف الشخصي" id="profileBtn">
+                    <i class="fas fa-user"></i>
+                </a>
                 <!-- أيقونة الإعدادات -->
                 <button class="nav-icon-btn" title="الإعدادات" id="settingsBtn">
                     <i class="fas fa-cog"></i>
-                </button>
-                <!-- أيقونة التنبيهات -->
-                <button class="nav-icon-btn" title="التنبيهات" id="notificationsBtn">
-                    <i class="fas fa-bell"></i>
-                    <span class="badge" id="notificationBadge">7</span>
                 </button>
                 <!-- زر تسجيل الخروج -->
                 <button class="nav-icon-btn" title="تسجيل الخروج" id="logoutBtn">
@@ -186,14 +190,19 @@
             document.getElementById("bannerFileInput").click();
         });
 
-        // Placeholder for loading user posts
-        function loadUserPosts() {
-            const userFeedSection = document.getElementById("userFeedSection");
-            userFeedSection.innerHTML = '<p style="text-align: center; padding: 2rem;">تحميل منشورات المستخدم...</p>';
-            // هنا سيتم استدعاء API لتحميل المنشورات الخاصة بالمستخدم
+        // تحديث بيانات الملف الشخصي من localStorage
+        function updateProfileUI() {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (user) {
+                document.getElementById('profileName').innerText = user.displayName || user.username;
+                document.querySelector('.profile-username').innerText = '@' + user.username;
+                if (user.avatarUrl) {
+                    document.getElementById('profileAvatar').src = user.avatarUrl;
+                }
+            }
         }
 
-        window.addEventListener("load", loadUserPosts);
+        window.addEventListener("load", updateProfileUI);
     </script>
 </body>
 </html>

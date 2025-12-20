@@ -176,10 +176,103 @@ function logout() {
     window.location.href = '/auth.html';
 }
 
+// ============ UI Interaction Functions ============
+
+function setupModals() {
+    const modals = document.querySelectorAll('.modal');
+    const closeButtons = document.querySelectorAll('.modal-close');
+
+    closeButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            modals.forEach(modal => modal.classList.remove('active'));
+        });
+    });
+
+    window.addEventListener('click', (e) => {
+        modals.forEach(modal => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
+    });
+}
+
+async function loadNotifications() {
+    const notificationsList = document.getElementById('notificationsList');
+    if (!notificationsList) return;
+
+    notificationsList.innerHTML = '<p style="text-align: center; padding: 20px;">جارٍ تحميل الإشعارات...</p>';
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/notifications`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+
+        if (!response.ok) throw new Error('فشل تحميل الإشعارات');
+
+        const data = await response.json();
+        if (data.notifications && data.notifications.length > 0) {
+            notificationsList.innerHTML = '';
+            data.notifications.forEach(notif => {
+                const item = document.createElement('div');
+                item.className = `notification-item ${notif.isRead ? '' : 'unread'}`;
+                item.innerHTML = `
+                    <div class="notification-content">
+                        <p>${notif.message || 'لديك إشعار جديد'}</p>
+                        <span class="notification-time">${getTimeAgo(new Date(notif.createdAt))}</span>
+                    </div>
+                `;
+                notificationsList.appendChild(item);
+            });
+        } else {
+            notificationsList.innerHTML = '<p style="text-align: center; padding: 20px;">لا توجد إشعارات حالياً.</p>';
+        }
+    } catch (error) {
+        console.error('Error loading notifications:', error);
+        notificationsList.innerHTML = '<p style="text-align: center; padding: 20px; color: red;">حدث خطأ أثناء تحميل الإشعارات.</p>';
+    }
+}
+
+async function loadUserPosts() {
+    const userFeedSection = document.getElementById('userFeedSection');
+    if (!userFeedSection) return;
+
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!user) return;
+
+    userFeedSection.innerHTML = '<p style="text-align: center; padding: 20px;">جارٍ تحميل منشوراتك...</p>';
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/posts/user/${user.id}`);
+        if (!response.ok) throw new Error('فشل تحميل المنشورات');
+
+        const data = await response.json();
+        if (data.posts && data.posts.length > 0) {
+            userFeedSection.innerHTML = '';
+            data.posts.forEach(post => {
+                const postElement = createPostElement(post);
+                userFeedSection.appendChild(postElement);
+            });
+            const postCount = document.getElementById('postCount');
+            if (postCount) postCount.innerText = data.posts.length;
+        } else {
+            userFeedSection.innerHTML = '<p style="text-align: center; padding: 20px;">لم تقم بنشر أي شيء بعد.</p>';
+        }
+    } catch (error) {
+        console.error('Error loading user posts:', error);
+        userFeedSection.innerHTML = '<p style="text-align: center; padding: 20px; color: red;">حدث خطأ أثناء تحميل المنشورات.</p>';
+    }
+}
+
 // ============ Initialization ============
 window.addEventListener('load', function() {
-    // إضافة مستمع لحدث الضغط على زر تسجيل الخروج إذا كان موجوداً
-    const logoutBtn = document.getElementById('logoutBtn') || document.querySelector('.sidebar-item i.fa-sign-out-alt')?.parentElement;
+    // إعداد المودالز
+    setupModals();
+
+    // زر تسجيل الخروج
+    const logoutBtn = document.getElementById('logoutBtn');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -187,8 +280,31 @@ window.addEventListener('load', function() {
         });
     }
 
+    // زر الإشعارات
+    const notificationsBtn = document.getElementById('notificationsBtn');
+    const notificationsModal = document.getElementById('notificationsModal');
+    if (notificationsBtn && notificationsModal) {
+        notificationsBtn.addEventListener('click', () => {
+            notificationsModal.classList.add('active');
+            loadNotifications();
+        });
+    }
+
+    // زر الإعدادات
+    const settingsBtn = document.getElementById('settingsBtn');
+    const settingsModal = document.getElementById('settingsModal');
+    if (settingsBtn && settingsModal) {
+        settingsBtn.addEventListener('click', () => {
+            settingsModal.classList.add('active');
+        });
+    }
+
+    // تحميل البيانات إذا كان المستخدم مسجلاً
     if (authToken) {
         loadFeed();
+        if (window.location.pathname.includes('profile.html')) {
+            loadUserPosts();
+        }
     }
     console.log('✅ Nexora loaded successfully with new UI logic');
 });

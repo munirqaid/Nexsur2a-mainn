@@ -19,11 +19,19 @@
             </div>
 
             <div class="navbar-icons-right">
-                
+                <!-- أيقونة الإشعارات -->
+                <button class="nav-icon-btn" title="الإشعارات" id="notificationsBtn">
+                    <i class="fas fa-bell"></i>
+                    <span class="badge" id="notificationBadge">0</span>
+                </button>
                 <!-- أيقونة الملف الشخصي -->
                 <a href="profile.html" class="nav-icon-btn" title="الملف الشخصي" id="profileBtn">
                     <i class="fas fa-user"></i>
                 </a>
+                <!-- أيقونة الإعدادات -->
+                <button class="nav-icon-btn" title="الإعدادات" id="settingsBtn">
+                    <i class="fas fa-cog"></i>
+                </button>
                 <!-- زر تسجيل الخروج -->
                 <button class="nav-icon-btn" title="تسجيل الخروج" id="logoutBtn">
                     <i class="fas fa-sign-out-alt"></i>
@@ -95,6 +103,54 @@
 
     <!-- حقل إدخال ملف مخفي -->
     <input type="file" id="mediaFileInput" accept="image/*,video/*" style="display: none;">
+
+    <!-- Modal للإشعارات -->
+    <div id="notificationsModal" class="modal">
+        <div class="modal-content notifications-modal">
+            <div class="modal-header">
+                <h2>الإشعارات</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="notifications-list" id="notificationsList">
+                <!-- الإشعارات سيتم تحميلها هنا -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal للإعدادات -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content settings-modal">
+            <div class="modal-header">
+                <h2>الإعدادات</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="settings-body">
+                <h3>إعدادات الخصوصية</h3>
+                <div class="setting-item">
+                    <label for="privacySelect">من يمكنه رؤية منشوراتي؟</label>
+                    <select id="privacySelect">
+                        <option value="public">الكل</option>
+                        <option value="friends">الأصدقاء فقط</option>
+                        <option value="private">أنا فقط</option>
+                    </select>
+                </div>
+                
+                <h3 style="margin-top: 2rem;">إعدادات الحساب</h3>
+                <div class="setting-item">
+                    <label for="passwordInput">تغيير كلمة المرور</label>
+                    <input type="password" id="passwordInput" placeholder="كلمة المرور الجديدة">
+                </div>
+                
+                <h3 style="margin-top: 2rem;">إعدادات التنبيهات</h3>
+                <div class="setting-item">
+                    <label for="notificationsToggle">تشغيل/إيقاف الإشعارات</label>
+                    <input type="checkbox" id="notificationsToggle" checked>
+                </div>
+
+                <button class="btn btn-primary" id="saveSettingsBtn">حفظ التغييرات</button>
+            </div>
+        </div>
+    </div>
     
     <script src="script.js"></script>
 </body>

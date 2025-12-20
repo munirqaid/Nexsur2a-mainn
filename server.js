@@ -10,7 +10,7 @@ import authRoutes from './api/auth.js';
 import usersRoutes from './api/users.js';
 import postsRoutes from './api/posts.js';
 import commentsRoutes from './api/comments.js';
-
+import notificationsRoutes from './api/notifications.js';
 import searchRoutes from './api/search.js';
 
 
@@ -33,7 +33,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api/posts', postsRoutes);
 app.use('/api/comments', commentsRoutes);
-
+app.use('/api/notifications', notificationsRoutes);
 app.use('/api/search', searchRoutes);
 
 
