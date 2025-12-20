@@ -116,7 +116,8 @@ router.put('/:postId', authenticateToken, async (req, res) => {
       return res.status(404).json({ error: 'Post not found' });
     }
 
-    if (post.userId !== userId) {
+    // التحقق من أن المستخدم هو صاحب المنشور
+    if (post.userId.toString() !== userId.toString()) {
       return res.status(403).json({ error: 'Unauthorized' });
     }
 
@@ -149,7 +150,8 @@ router.delete('/:postId', authenticateToken, async (req, res) => {
       return res.status(404).json({ error: 'Post not found' });
     }
 
-    if (post.userId !== userId) {
+    // التحقق من أن المستخدم هو صاحب المنشور
+    if (post.userId.toString() !== userId.toString()) {
       return res.status(403).json({ error: 'Unauthorized' });
     }
 

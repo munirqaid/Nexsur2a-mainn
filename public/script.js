@@ -67,6 +67,9 @@ function displayPosts(posts) {
         const postElement = createPostElement(post);
         feedSection.appendChild(postElement);
     });
+    
+    // إضافة مستمعي الأحداث لقوائم الخيارات
+    setupPostMenuListeners();
 }
 
 function createPostElement(post) {
@@ -74,6 +77,11 @@ function createPostElement(post) {
     div.className = 'post-card';
     
     const author = post.author || { displayName: 'مستخدم', avatarUrl: 'https://picsum.photos/40/40' };
+
+    // منطق إظهار زر الحذف
+    const currentUser = JSON.parse(localStorage.getItem('user'));
+    const isMyPost = currentUser && (currentUser.id === post.author.id || currentUser.id === post.author._id);
+    const deleteBtnStyle = isMyPost ? '' : 'display: none;';
     
     const timeAgo = post.createdAt ? getTimeAgo(new Date(post.createdAt)) : 'الآن';
     
@@ -84,7 +92,21 @@ function createPostElement(post) {
                 <h4 class="post-author">${author.displayName || 'مستخدم'}</h4>
                 <p class="post-time">${timeAgo}</p>
             </div>
-            <button class="post-menu-btn"><i class="fas fa-ellipsis-h"></i></button>
+            <div class="post-menu-container">
+                <button class="post-menu-btn" data-post-id="${post._id}"><i class="fas fa-ellipsis-h"></i></button>
+                <div class="post-dropdown-menu" id="menu-${post._id}">
+                    <a href="#" class="menu-item" data-action="save">
+                        <i class="fas fa-bookmark"></i> حفظ المنشور
+                    </a>
+                    <a href="#" class="menu-item" data-action="report">
+                        <i class="fas fa-flag"></i> إبلاغ
+                    </a>
+                    <!-- زر الحذف يظهر فقط إذا كان المستخدم هو صاحب المنشور -->
+                    <a href="#" class="menu-item delete-post-btn" data-post-id="${post._id}" style="${deleteBtnStyle}">
+                        <i class="fas fa-trash-alt"></i> حذف المنشور
+                    </a>
+                </div>
+            </div>
         </div>
         <div class="post-content"><p>${post.content}</p></div>
         <div class="post-stats">
@@ -219,6 +241,68 @@ async function loadUserPosts() {
     } catch (error) {
         console.error('Error loading user posts:', error);
         userFeedSection.innerHTML = '<p style="text-align: center; padding: 20px; color: red;">حدث خطأ أثناء تحميل المنشورات.</p>';
+    }
+}
+
+// ============ Post Menu Logic ============
+function setupPostMenuListeners() {
+    document.querySelectorAll('.post-menu-btn').forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.stopPropagation(); // منع إغلاق القائمة فوراً
+            const postId = button.getAttribute('data-post-id');
+            const menu = document.getElementById(`menu-${postId}`);
+            
+            // إغلاق جميع القوائم الأخرى
+            document.querySelectorAll('.post-dropdown-menu').forEach(m => {
+                if (m !== menu) m.classList.remove('active');
+            });
+
+            // تبديل حالة القائمة الحالية
+            menu.classList.toggle('active');
+        });
+    });
+
+    // إغلاق القائمة عند النقر خارجها
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.post-dropdown-menu').forEach(m => {
+            m.classList.remove('active');
+        });
+    });
+
+    // إضافة مستمع لزر الحذف
+    document.querySelectorAll('.delete-post-btn').forEach(button => {
+        button.addEventListener('click', async (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const postId = button.getAttribute('data-post-id');
+            if (confirm('هل أنت متأكد من حذف هذا المنشور؟')) {
+                await deletePost(postId);
+            }
+        });
+    });
+}
+
+async function deletePost(postId) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/posts/${postId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${authToken}`
+            }
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'فشل حذف المنشور');
+        }
+
+        // إعادة تحميل الخلاصة بعد الحذف
+        await loadFeed();
+        alert('تم حذف المنشور بنجاح.');
+
+    } catch (error) {
+        console.error('Error deleting post:', error);
+        alert(`حدث خطأ: ${error.message}`);
     }
 }
 
