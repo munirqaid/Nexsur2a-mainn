@@ -233,6 +233,10 @@ async function loadUserPosts() {
                 const postElement = createPostElement(post);
                 userFeedSection.appendChild(postElement);
             });
+            
+            // إضافة مستمعي الأحداث لقوائم الخيارات في صفحة الملف الشخصي
+            setupPostMenuListeners();
+
             const postCount = document.getElementById('postCount');
             if (postCount) postCount.innerText = data.posts.length;
         } else {

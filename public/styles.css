@@ -249,6 +249,7 @@ body {
     display: flex;
     align-items: flex-start;
     gap: 1rem;
+    position: relative; /* إضافة تموضع نسبي ليكون مرجعاً للقائمة المنسدلة */
 }
 
 .post-avatar {
@@ -542,13 +543,14 @@ body {
 /* ============ Post Dropdown Menu ============ */
 .post-menu-container {
     position: relative;
-    display: inline-block;
+    /* إزالة display: inline-block لضمان عدم تأثيره على التموضع */
 }
 
 .post-dropdown-menu {
     position: absolute;
     top: 100%; /* أسفل الزر */
-    left: 0; /* محاذاة لليسار في RTL */
+    right: 0; /* محاذاة لليمين في RTL */
+    left: auto; /* إلغاء المحاذاة لليسار */
     background-color: var(--surface-color);
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
