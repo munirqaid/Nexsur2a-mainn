@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexora - الخلاصة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700;800&family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #fff;
+            color: #262626;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Cairo', sans-serif;
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            background: #fff;
+            border-bottom: 1px solid #dbdbdb;
+            padding: 0 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            height: 60px;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-container {
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8em;
+            font-weight: 700;
+            background: linear-gradient(45deg, #fd1d1d, #833ab4, #fd1d1d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-family: 'Billabong', cursive;
+            letter-spacing: 2px;
+        }
+
+        .nav-center {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            margin: 0 20px;
+        }
+
+        .search-box {
+            background: #f0f0f0;
+            border: none;
+            border-radius: 25px;
+            padding: 8px 16px;
+            width: 250px;
+            font-size: 0.9em;
+            font-family: 'Cairo', sans-serif;
+            color: #262626;
+        }
+
+        .search-box::placeholder {
+            color: #999;
+        }
+
+        .search-box:focus {
+            outline: none;
+            background: #f0f0f0;
+            border: 1px solid #ccc;
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-icon-btn {
+            background: none;
+            border: none;
+            color: #262626;
+            font-size: 1.3em;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .nav-icon-btn:hover {
+            color: #fd1d1d;
+            transform: scale(1.1);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: #fd1d1d;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7em;
+            font-weight: 700;
+        }
+
+        .user-profile-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 5px 10px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .user-profile-btn:hover {
+            opacity: 0.7;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #fd1d1d, #833ab4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: white;
+            border: 2px solid #262626;
+        }
+
+        /* ===== MAIN CONTAINER ===== */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 250px 1fr 300px;
+            gap: 20px;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            background: #fff;
+            border-radius: 0;
+            padding: 0;
+            border: none;
+            height: fit-content;
+            position: sticky;
+            top: 80px;
+        }
+
+        .sidebar-item {
+            padding: 12px 15px;
+            margin-bottom: 5px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 0.95em;
+            color: #262626;
+            font-weight: 500;
+        }
+
+        .sidebar-item:hover {
+            background: #f5f5f5;
+        }
+
+        .sidebar-item.active {
+            background: #f0f0f0;
+            color: #fd1d1d;
+            font-weight: 700;
+        }
+
+        .sidebar-item i {
+            font-size: 1.3em;
+            width: 25px;
+            text-align: center;
+        }
+
+        /* ===== FEED ===== */
+        .feed-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .post-creator {
+            background: #fff;
+            border: 1px solid #dbdbdb;
+            border-radius: 8px;
+            padding: 15px;
+            backdrop-filter: none;
+        }
+
+        .post-creator-header {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+            align-items: center;
+        }
+
+        .post-creator-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #fd1d1d, #833ab4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: white;
+            border: 2px solid #262626;
+            flex-shrink: 0;
+        }
+
+        .post-creator-input {
+            flex: 1;
+            background: #f0f0f0;
+            border: none;
+            border-radius: 25px;
+            padding: 10px 16px;
+            color: #262626;
+            font-family: 'Cairo', sans-serif;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.9em;
+        }
+
+        .post-creator-input:focus {
+            outline: none;
+            background: #f0f0f0;
+            box-shadow: 0 0 0 2px rgba(253, 29, 29, 0.1);
+        }
+
+        .post-creator-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .post-creator-icons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .icon-btn {
+            background: transparent;
+            border: none;
+            color: #262626;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: all 0.2s ease;
+            padding: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-btn:hover {
+            color: #fd1d1d;
+            transform: scale(1.15);
+        }
+
+        .post-btn {
+            background: linear-gradient(45deg, #fd1d1d, #833ab4);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            font-size: 0.9em;
+        }
+
+        .post-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(253, 29, 29, 0.3);
+        }
+
+        /* ===== POST CARD ===== */
+        .post-card {
+            background: #fff;
+            border: 1px solid #dbdbdb;
+            border-radius: 8px;
+            overflow: hidden;
+            backdrop-filter: none;
+            transition: all 0.2s ease;
+        }
+
+        .post-card:hover {
+            border-color: #999;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .post-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #fd1d1d, #833ab4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            cursor: pointer;
+            color: white;
+            border: 2px solid #262626;
+            flex-shrink: 0;
+        }
+
+        .post-user-info {
+            flex: 1;
+        }
+
+        .post-username {
+            font-weight: 600;
+            cursor: pointer;
+            color: #262626;
+            font-size: 0.9em;
+        }
+
+        .post-username:hover {
+            color: #fd1d1d;
+        }
+
+        .post-time {
+            font-size: 0.8em;
+            color: #999;
+        }
+
+        .post-menu-btn {
+            background: none;
+            border: none;
+            color: #262626;
+            cursor: pointer;
+            font-size: 1.2em;
+            padding: 5px;
+        }
+
+        .post-menu-btn:hover {
+            color: #fd1d1d;
+        }
+
+        .post-content {
+            padding: 0 15px 12px 15px;
+            line-height: 1.5;
+            color: #262626;
+            font-size: 0.9em;
+        }
+
+        .post-image {
+            width: 100%;
+            max-height: 500px;
+            object-fit: cover;
+            background: #f0f0f0;
+        }
+
+        .post-actions {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 15px;
+            border-top: 1px solid #f0f0f0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .post-action {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #262626;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex: 1;
+            justify-content: center;
+            padding: 5px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        .post-action:hover {
+            color: #fd1d1d;
+            background: #f5f5f5;
+        }
+
+        .post-action.liked {
+            color: #fd1d1d;
+        }
+
+        .post-action.liked i {
+            color: #fd1d1d;
+        }
+
+        .post-stats {
+            padding: 8px 15px;
+            font-size: 0.85em;
+            color: #999;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .post-stats-item {
+            display: inline;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+
+        .post-stats-item:hover {
+            color: #262626;
+        }
+
+        /* ===== RIGHT SIDEBAR ===== */
+        .right-sidebar {
+            background: #fff;
+            border-radius: 0;
+            padding: 0;
+            border: none;
+            height: fit-content;
+            position: sticky;
+            top: 80px;
+        }
+
+        .sidebar-title {
+            font-size: 1em;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #262626;
+        }
+
+        .trending-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .trending-item:hover {
+            background: #f5f5f5;
+            padding-left: 5px;
+        }
+
+        .trending-tag {
+            color: #262626;
+            font-weight: 700;
+            font-size: 0.9em;
+        }
+
+        .trending-count {
+            font-size: 0.8em;
+            color: #999;
+            display: block;
+            margin-top: 3px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #999;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 3px solid #f0f0f0;
+            border-top-color: #fd1d1d;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ===== MODALS ===== */
+        .modal {
+            display: none; /* مخفي افتراضياً */
+            position: fixed; /* البقاء في نفس المكان */
+            z-index: 1000; /* فوق كل شيء */
+            left: 0;
+            top: 0;
+            width: 100%; /* عرض كامل */
+            height: 100%; /* ارتفاع كامل */
+            overflow: auto; /* تمكين التمرير إذا لزم الأمر */
+            background-color: rgba(0,0,0,0.4); /* خلفية معتمة */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* يمكن تعديل العرض */
+            max-width: 500px;
+            border-radius: 10px;
+            position: relative;
+            animation-name: animatetop;
+            animation-duration: 0.4s
+        }
+
+        @keyframes animatetop {
+            from {top: -300px; opacity: 0}
+            to {top: 0; opacity: 1}
+        }
+
+        .modal-close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .modal-close:hover,
+        .modal-close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-btn {
+            background: linear-gradient(45deg, #fd1d1d, #833ab4);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            margin-top: 10px;
+            display: block;
+            width: 100%;
+            text-align: center;
+        }
+
+        .modal-btn:hover {
+            opacity: 0.9;
+        }
+
+        .settings-section {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #eee;
+            border-radius: 5px;
+        }
+
+        .settings-section label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .settings-section input[type="password"],
+        .settings-section select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        #camera-video {
+            width: 100%;
+            max-height: 300px;
+            background: #000;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .main-container {
+                grid-template-columns: 200px 1fr;
+            }
+
+            .right-sidebar {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                padding: 10px;
+            }
+
+            .sidebar {
+                display: none;
+            }
+
+            .nav-center {
+                display: none;
+            }
+
+            .logo {
+                font-size: 1.3em;
+            }
+
+            .nav-icons {
+                gap: 10px;
+            }
+
+            .navbar {
+                padding: 0 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVBAR -->
+    <div class="navbar">
+        <div class="navbar-container">
+            <div class="logo">
+                <i class="fas fa-camera"></i> Nexora
+            </div>
+
+            <div class="nav-center">
+                <input type="text" class="search-box" placeholder="ابحث عن أشخاص أو منشورات...">
+            </div>
+
+            <div class="nav-icons">
+                <button class="nav-icon-btn" title="الاستكشاف">
+                    <i class="fas fa-compass"></i>
+                </button>
+
+                <button class="nav-icon-btn" title="الرسائل">
+                    <i class="fas fa-paper-plane"></i>
+                    <span class="notification-badge">2</span>
+                </button>
+                <button class="user-profile-btn" title="الملف الشخصي">
+                    <div class="user-avatar">أ</div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-container">
+        <!-- LEFT SIDEBAR -->
+        <div class="sidebar">
+            <div class="sidebar-item active">
+                <i class="fas fa-home"></i>
+                <span>الرئيسية</span>
+            </div>
+            <div class="sidebar-item">
+                <i class="fas fa-compass"></i>
+                <span>الاستكشاف</span>
+            </div>
+
+            <div class="sidebar-item">
+                <i class="fas fa-paper-plane"></i>
+                <span>الرسائل</span>
+            </div>
+            <div class="sidebar-item">
+                <i class="fas fa-bookmark"></i>
+                <span>المحفوظات</span>
+            </div>
+            <div class="sidebar-item">
+                <i class="fas fa-user"></i>
+                <span>الملف الشخصي</span>
+            </div>
+
+            <div class="sidebar-item" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>تسجيل الخروج</span>
+            </div>
+        </div>
+
+        <!-- FEED -->
+        <div class="feed-container">
+            <!-- POST CREATOR -->
+            <div class="post-creator">
+                <div class="post-creator-header">
+                    <div class="post-creator-avatar">أ</div>
+                    <input type="text" class="post-creator-input" placeholder="ماذا يدور في بالك؟" id="postInput">
+                </div>
+                <div class="post-creator-actions">
+                    <div class="post-creator-icons">
+
+                        <button class="icon-btn" title="إضافة موقع">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </button>
+                        <button class="icon-btn" title="إضافة استطلاع">
+                            <i class="fas fa-poll"></i>
+                        </button>
+                    </div>
+                    <button class="post-btn" id="publishBtn">نشر</button>
+                </div>
+            </div>
+
+            <!-- POSTS FEED -->
+            <div id="postsFeed">
+                <!-- المنشورات سيتم تحميلها ديناميكياً هنا -->
+            </div>
+        </div>
+
+        <!-- RIGHT SIDEBAR -->
+        
+        <!-- MODALS CONTAINER -->
+        <div id="modals-container">
+            <!-- Media Selection Modal -->
+
+
+
+
+
+
+
+        </div>
+        
+        <!-- END MODALS CONTAINER -->
+        <div class="right-sidebar">
+            <div class="sidebar-title">الأكثر متابعة</div>
+            
+            <div class="trending-item">
+                <div class="trending-tag">#تطوير_الويب</div>
+                <div class="trending-count">45.2K منشور</div>
+            </div>
+
+            <div class="trending-item">
+                <div class="trending-tag">#التصوير_الفوتوغرافي</div>
+                <div class="trending-count">128K منشور</div>
+            </div>
+
+            <div class="trending-item">
+                <div class="trending-tag">#السفر_والسياحة</div>
+                <div class="trending-count">234K منشور</div>
+            </div>
+
+            <div class="trending-item">
+                <div class="trending-tag">#التكنولوجيا</div>
+                <div class="trending-count">567K منشور</div>
+            </div>
+
+            <div class="trending-item">
+                <div class="trending-tag">#الطعام_والطهي</div>
+                <div class="trending-count">892K منشور</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Like button functionality
+        document.querySelectorAll('.post-action').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (this.innerHTML.includes('إعجاب')) {
+                    this.classList.toggle('liked');
+                    if (this.classList.contains('liked')) {
+                        this.innerHTML = '<i class="fas fa-heart"></i><span>أعجبك</span>';
+                    } else {
+                        this.innerHTML = '<i class="far fa-heart"></i><span>إعجاب</span>';
+                    }
+                }
+            });
+        });
+
+        // Sidebar navigation
+        document.querySelectorAll('.sidebar-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        
+
+        
+
+        // Check authentication
+        window.addEventListener('load', function() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = '/auth.html';
+            }
+        });
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

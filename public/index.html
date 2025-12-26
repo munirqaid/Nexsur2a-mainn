@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexora - منصة التواصل الاجتماعي المتقدمة</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700;800&family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- الشريط العلوي الثابت -->
+    <header class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-icons-left">
+                <div class="logo" title="Nexora - Your World. Smarter.">
+                    <span>NEXORA</span>
+                </div>
+            </div>
+
+            <div class="navbar-icons-right">
+                <!-- أيقونة الإشعارات -->
+                <button class="nav-icon-btn" title="الإشعارات" id="notificationsBtn">
+                    <i class="fas fa-bell"></i>
+                    <span class="badge" id="notificationBadge">0</span>
+                </button>
+                <!-- أيقونة الملف الشخصي -->
+                <a href="profile.html" class="nav-icon-btn" title="الملف الشخصي" id="profileBtn">
+                    <i class="fas fa-user"></i>
+                </a>
+                <!-- أيقونة الإعدادات -->
+                <button class="nav-icon-btn" title="الإعدادات" id="settingsBtn">
+                    <i class="fas fa-cog"></i>
+                </button>
+                <!-- زر تسجيل الخروج -->
+                <button class="nav-icon-btn" title="تسجيل الخروج" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="main-container">
+        <div class="sidebar-layout">
+            <div class="content-wrapper">
+                
+                <!-- قسم القصص (Stories) - تم تنظيفه من القصص الوهمية -->
+                <section class="stories-section" id="storiesSection">
+                    <div class="story-card add-story">
+                        <i class="fas fa-plus-circle"></i>
+                        <span>إضافة قصتك</span>
+                    </div>
+                    <!-- القصص الحقيقية سيتم تحميلها هنا برمجياً -->
+                </section>
+		
+                <!-- مربع كتابة المنشور (Composer) -->
+                <section class="post-composer">
+                    <div class="composer-header">
+                        <div class="avatar-placeholder">
+                            <img src="" alt="صورتك" class="composer-avatar" id="currentUserAvatar" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="default-avatar-icon" style="display:none; width:44px; height:44px; border-radius:50%; background:#eee; align-items:center; justify-content:center;"><i class="fas fa-user" style="color:#ccc;"></i></div>
+                        </div>
+                        <textarea class="composer-input" placeholder="ماذا يدور في ذهنك؟" id="postTextarea"></textarea>
+                    </div>
+                    
+                    <div id="mediaPreviewContainer" class="media-preview-container">
+                        <img id="mediaPreview" class="media-preview" src="" alt="معاينة الوسائط">
+                        <button id="removeMediaBtn" class="remove-media-btn"><i class="fas fa-times"></i></button>
+                    </div>
+                    
+                    <div class="composer-divider"></div>
+                    
+                    <div class="composer-footer">
+                        <div class="composer-actions">
+                            <div class="media-upload-container">
+                                <button class="composer-action-btn" id="mediaUploadBtn" title="إضافة وسائط">
+                                    <i class="fas fa-camera"></i>
+                                </button>
+                                <div class="media-dropdown" id="mediaDropdown">
+                                    <button class="media-option" id="openCameraBtn">
+                                        <i class="fas fa-camera"></i>
+                                        <span>فتح الكاميرا</span>
+                                    </button>
+                                    <button class="media-option" id="openGalleryBtn">
+                                        <i class="fas fa-images"></i>
+                                        <span>فتح المعرض</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- زر النشر -->
+                        <button class="btn btn-primary" id="postSubmitBtn">
+                            <i class="fas fa-paper-plane"></i>
+                            <span>نشر</span>
+                        </button>
+                    </div>
+                </section>
+		
+                <!-- منطقة الخلاصات (المنشورات) -->
+                <section class="feed-section" id="feedSection">
+                    <!-- المنشورات سيتم تحميلها هنا -->
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- حقل إدخال ملف مخفي -->
+    <input type="file" id="mediaFileInput" accept="image/*,video/*" style="display: none;">
+
+    <!-- Modal للإشعارات -->
+    <div id="notificationsModal" class="modal">
+        <div class="modal-content notifications-modal">
+            <div class="modal-header">
+                <h2>الإشعارات</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="notifications-list" id="notificationsList">
+                <!-- الإشعارات سيتم تحميلها هنا -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal للإعدادات -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content settings-modal">
+            <div class="modal-header">
+                <h2>الإعدادات</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="settings-body">
+                <h3>إعدادات الخصوصية</h3>
+                <div class="setting-item">
+                    <label for="privacySelect">من يمكنه رؤية منشوراتي؟</label>
+                    <select id="privacySelect">
+                        <option value="public">الكل</option>
+                        <option value="friends">الأصدقاء فقط</option>
+                        <option value="private">أنا فقط</option>
+                    </select>
+                </div>
+                
+                <h3 style="margin-top: 2rem;">إعدادات الحساب</h3>
+                <div class="setting-item">
+                    <label for="passwordInput">تغيير كلمة المرور</label>
+                    <input type="password" id="passwordInput" placeholder="كلمة المرور الجديدة">
+                </div>
+                
+                <h3 style="margin-top: 2rem;">إعدادات التنبيهات</h3>
+                <div class="setting-item">
+                    <label for="notificationsToggle">تشغيل/إيقاف الإشعارات</label>
+                    <input type="checkbox" id="notificationsToggle" checked>
+                </div>
+
+                <button class="btn btn-primary" id="saveSettingsBtn">حفظ التغييرات</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal للتعليقات -->
+    <div id="commentsModal" class="modal">
+        <div class="modal-content comments-modal">
+            <div class="modal-header">
+                <h2>التعليقات</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="comments-body">
+                <div id="commentsList" class="comments-list">
+                    <!-- التعليقات سيتم تحميلها هنا -->
+                </div>
+                <div class="comment-input-wrapper">
+                    <textarea id="commentTextarea" placeholder="اكتب تعليقاً..."></textarea>
+                    <button id="submitCommentBtn" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
